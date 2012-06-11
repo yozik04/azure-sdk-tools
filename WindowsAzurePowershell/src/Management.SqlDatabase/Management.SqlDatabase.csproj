@@ -46,17 +46,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Firewall\GetAzureSqlDatabaseFirewallRule.cs" />
-    <Compile Include="Firewall\NewAzureSqlDatabaseFirewallRule.cs" />
-    <Compile Include="Firewall\RemoveAzureSqlDatabaseFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\RemoveAzureSqlDatabaseFirewallRule.cs" />
+    <Compile Include="Servers\Cmdlet\GetAzureSqlDatabaseServer.cs" />
+    <Compile Include="Servers\Cmdlet\NewAzureSqlDatabaseServer.cs" />
+    <Compile Include="Servers\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
+    <Compile Include="Servers\Cmdlet\SetAzureSqlDatabasePassword.cs" />
     <Compile Include="Model\SqlDatabaseFirewallRuleContext.cs" />
     <Compile Include="Model\SqlDatabaseOperationContext.cs" />
     <Compile Include="Model\SqlDatabaseServerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servers\GetAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\NewAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\RemoveAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\SetAzureSqlDatabasePassword.cs" />
     <Compile Include="SqlDatabaseManagementCmdletBase.cs" />
     <Compile Include="Microsoft.WindowsAzure.Management.SqlDatabase.SnapIn.cs">
       <SubType>Component</SubType>
