@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DDF5D225-C9C5-42B7-BDB5-2C3646E479AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB</RootNamespace>
+    <AssemblyName>Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\package\Output\Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\package\Output\Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Management.Automation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Firewall\GetAzureSqlDBFWRuleCommand.cs" />
+    <Compile Include="Firewall\NewAzureSqlDBFWRuleCommand.cs" />
+    <Compile Include="Firewall\RemoveAzureSqlDBFWRuleCommand.cs" />
+    <Compile Include="Model\SqlDBFirewallRuleContext.cs" />
+    <Compile Include="Model\SqlDBOperationContext.cs" />
+    <Compile Include="Model\SqlDBServerContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servers\GetAzureSqlDBServerCommand.cs" />
+    <Compile Include="Servers\NewAzureSqlDBServerCommand.cs" />
+    <Compile Include="Servers\RemoveAzureSqlDBServerCommand.cs" />
+    <Compile Include="Servers\SetAzureSqlDBPasswordCommand.cs" />
+    <Compile Include="SqlDBManagementCmdletBase.cs" />
+    <Compile Include="WAPSCmdletsSnapIn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Management.SqlDB\Management.SqlDB.csproj">
+      <Project>{446F28C5-7DFB-48B5-918D-99CD8E3736B7}</Project>
+      <Name>Management.SqlAzure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagementTools.PowerShell.Common\ManagementTools.PowerShell.Common.csproj">
+      <Project>{3D1424F0-DEA0-4762-B8F7-0E0C9DA5449F}</Project>
+      <Name>ManagementTools.PowerShell.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceManagement\ServiceManagement.csproj">
+      <Project>{559A16C7-B11C-4AA6-8C16-8ADECA6ABED7}</Project>
+      <Name>ServiceManagement</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.dll-Help.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
