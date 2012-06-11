@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
-    public class SqlDBFirewallRuleContext : SqlDBOperationContext
+    public class SqlDatabaseFirewallRuleContext : SqlDatabaseOperationContext
     {
         public string RuleName { get; set; }
 

@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase
 {
     using System;
     using System.Globalization;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.Common;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.Cmdlets.Common;
 
-    public class SqlDBManagementCmdletBase : CmdletBase<ISqlAzureManagement>
+    public class SqlDatabaseManagementCmdletBase : CmdletBase<ISqlAzureManagement>
     {
         // SQL Azure doesn't support async 
         protected static Operation WaitForSqlAzureOperation()

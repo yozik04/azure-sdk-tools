@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 {
     using System;
     using System.Collections.Generic;
@@ -20,20 +20,20 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureSqlDBFWRule")]
-    public class GetAzureSqlDBFWRuleCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseFirewallRule")]
+    public class GetAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public GetAzureSqlDBFWRuleCommand()
+        public GetAzureSqlDatabaseFirewallRule()
         {
         }
 
-        public GetAzureSqlDBFWRuleCommand(ISqlAzureManagement channel)
+        public GetAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
             set;
         }
 
-        public IEnumerable<SqlDBFirewallRuleContext> GetSqlAzureFirewallRulesProcess()
+        public IEnumerable<SqlDatabaseFirewallRuleContext> GetSqlAzureFirewallRulesProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
                     var firewallRules = this.RetryCall(s => this.Channel.GetServerFirewallRules(s, this.ServerName));
                     Operation operation = WaitForSqlAzureOperation();
                     return firewallRules
-                                .Select(p => new SqlDBFirewallRuleContext()
+                                .Select(p => new SqlDatabaseFirewallRuleContext()
                                 {
                                     OperationId = operation.OperationTrackingId,
                                     OperationDescription = CommandRuntime.ToString(),

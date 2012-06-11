@@ -12,27 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
     using System.Xml;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDBServer")]
-    public class NewAzureSqlDBServerCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer")]
+    public class NewAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
-        public NewAzureSqlDBServerCommand()
+        public NewAzureSqlDatabaseServer()
         {
         }
 
-        public NewAzureSqlDBServerCommand(ISqlAzureManagement channel)
+        public NewAzureSqlDatabaseServer(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
                 {
                    serverName = this.RetryCall(s => this.Channel.NewServer(s, this.AdministratorLogin, this.AdministratorLoginPassword, this.Location));
                    Operation operation = WaitForSqlAzureOperation();
-                   return new SqlDBOperationContext()
+                   return new SqlDatabaseOperationContext()
                    {
                        ServerName = serverName.InnerText,
                        OperationStatus = operation.Status,

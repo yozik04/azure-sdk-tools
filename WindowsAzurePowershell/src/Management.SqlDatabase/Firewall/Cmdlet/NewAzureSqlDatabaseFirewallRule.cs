@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDBFWRule", DefaultParameterSetName = "IpRange")]
-    public class NewAzureSqlDBFWRuleCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseFirewallRule", DefaultParameterSetName = "IpRange")]
+    public class NewAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public NewAzureSqlDBFWRuleCommand()
+        public NewAzureSqlDatabaseFirewallRule()
         {
         }
 
-        public NewAzureSqlDBFWRuleCommand(ISqlAzureManagement channel)
+        public NewAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -95,7 +95,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
                     }
 
                     Operation operation = WaitForSqlAzureOperation();
-                    var context = new SqlDBFirewallRuleContext()
+                    var context = new SqlDatabaseFirewallRuleContext()
                     {
                         ServerName = this.ServerName,
                         OperationId = operation.OperationTrackingId,

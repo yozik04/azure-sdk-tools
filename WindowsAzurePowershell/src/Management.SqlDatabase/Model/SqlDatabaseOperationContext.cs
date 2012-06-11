@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
     using Microsoft.WindowsAzure.ManagementTools.PowerShell.Common.Services.Model;
 
-    public class SqlDBOperationContext : ManagementOperationContext
+    public class SqlDatabaseOperationContext : ManagementOperationContext
     {
         public string ServerName
         {

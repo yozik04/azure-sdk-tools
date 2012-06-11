@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
 {
     using System;
     using System.Collections.Generic;
@@ -20,20 +20,20 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     /// <summary>
     /// Retrieves a list of all the SQL Azure servers that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureSqlDBServer")]
-    public class GetAzureSqlDBServerCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServer")]
+    public class GetAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
-        public GetAzureSqlDBServerCommand()
+        public GetAzureSqlDatabaseServer()
         {
         }
 
-        public GetAzureSqlDBServerCommand(ISqlAzureManagement channel)
+        public GetAzureSqlDatabaseServer(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -58,9 +58,9 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
 
                         if (server != null)
                         {
-                            return new List<SqlDBServerContext>
+                            return new List<SqlDatabaseServerContext>
                             {
-                                new SqlDBServerContext
+                                new SqlDatabaseServerContext
                                 {
                                     OperationId = operation.OperationTrackingId,
                                     OperationDescription = CommandRuntime.ToString(),
@@ -87,7 +87,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
                     this.WriteErrorDetails(ex);
                 }
 
-                return servers.Select(s => new SqlDBServerContext
+                return servers.Select(s => new SqlDatabaseServerContext
                     {
                         ServerName = s.Name,
                         Location = s.Location,

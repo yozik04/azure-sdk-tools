@@ -12,24 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.ManagementTools.PowerShell.Common.Services.Helpers;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
-    [Cmdlet(VerbsCommon.Set, "AzureSqlDBPassword")]
-    public class SetAzureSqlDBPasswordCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword")]
+    public class SetAzureSqlDatabasePassword : SqlDatabaseManagementCmdletBase
     {
-        public SetAzureSqlDBPasswordCommand()
+        public SetAzureSqlDatabasePassword()
         {
         }
 
-        public SetAzureSqlDBPasswordCommand(ISqlAzureManagement channel)
+        public SetAzureSqlDatabasePassword(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
                 {
                     this.RetryCall(s => this.Channel.SetPassword(s, this.ServerName, this.NewPassword));
                     Operation operation = WaitForSqlAzureOperation();
-                    SqlDBOperationContext context = new SqlDBOperationContext()
+                    SqlDatabaseOperationContext context = new SqlDatabaseOperationContext()
                     {
                         OperationDescription = CommandRuntime.ToString(),
                         OperationId = operation.OperationTrackingId,

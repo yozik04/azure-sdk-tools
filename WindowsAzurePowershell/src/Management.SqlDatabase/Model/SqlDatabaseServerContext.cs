@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
-    public class SqlDBServerContext : SqlDBOperationContext
+    public class SqlDatabaseServerContext : SqlDatabaseOperationContext
     {       
         public string AdministratorLogin
         {

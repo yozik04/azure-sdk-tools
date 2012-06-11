@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDBServer")]
-    public class RemoveAzureSqlDBServerCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer")]
+    public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
-        public RemoveAzureSqlDBServerCommand()
+        public RemoveAzureSqlDatabaseServer()
         {
         }
 
-        public RemoveAzureSqlDBServerCommand(ISqlAzureManagement channel)
+        public RemoveAzureSqlDatabaseServer(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Servers
                 {
                     this.RetryCall(s => this.Channel.RemoveServer(s, this.ServerName));
                     Operation operation = WaitForSqlAzureOperation();
-                    var context = new SqlDBOperationContext()
+                    var context = new SqlDatabaseOperationContext()
                     {
                         ServerName = this.ServerName,
                         OperationId = operation.OperationTrackingId,

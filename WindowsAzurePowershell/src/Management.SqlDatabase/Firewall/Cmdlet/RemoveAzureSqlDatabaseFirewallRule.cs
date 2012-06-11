@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDB;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     /// <summary>
     /// Deletes a firewall rule from a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDBFWRule")]
-    public class RemoveAzureSqlDBFWRuleCommand : SqlDBManagementCmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseFirewallRule")]
+    public class RemoveAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public RemoveAzureSqlDBFWRuleCommand()
+        public RemoveAzureSqlDatabaseFirewallRule()
         {
         }
 
-        public RemoveAzureSqlDBFWRuleCommand(ISqlAzureManagement channel)
+        public RemoveAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
         {
             this.Channel = channel;
         }
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.ManagementTools.PowerShell.SqlDB.Firewall
                     this.RetryCall(s => this.Channel.RemoveServerFirewallRule(s, this.ServerName, this.RuleName));
 
                     Operation operation = WaitForSqlAzureOperation();
-                    var context = new SqlDBOperationContext()
+                    var context = new SqlDatabaseOperationContext()
                     {
                         ServerName = this.ServerName,
                         OperationId = operation.OperationTrackingId,
