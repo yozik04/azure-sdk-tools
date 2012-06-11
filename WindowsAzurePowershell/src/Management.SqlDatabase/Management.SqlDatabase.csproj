@@ -140,9 +140,9 @@
       <Project>{446F28C5-7DFB-48B5-918D-99CD8E3736B7}</Project>
       <Name>Management.SqlAzure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManagementTools.PowerShell.Common\ManagementTools.PowerShell.Common.csproj">
-      <Project>{3D1424F0-DEA0-4762-B8F7-0E0C9DA5449F}</Project>
-      <Name>ManagementTools.PowerShell.Common</Name>
+    <ProjectReference Include="..\Management\Management.csproj">
+      <Project>{CD5AA507-F5EF-473D-855B-84B91A1ABE54}</Project>
+      <Name>Management</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceManagement\ServiceManagement.csproj">
       <Project>{559A16C7-B11C-4AA6-8C16-8ADECA6ABED7}</Project>

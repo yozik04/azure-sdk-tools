@@ -19,7 +19,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.SqlDatabase;
-    using Microsoft.WindowsAzure.ManagementTools.PowerShell.Common.Services.Helpers;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
 
     [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword")]

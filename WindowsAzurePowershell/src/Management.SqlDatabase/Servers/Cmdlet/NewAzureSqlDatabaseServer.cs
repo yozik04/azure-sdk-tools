@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             set;
         }      
 
-        public SqlDBOperationContext NewSqlAzureServerProcess()
+        public SqlDatabaseOperationContext NewSqlAzureServerProcess()
         {
             XmlElement serverName = null;
 

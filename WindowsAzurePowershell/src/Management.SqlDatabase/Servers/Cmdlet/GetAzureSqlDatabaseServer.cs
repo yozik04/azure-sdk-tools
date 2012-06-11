@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         [ValidateNotNullOrEmpty]
         public string ServerName { get; set; }        
 
-        public IEnumerable<SqlDBServerContext> GetSqlAzureServersProcess()
+        public IEnumerable<SqlDatabaseServerContext> GetSqlAzureServersProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
