@@ -130,6 +130,21 @@
     <Compile Include="Model\SqlDatabaseOperationContext.cs" />
     <Compile Include="Model\SqlDatabaseServerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientOutputMessageInspector.cs" />
+    <Compile Include="Services\ConfigurationConstants.cs" />
+    <Compile Include="Services\Constants.cs" />
+    <Compile Include="Services\ISqlAzureManagement.cs" />
+    <Compile Include="Services\ISqlAzureManagementExternalApi.cs" />
+    <Compile Include="Services\NewSqlAzureFirewallRuleInput.cs" />
+    <Compile Include="Services\NewSqlAzureServerInput.cs" />
+    <Compile Include="Services\SqlAzureFirewallExtensions.cs" />
+    <Compile Include="Services\SqlAzureFirewallRule.cs" />
+    <Compile Include="Services\SqlAzureFirewallRulesList.cs" />
+    <Compile Include="Services\SqlAzureManagementError.cs" />
+    <Compile Include="Services\SqlAzureManagementHelper.cs" />
+    <Compile Include="Services\SqlAzureServer.cs" />
+    <Compile Include="Services\SqlAzureServerExtensions.cs" />
+    <Compile Include="Services\SqlAzureServerList.cs" />
     <Compile Include="SqlDatabaseManagementCmdletBase.cs" />
     <Compile Include="Microsoft.WindowsAzure.Management.SqlDatabase.SnapIn.cs">
       <SubType>Component</SubType>
