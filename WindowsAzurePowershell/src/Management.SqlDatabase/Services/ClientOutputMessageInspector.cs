@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.ServiceModel;
     using System.ServiceModel.Channels;

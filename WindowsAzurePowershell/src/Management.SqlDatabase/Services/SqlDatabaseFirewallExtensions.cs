@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
-    public static partial class SqlAzureManagementExtensionMethods
+    public static partial class SqlDatabaseManagementExtensionMethods
     {
-        public static SqlAzureFirewallRulesList GetServerFirewallRules(this ISqlAzureManagement proxy, string subscriptionId, string serverName)
+        public static SqlDatabaseFirewallRulesList GetServerFirewallRules(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName)
         {
             return proxy.EndGetServerFirewallRules(proxy.BeginGetServerFirewallRules(subscriptionId, serverName, null, null));
         }
 
-        public static void NewServerFirewallRule(this ISqlAzureManagement proxy, string subscriptionId, string serverName, string ruleName, string startIpAddress, string endIpAddress)
+        public static void NewServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
-            var input = new NewSqlAzureFirewallRuleInput
+            var input = new NewSqlDatabaseFirewallRuleInput
             {
                 StartIpAddress = startIpAddress,
                 EndIpAddress = endIpAddress
@@ -32,13 +32,13 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
             proxy.EndNewServerFirewallRule(proxy.BeginNewServerFirewallRule(subscriptionId, serverName, ruleName, input, null, null));
         }
 
-        public static string NewServerFirewallRuleWithIpDetect(this ISqlAzureManagement proxy, string subscriptionId, string serverName, string ruleName)
+        public static string NewServerFirewallRuleWithIpDetect(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName)
         {
             var result = proxy.EndNewServerFirewallRuleWithIpDetect(proxy.BeginNewServerFirewallRuleWithIpDetect(subscriptionId, serverName, ruleName, null, null));
             return result.InnerText;
         }
 
-        public static void RemoveServerFirewallRule(this ISqlAzureManagement proxy, string subscriptionId, string serverName, string ruleName)
+        public static void RemoveServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName)
         {
             proxy.EndRemoveServerFirewallRule(proxy.BeginRemoveServerFirewallRule(subscriptionId, serverName, ruleName, null, null));
         }

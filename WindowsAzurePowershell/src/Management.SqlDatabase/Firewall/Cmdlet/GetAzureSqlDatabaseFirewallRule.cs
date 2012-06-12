@@ -20,8 +20,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
         {
         }
 
-        public GetAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
+        public GetAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        public IEnumerable<SqlDatabaseFirewallRuleContext> GetSqlAzureFirewallRulesProcess()
+        public IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 base.ProcessRecord();
 
-                var rules = this.GetSqlAzureFirewallRulesProcess();
+                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess();
                 
                 if (rules != null)
                 {

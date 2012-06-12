@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
-    [CollectionDataContract(Name = "Servers", ItemName = "Server", Namespace = Constants.SqlAzureManagementNS)]
-    public class SqlAzureServerList : List<SqlAzureServer>
+    [CollectionDataContract(Name = "Servers", ItemName = "Server", Namespace = Constants.SqlDatabaseManagementNS)]
+    public class SqlDatabaseServerList : List<SqlDatabaseServer>
     {
-        public SqlAzureServerList()
+        public SqlDatabaseServerList()
         {
         }
 
-        public SqlAzureServerList(IEnumerable<SqlAzureServer> servers)
+        public SqlDatabaseServerList(IEnumerable<SqlDatabaseServer> servers)
             : base(servers)
         {
         }

@@ -18,8 +18,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
         {
         }
 
-        public NewAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
+        public NewAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -77,7 +77,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        public void NewSqlAzureFirewallRuleProcess()
+        public void NewAzureSqlDatabaseFirewallRuleProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -123,7 +123,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.NewSqlAzureFirewallRuleProcess();
+                this.NewAzureSqlDatabaseFirewallRuleProcess();
             }
             catch (Exception ex)
             {

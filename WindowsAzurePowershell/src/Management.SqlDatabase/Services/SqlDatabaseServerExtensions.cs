@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.IO;
     using System.Xml;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
 
-    public static partial class SqlAzureManagementExtensionMethods
+    public static partial class SqlDatabaseManagementExtensionMethods
     {
-        public static SqlAzureServerList GetServers(this ISqlAzureManagement proxy, string subscriptionId)
+        public static SqlDatabaseServerList GetServers(this ISqlDatabaseManagement proxy, string subscriptionId)
         {
             return proxy.EndGetServers(proxy.BeginGetServers(subscriptionId, null, null));
         }
 
-        public static XmlElement NewServer(this ISqlAzureManagement proxy, string subscriptionId, string administratorLogin, string administratorLoginPassword, string location)
+        public static XmlElement NewServer(this ISqlDatabaseManagement proxy, string subscriptionId, string administratorLogin, string administratorLoginPassword, string location)
         {
-            var input = new NewSqlAzureServerInput()
+            var input = new NewSqlDatabaseServerInput()
             {
                 AdministratorLogin = administratorLogin,
                 AdministratorLoginPassword = administratorLoginPassword,
@@ -39,12 +39,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
             return result;
         }
 
-        public static void RemoveServer(this ISqlAzureManagement proxy, string subscriptionId, string serverName)
+        public static void RemoveServer(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName)
         {
             proxy.EndRemoveServer(proxy.BeginRemoveServer(subscriptionId, serverName, null, null));
         }
 
-        public static void SetPassword(this ISqlAzureManagement proxy, string subscriptionId, string serverName, string password)
+        public static void SetPassword(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string password)
         {
             // create an xml element for the request body
             var xml = string.Empty;
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
             {
                 var tw = new XmlTextWriter(tx);
                 tw.WriteStartDocument();
-                tw.WriteStartElement("AdministratorLoginPassword", Constants.SqlAzureManagementNS);
+                tw.WriteStartElement("AdministratorLoginPassword", Constants.SqlDatabaseManagementNS);
                 tw.WriteString(password);
                 tw.WriteEndElement();
 

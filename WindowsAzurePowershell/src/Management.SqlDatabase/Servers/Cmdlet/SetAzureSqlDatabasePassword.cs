@@ -18,8 +18,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword")]
     public class SetAzureSqlDatabasePassword : SqlDatabaseManagementCmdletBase
@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
         }
 
-        public SetAzureSqlDatabasePassword(ISqlAzureManagement channel)
+        public SetAzureSqlDatabasePassword(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.SetSqlAzurePasswordProcess();
+                this.SetAzureSqlDatabasePasswordProcess();
             }           
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             }           
         }
 
-        private void SetSqlAzurePasswordProcess()
+        private void SetAzureSqlDatabasePasswordProcess()
         {
             try
             {

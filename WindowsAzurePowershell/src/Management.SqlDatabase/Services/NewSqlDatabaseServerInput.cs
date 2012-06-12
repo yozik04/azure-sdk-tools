@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Runtime.Serialization;
 
     /// <summary>
     /// New server data contract. 
     /// </summary>
-    [DataContract(Namespace = Constants.SqlAzureManagementNS, Name = "Server")]
-    public class NewSqlAzureServerInput : IExtensibleDataObject
+    [DataContract(Namespace = Constants.SqlDatabaseManagementNS, Name = "Server")]
+    public class NewSqlDatabaseServerInput : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]
         public string AdministratorLogin { get; set; }

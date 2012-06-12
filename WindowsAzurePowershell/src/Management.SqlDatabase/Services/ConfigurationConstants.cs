@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.ServiceModel;
     using System.ServiceModel.Channels;
 
     public static class ConfigurationConstants
     {
-        public const string SqlAzureManagementEndpoint = "https://management.database.windows.net:8443";
+        public const string SqlDatabaseManagementEndpoint = "https://management.database.windows.net:8443";
 
         public static Binding WebHttpBinding()
         {

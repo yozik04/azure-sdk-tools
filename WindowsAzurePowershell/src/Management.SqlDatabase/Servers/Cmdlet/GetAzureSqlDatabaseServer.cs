@@ -20,8 +20,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     /// <summary>
     /// Retrieves a list of all the SQL Azure servers that belongs to a subscription.
@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
         }
 
-        public GetAzureSqlDatabaseServer(ISqlAzureManagement channel)
+        public GetAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -42,11 +42,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         [ValidateNotNullOrEmpty]
         public string ServerName { get; set; }        
 
-        public IEnumerable<SqlDatabaseServerContext> GetSqlAzureServersProcess()
+        public IEnumerable<SqlDatabaseServerContext> GetAzureSqlDatabaseServersProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
-                SqlAzureServerList servers = null;
+                SqlDatabaseServerList servers = null;
                 Operation operation = null;
                 try
                 {
@@ -107,7 +107,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();
-                var servers = this.GetSqlAzureServersProcess();
+                var servers = this.GetAzureSqlDatabaseServersProcess();
 
                 if (servers != null)
                 {

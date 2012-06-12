@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System;
     using System.Net;
@@ -25,24 +25,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
     using System.ServiceModel.Web;
     using System.Xml;
 
-    public static class SqlAzureManagementHelper
+    public static class SqlDatabaseManagementHelper
     {
-        public static ISqlAzureManagement CreateSqlAzureManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert)
+        public static ISqlDatabaseManagement CreateSqlDatabaseManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert)
         {
-            WebChannelFactory<ISqlAzureManagement> factory = new WebChannelFactory<ISqlAzureManagement>(binding, remoteUri);
+            WebChannelFactory<ISqlDatabaseManagement> factory = new WebChannelFactory<ISqlDatabaseManagement>(binding, remoteUri);
             factory.Endpoint.Behaviors.Add(new ClientOutputMessageInspector());
             factory.Credentials.ClientCertificate.Certificate = cert;
             return factory.CreateChannel();
         }
 
-        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlAzureManagementError errorDetails)
+        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlDatabaseManagementError errorDetails)
         {
             HttpStatusCode httpStatusCode;
             string operationId;
             return TryGetExceptionDetails(exception, out errorDetails, out httpStatusCode, out operationId);
         }
 
-        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlAzureManagementError errorDetails, out HttpStatusCode httpStatusCode, out string operationId)
+        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlDatabaseManagementError errorDetails, out HttpStatusCode httpStatusCode, out string operationId)
         {
             errorDetails = null;
             httpStatusCode = 0;
@@ -79,7 +79,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                errorDetails = new SqlAzureManagementError();
+                errorDetails = new SqlDatabaseManagementError();
                 errorDetails.Message = response.ResponseUri.AbsoluteUri + " does not exist.";
                 errorDetails.Code = response.StatusCode.ToString();
                 return false;
@@ -95,8 +95,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
                 try
                 {
                     XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(s, new XmlDictionaryReaderQuotas());
-                    DataContractSerializer ser = new DataContractSerializer(typeof(SqlAzureManagementError));
-                    errorDetails = (SqlAzureManagementError)ser.ReadObject(reader, true);
+                    DataContractSerializer ser = new DataContractSerializer(typeof(SqlDatabaseManagementError));
+                    errorDetails = (SqlDatabaseManagementError)ser.ReadObject(reader, true);
                 }
                 catch (SerializationException)
                 {

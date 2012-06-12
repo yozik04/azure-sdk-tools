@@ -19,8 +19,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.ServiceModel;
     using System.Xml;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
         }
 
-        public NewAzureSqlDatabaseServer(ISqlAzureManagement channel)
+        public NewAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             set;
         }      
 
-        public SqlDatabaseOperationContext NewSqlAzureServerProcess()
+        public SqlDatabaseOperationContext NewAzureSqlDatabaseServerProcess()
         {
             XmlElement serverName = null;
 
@@ -96,7 +96,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();                 
-                var context = this.NewSqlAzureServerProcess();
+                var context = this.NewAzureSqlDatabaseServerProcess();
 
                 if (context != null)
                 {

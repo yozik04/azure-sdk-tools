@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
@@ -20,14 +20,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDB
     /// <summary>
     /// List of firewall rules.
     /// </summary>
-    [CollectionDataContract(Name = "FirewallRules", ItemName = "FirewallRule", Namespace = Constants.SqlAzureManagementNS)]
-    public class SqlAzureFirewallRulesList : List<SqlAzureFirewallRule>
+    [CollectionDataContract(Name = "FirewallRules", ItemName = "FirewallRule", Namespace = Constants.SqlDatabaseManagementNS)]
+    public class SqlDatabaseFirewallRulesList : List<SqlDatabaseFirewallRule>
     {
-        public SqlAzureFirewallRulesList()
+        public SqlDatabaseFirewallRulesList()
         {
         }
 
-        public SqlAzureFirewallRulesList(IEnumerable<SqlAzureFirewallRule> firewallRules)
+        public SqlDatabaseFirewallRulesList(IEnumerable<SqlDatabaseFirewallRule> firewallRules)
             : base(firewallRules)
         {
         }

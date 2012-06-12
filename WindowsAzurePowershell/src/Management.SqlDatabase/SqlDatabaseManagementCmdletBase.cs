@@ -19,10 +19,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.Cmdlets.Common;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
-    public class SqlDatabaseManagementCmdletBase : CmdletBase<ISqlAzureManagement>
+    public class SqlDatabaseManagementCmdletBase : CmdletBase<ISqlDatabaseManagement>
     {
         // SQL Azure doesn't support async 
         protected static Operation WaitForSqlAzureOperation()
@@ -34,29 +34,29 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
             return operation;
         }
 
-        protected override ISqlAzureManagement CreateChannel()
+        protected override ISqlDatabaseManagement CreateChannel()
         {
             if (this.ServiceBinding == null)
             {
-                this.ServiceBinding = Management.SqlDB.ConfigurationConstants.WebHttpBinding();
+                this.ServiceBinding = ConfigurationConstants.WebHttpBinding();
             }
 
             if (string.IsNullOrEmpty(CurrentSubscription.SqlAzureServiceEndpoint))
             {
-                this.ServiceEndpoint = Management.SqlDB.ConfigurationConstants.SqlAzureManagementEndpoint;
+                this.ServiceEndpoint = ConfigurationConstants.SqlDatabaseManagementEndpoint;
             }
             else
             {
                 this.ServiceEndpoint = CurrentSubscription.SqlAzureServiceEndpoint;
             }
 
-            return SqlAzureManagementHelper.CreateSqlAzureManagementChannel(this.ServiceBinding, new Uri(this.ServiceEndpoint), CurrentSubscription.Certificate);
+            return SqlDatabaseManagementHelper.CreateSqlDatabaseManagementChannel(this.ServiceBinding, new Uri(this.ServiceEndpoint), CurrentSubscription.Certificate);
         }
 
         protected override void WriteErrorDetails(System.ServiceModel.CommunicationException exception)
         {
-            SqlAzureManagementError error = null;
-            SqlAzureManagementHelper.TryGetExceptionDetails(exception, out error);
+            SqlDatabaseManagementError error = null;
+            SqlDatabaseManagementHelper.TryGetExceptionDetails(exception, out error);
 
             if (error == null)
             {

@@ -18,8 +18,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     /// <summary>
     /// Deletes a firewall rule from a SQL Azure server that belongs to a subscription.
@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
         {
         }
 
-        public RemoveAzureSqlDatabaseFirewallRule(ISqlAzureManagement channel)
+        public RemoveAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
         
-        public string RemoveSqlAzureFirewallRuleProcess()
+        public string RemoveAzureSqlDatabaseFirewallRuleProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.RemoveSqlAzureFirewallRuleProcess();
+                this.RemoveAzureSqlDatabaseFirewallRuleProcess();
             }
             catch (Exception ex)
             {

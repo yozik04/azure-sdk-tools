@@ -18,8 +18,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.SqlDatabase;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
     [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer")]
     public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
         }
 
-        public RemoveAzureSqlDatabaseServer(ISqlAzureManagement channel)
+        public RemoveAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.RemoveSqlAzureServerProcess();
+                this.RemoveAzureSqlDatabaseServerProcess();
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             }
         }
 
-        private void RemoveSqlAzureServerProcess()
+        private void RemoveAzureSqlDatabaseServerProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {

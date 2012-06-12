@@ -109,6 +109,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -133,28 +134,24 @@
     <Compile Include="Services\ClientOutputMessageInspector.cs" />
     <Compile Include="Services\ConfigurationConstants.cs" />
     <Compile Include="Services\Constants.cs" />
-    <Compile Include="Services\ISqlAzureManagement.cs" />
-    <Compile Include="Services\ISqlAzureManagementExternalApi.cs" />
-    <Compile Include="Services\NewSqlAzureFirewallRuleInput.cs" />
-    <Compile Include="Services\NewSqlAzureServerInput.cs" />
-    <Compile Include="Services\SqlAzureFirewallExtensions.cs" />
-    <Compile Include="Services\SqlAzureFirewallRule.cs" />
-    <Compile Include="Services\SqlAzureFirewallRulesList.cs" />
-    <Compile Include="Services\SqlAzureManagementError.cs" />
-    <Compile Include="Services\SqlAzureManagementHelper.cs" />
-    <Compile Include="Services\SqlAzureServer.cs" />
-    <Compile Include="Services\SqlAzureServerExtensions.cs" />
-    <Compile Include="Services\SqlAzureServerList.cs" />
+    <Compile Include="Services\ISqlDatabaseManagement.cs" />
+    <Compile Include="Services\ISqlDatabaseManagementExternalApi.cs" />
+    <Compile Include="Services\NewSqlDatabaseFirewallRuleInput.cs" />
+    <Compile Include="Services\NewSqlDatabaseServerInput.cs" />
+    <Compile Include="Services\SqlDatabaseFirewallExtensions.cs" />
+    <Compile Include="Services\SqlDatabaseFirewallRule.cs" />
+    <Compile Include="Services\SqlDatabaseFirewallRulesList.cs" />
+    <Compile Include="Services\SqlDatabaseManagementError.cs" />
+    <Compile Include="Services\SqlDatabaseManagementHelper.cs" />
+    <Compile Include="Services\SqlDatabaseServer.cs" />
+    <Compile Include="Services\SqlDatabaseServerExtensions.cs" />
+    <Compile Include="Services\SqlDatabaseServerList.cs" />
     <Compile Include="SqlDatabaseManagementCmdletBase.cs" />
     <Compile Include="Microsoft.WindowsAzure.Management.SqlDatabase.SnapIn.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Management.SqlDB\Management.SqlDB.csproj">
-      <Project>{446F28C5-7DFB-48B5-918D-99CD8E3736B7}</Project>
-      <Name>Management.SqlAzure</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Management\Management.csproj">
       <Project>{CD5AA507-F5EF-473D-855B-84B91A1ABE54}</Project>
       <Name>Management</Name>

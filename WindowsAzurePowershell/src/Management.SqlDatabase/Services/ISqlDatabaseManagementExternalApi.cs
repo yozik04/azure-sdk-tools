@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.ServiceModel;
 
     /// <summary>
     /// Provides the SQL Azure Management Api. 
     /// </summary>
-    [ServiceContract(Namespace = Constants.SqlAzureManagementNS)]
-    public partial interface ISqlAzureManagement
+    [ServiceContract(Namespace = Constants.SqlDatabaseManagementNS)]
+    public partial interface ISqlDatabaseManagement
     {
     }
 }

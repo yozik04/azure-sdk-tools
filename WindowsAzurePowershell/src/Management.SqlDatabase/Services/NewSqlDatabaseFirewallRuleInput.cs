@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDB
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Runtime.Serialization;
 
     /// <summary>
     /// New firewall rule data contract. 
     /// </summary>
-    [DataContract(Name = "FirewallRule", Namespace = Constants.SqlAzureManagementNS)]
-    public class NewSqlAzureFirewallRuleInput : IExtensibleDataObject
+    [DataContract(Name = "FirewallRule", Namespace = Constants.SqlDatabaseManagementNS)]
+    public class NewSqlDatabaseFirewallRuleInput : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]
         public string StartIpAddress { get; set; }
