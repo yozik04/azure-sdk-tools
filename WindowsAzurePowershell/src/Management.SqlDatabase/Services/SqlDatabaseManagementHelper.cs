@@ -15,18 +15,18 @@
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Runtime.Serialization;
     using System.Security.Cryptography.X509Certificates;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
     using System.ServiceModel.Web;
     using System.Xml;
 
     public static class SqlDatabaseManagementHelper
     {
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposing the factory would also dispose the channel we are returning.")]
         public static ISqlDatabaseManagement CreateSqlDatabaseManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert)
         {
             WebChannelFactory<ISqlDatabaseManagement> factory = new WebChannelFactory<ISqlDatabaseManagement>(binding, remoteUri);
