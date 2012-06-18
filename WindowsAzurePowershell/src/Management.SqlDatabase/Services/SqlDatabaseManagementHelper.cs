@@ -29,12 +29,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     {
         public static ISqlDatabaseManagement CreateSqlDatabaseManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert)
         {
-            using (WebChannelFactory<ISqlDatabaseManagement> factory = new WebChannelFactory<ISqlDatabaseManagement>(binding, remoteUri))
-            {
-                factory.Endpoint.Behaviors.Add(new ClientOutputMessageInspector());
-                factory.Credentials.ClientCertificate.Certificate = cert;
-                return factory.CreateChannel();
-            }
+            WebChannelFactory<ISqlDatabaseManagement> factory = new WebChannelFactory<ISqlDatabaseManagement>(binding, remoteUri);
+            factory.Endpoint.Behaviors.Add(new ClientOutputMessageInspector());
+            factory.Credentials.ClientCertificate.Certificate = cert;
+            return factory.CreateChannel();
         }
 
         public static bool TryGetExceptionDetails(CommunicationException exception, out SqlDatabaseManagementError errorDetails)
