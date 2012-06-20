@@ -21,7 +21,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer")]
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.High)]
     public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
         public RemoveAzureSqlDatabaseServer()
