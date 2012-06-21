@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         {
             this.subscriptionID = "055c4f05-8a3d-4f6b-97fc-055ff1aa1ffb";
             this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
-            // At runt ime, the current directory will be like
+            // At run time, the current directory will be like
             // <root>\<project>\WindowsAzurePowershell\src\TestResults\<machineName> 2012-06-19 18_49_58\Out
             string currentDir = Directory.GetCurrentDirectory();
             this.moduleManifestFileLocation = Path.GetFullPath(Path.Combine(currentDir, @"..\..\..\..\..\Package\Release"));
