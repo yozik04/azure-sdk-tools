@@ -14,7 +14,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Management.SqlDatabase.Test.Utilities
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities
 {
     /// <summary>
     /// Helper class that executes a given powershell script
@@ -30,7 +30,7 @@ namespace Management.SqlDatabase.Test.Utilities
         /// <returns>true, if the last line of the script returns PASS. Otherwise false</returns>
         public static bool ExecuteScript(string scriptFileName)
         {
-            return PSScriptExecutor.ExecuteScript(scriptFileName, string.Empty, TimeSpan.FromMinutes(2));
+            return PSScriptExecutor.ExecuteScript(scriptFileName, string.Empty);
         }
 
         /// <summary>
@@ -54,7 +54,6 @@ namespace Management.SqlDatabase.Test.Utilities
         public static bool ExecuteScript(string scriptFileName, string argument, TimeSpan timeout)
         {
             lastOutputLine = "FAIL"; // reset the previous result
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
             
             Process process = new Process();
             process.StartInfo.FileName = "powershell.exe";
@@ -83,7 +82,6 @@ namespace Management.SqlDatabase.Test.Utilities
 
         private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
-
             if (outLine.Data != null)
             {
                 Console.WriteLine(outLine.Data);

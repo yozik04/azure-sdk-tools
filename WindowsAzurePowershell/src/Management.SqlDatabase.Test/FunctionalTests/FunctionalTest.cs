@@ -11,11 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
-using Management.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
-namespace Management.SqlDatabase.Test
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 {
     [TestClass]
     public class FunctionalTest
@@ -30,7 +30,8 @@ namespace Management.SqlDatabase.Test
         {
             this.subscriptionID = "055c4f05-8a3d-4f6b-97fc-055ff1aa1ffb";
             this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
-            // <root>\azure-sdk-tools-pr\WindowsAzurePowershell\src\TestResults\ravipal_RAVIPAL60 2012-06-19 18_49_58\Out
+            // At runt ime, the current directory will be like
+            // <root>\<project>\WindowsAzurePowershell\src\TestResults\<machineName> 2012-06-19 18_49_58\Out
             string currentDir = Directory.GetCurrentDirectory();
             this.moduleManifestFileLocation = Path.GetFullPath(Path.Combine(currentDir, @"..\..\..\..\..\Package\Release"));
             Assert.IsTrue(Directory.Exists(this.moduleManifestFileLocation), "Module manifest file location {0} is not exist", this.moduleManifestFileLocation);
