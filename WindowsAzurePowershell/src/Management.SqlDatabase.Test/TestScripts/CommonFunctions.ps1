@@ -14,6 +14,7 @@
 
 # Loads Microsoft.WindowsAzure.Management module
 # Selects a subscription id to be used by the test
+
 function Init-TestEnvironment
 {
     [CmdletBinding()]
