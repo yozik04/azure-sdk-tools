@@ -26,16 +26,14 @@ function Init-TestEnvironment
         $subscriptionID,
         [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]
-        $certThumbPrint,
-        [Parameter(Mandatory=$true, Position=2)]
-        [ValidateNotNullOrEmpty()]
-        $moduleManifestFileLocation
+        $certThumbPrint
     )
     
-    $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
+    $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management.SqlDatabase"
     if(!$moduleLoaded)
     {
-        Import-Module $moduleManifestFileLocation\Microsoft.WindowsAzure.Management.psd1
+        Import-Module .\Microsoft.WindowsAzure.Management.dll
+        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.dll
     }
 
     $myCert = Get-Item cert:\\CurrentUser\My\$certThumbPrint

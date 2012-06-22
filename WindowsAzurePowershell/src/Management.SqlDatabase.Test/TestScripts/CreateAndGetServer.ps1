@@ -26,23 +26,18 @@ Param
     [Parameter(Mandatory=$true, Position=2)]
     [ValidateNotNullOrEmpty()]
     [String]
-    $moduleManifestFileLocation,
-    [Parameter(Mandatory=$true, Position=3)]
-    [ValidateNotNullOrEmpty()]
-    [String]
     $serverLocation
 )
 
 Write-Output "`$subscriptionID=$subscriptionID"
 Write-Output "`$certThumbPrint=$certThumbPrint"
 Write-Output "`$serverLocation=$serverLocation"
-Write-Output "`$moduleManifestFileLocation=$moduleManifestFileLocation"
 
 . .\CommonFunctions.ps1
 
 Try
 {
-    Init-TestEnvironment -subscriptionID $subscriptionID -certThumbPrint $certThumbPrint -moduleManifestFileLocation $moduleManifestFileLocation
+    Init-TestEnvironment -subscriptionID $subscriptionID -certThumbPrint $certThumbPrint
     $loginName="mylogin1"
     $loginPassword="Sql@zure1"
     $isTestPass = $False

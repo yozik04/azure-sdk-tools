@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
 
@@ -22,7 +21,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
     {
         private string subscriptionID;
         private string certThumbprint;
-        private string moduleManifestFileLocation;
         private string serverLocation;
 
         [TestInitialize]
@@ -30,11 +28,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         {
             this.subscriptionID = "055c4f05-8a3d-4f6b-97fc-055ff1aa1ffb";
             this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
-            // At run time, the current directory will be like
-            // <root>\WindowsAzurePowershell\src\TestResults\<machineName> 2012-06-19 18_49_58\Out
-            string currentDir = Directory.GetCurrentDirectory();
-            this.moduleManifestFileLocation = Path.GetFullPath(Path.Combine(currentDir, @"..\..\..\..\..\Package\Release"));
-            Assert.IsTrue(Directory.Exists(this.moduleManifestFileLocation), "Module manifest file location {0} is not exist", this.moduleManifestFileLocation);
             this.serverLocation = "North Central US";
         }
 
@@ -42,7 +35,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         [TestCategory("Functional")]
         public void ServerTest()
         {
-            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -moduleManifestFileLocation \"{2}\" -serverLocation \"{3}\"", this.subscriptionID, this.certThumbprint, this.moduleManifestFileLocation, this.serverLocation);
+            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
             bool testResult = PSScriptExecutor.ExecuteScript("CreateAndGetServer.ps1", arguments);
             Assert.IsTrue(testResult);
         }
