@@ -33,25 +33,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the server to delete.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the SQL Database server to delete.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
             get;
             set;
-        }
-
-        protected override void ProcessRecord()
-        {
-            try
-            {
-                base.ProcessRecord();
-                this.RemoveAzureSqlDatabaseServerProcess();
-            }
-            catch (Exception ex)
-            {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
-            }
         }
 
         private void RemoveAzureSqlDatabaseServerProcess()
@@ -69,12 +56,27 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                         OperationDescription = CommandRuntime.ToString(),
                         OperationStatus = operation.Status
                     };
+
                     WriteObject(context, true);
                 }
                 catch (CommunicationException ex)
                 {
                     this.WriteErrorDetails(ex);
                 }
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            try
+            {
+                base.ProcessRecord();
+
+                this.RemoveAzureSqlDatabaseServerProcess();
+            }
+            catch (Exception ex)
+            {
+                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

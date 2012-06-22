@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
@@ -42,25 +42,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true, HelpMessage = "SQL Database administrator login password.")]
         [ValidateNotNullOrEmpty]
         public string NewPassword
         {
             get;
             set;
-        }
-
-        protected override void ProcessRecord()
-        {
-            try
-            {
-                base.ProcessRecord();
-                this.SetAzureSqlDatabasePasswordProcess();
-            }           
-            catch (Exception ex)
-            {
-                WriteError(new ErrorRecord(this.ProcessExceptionDetails(ex), string.Empty, ErrorCategory.CloseError, null));
-            }           
         }
 
         private void SetAzureSqlDatabasePasswordProcess()
@@ -78,11 +65,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                         OperationStatus = operation.Status
                     };
                     WriteObject(context, true);
-                }  
+                }
             }
             catch (CommunicationException ex)
             {
-                this.WriteErrorDetails(ex);                
+                this.WriteErrorDetails(ex);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            try
+            {
+                base.ProcessRecord();
+                this.SetAzureSqlDatabasePasswordProcess();
+            }
+            catch (Exception ex)
+            {
+                WriteError(new ErrorRecord(this.ProcessExceptionDetails(ex), string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

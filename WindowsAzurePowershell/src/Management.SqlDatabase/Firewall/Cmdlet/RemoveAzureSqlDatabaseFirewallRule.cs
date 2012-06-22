@@ -36,8 +36,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Position = 0, Mandatory = true,
-            ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Azure server name.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
@@ -45,7 +44,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Azure server firewall rule name.")]
+        [Parameter(Mandatory = true, HelpMessage = "SQL Database server firewall rule name.")]
         [ValidateNotNullOrEmpty]
         public string RuleName
         {

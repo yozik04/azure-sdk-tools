@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Azure server name.")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName { get; set; }        
 

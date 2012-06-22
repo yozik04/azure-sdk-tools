@@ -38,8 +38,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Position = 0, Mandatory = true,
-            ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Azure server name.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
@@ -91,7 +90,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                 base.ProcessRecord();
 
                 var rules = this.GetAzureSqlDatabaseFirewallRuleProcess();
-                
+
                 if (rules != null)
                 {
                     WriteObject(rules, true);
