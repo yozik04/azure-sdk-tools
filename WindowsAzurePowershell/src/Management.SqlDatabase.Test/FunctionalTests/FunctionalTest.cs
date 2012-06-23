@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 {
@@ -29,6 +30,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
             this.subscriptionID = "055c4f05-8a3d-4f6b-97fc-055ff1aa1ffb";
             this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
             this.serverLocation = "North Central US";
+
+            new NewAzureSqlDatabaseFirewallRule();
         }
 
         [TestMethod]
