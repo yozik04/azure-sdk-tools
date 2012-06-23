@@ -12,8 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
+using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 {
