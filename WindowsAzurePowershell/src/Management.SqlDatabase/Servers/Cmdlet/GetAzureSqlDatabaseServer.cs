@@ -40,9 +40,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
-        public string ServerName { get; set; }        
+        public string ServerName { get; set; }
 
-        public IEnumerable<SqlDatabaseServerContext> GetAzureSqlDatabaseServersProcess()
+        internal IEnumerable<SqlDatabaseServerContext> GetAzureSqlDatabaseServersProcess(string serverName)
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -52,9 +52,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 {
                     servers = this.RetryCall(s => this.Channel.GetServers(s));
                     operation = WaitForSqlAzureOperation();
-                    if (!string.IsNullOrEmpty(this.ServerName) && operation != null)
+                    if (!string.IsNullOrEmpty(serverName) && operation != null)
                     {
-                        var server = servers.FirstOrDefault(s => s.Name == this.ServerName);
+                        var server = servers.FirstOrDefault(s => s.Name == serverName);
 
                         if (server != null)
                         {
@@ -107,7 +107,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();
-                var servers = this.GetAzureSqlDatabaseServersProcess();
+                var servers = this.GetAzureSqlDatabaseServersProcess(this.ServerName);
 
                 if (servers != null)
                 {
@@ -116,7 +116,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

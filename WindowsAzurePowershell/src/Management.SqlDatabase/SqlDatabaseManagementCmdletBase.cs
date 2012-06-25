@@ -19,10 +19,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.Samples.WindowsAzure.ServiceManagement;
-    using Microsoft.WindowsAzure.Management.Cmdlets.Common;
+    using Microsoft.WindowsAzure.Management.CloudService.Services;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
-    public class SqlDatabaseManagementCmdletBase : CmdletBase<ISqlDatabaseManagement>
+    public class SqlDatabaseManagementCmdletBase : CloudCmdlet<ISqlDatabaseManagement>
     {
         // SQL Azure doesn't support async 
         protected static Operation WaitForSqlAzureOperation()

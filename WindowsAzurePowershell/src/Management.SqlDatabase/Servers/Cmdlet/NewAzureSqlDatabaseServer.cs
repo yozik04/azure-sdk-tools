@@ -59,25 +59,25 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
             get;
             set;
-        }      
+        }
 
-        public SqlDatabaseOperationContext NewAzureSqlDatabaseServerProcess()
+        internal SqlDatabaseOperationContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
         {
             XmlElement serverName = null;
 
             using (new OperationContextScope((IContextChannel)Channel))
-            {                
+            {
                 try
                 {
-                   serverName = this.RetryCall(s => this.Channel.NewServer(s, this.AdministratorLogin, this.AdministratorLoginPassword, this.Location));
-                   Operation operation = WaitForSqlAzureOperation();
-                   return new SqlDatabaseOperationContext()
-                   {
-                       ServerName = serverName.InnerText,
-                       OperationStatus = operation.Status,
-                       OperationDescription = CommandRuntime.ToString(),
-                       OperationId = operation.OperationTrackingId
-                   };
+                    serverName = this.RetryCall(s => this.Channel.NewServer(s, adminLogin, adminLoginPassword, location));
+                    Operation operation = WaitForSqlAzureOperation();
+                    return new SqlDatabaseOperationContext()
+                    {
+                        ServerName = serverName.InnerText,
+                        OperationStatus = operation.Status,
+                        OperationDescription = CommandRuntime.ToString(),
+                        OperationId = operation.OperationTrackingId
+                    };
                 }
                 catch (CommunicationException ex)
                 {
@@ -95,8 +95,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
         {
             try
             {
-                base.ProcessRecord();                 
-                var context = this.NewAzureSqlDatabaseServerProcess();
+                base.ProcessRecord();
+                var context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
 
                 if (context != null)
                 {
@@ -105,8 +105,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
-        }       
+        }
     }
 }

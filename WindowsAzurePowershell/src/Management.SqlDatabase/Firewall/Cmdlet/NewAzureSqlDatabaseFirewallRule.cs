@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        public void NewAzureSqlDatabaseFirewallRuleProcess()
+        internal void NewAzureSqlDatabaseFirewallRuleProcess()
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -125,7 +125,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.WriteError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.WriteError, null));
             }
         }
     }

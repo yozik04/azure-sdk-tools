@@ -51,19 +51,20 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             get;
             set;
         }
-        
-        public string RemoveAzureSqlDatabaseFirewallRuleProcess()
+
+        internal bool RemoveAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
                 try
                 {
-                    this.RetryCall(s => this.Channel.RemoveServerFirewallRule(s, this.ServerName, this.RuleName));
+                    RetryCall(subscription =>
+                        Channel.RemoveServerFirewallRule(subscription, serverName, ruleName));
 
                     Operation operation = WaitForSqlAzureOperation();
                     var context = new SqlDatabaseOperationContext()
                     {
-                        ServerName = this.ServerName,
+                        ServerName = serverName,
                         OperationId = operation.OperationTrackingId,
                         OperationDescription = CommandRuntime.ToString(),
                         OperationStatus = operation.Status
@@ -74,9 +75,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                 catch (CommunicationException ex)
                 {
                     this.WriteErrorDetails(ex);
+                    return false;
                 }
 
-                return null;
+                return true;
             }
         }
 
@@ -88,11 +90,15 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.RemoveAzureSqlDatabaseFirewallRuleProcess();
+
+                if (RemoveAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName))
+                {
+                    SafeWriteObjectWithTimestamp("CompleteMessage");
+                }
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

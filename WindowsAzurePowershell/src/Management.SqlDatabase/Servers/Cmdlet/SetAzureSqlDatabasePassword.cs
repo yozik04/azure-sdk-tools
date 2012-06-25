@@ -50,13 +50,13 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             set;
         }
 
-        private void SetAzureSqlDatabasePasswordProcess()
+        internal void SetAzureSqlDatabasePasswordProcess(string serverName, string newPassword)
         {
             try
             {
                 using (new OperationContextScope((IContextChannel)Channel))
                 {
-                    this.RetryCall(s => this.Channel.SetPassword(s, this.ServerName, this.NewPassword));
+                    this.RetryCall(s => this.Channel.SetPassword(s, serverName, newPassword));
                     Operation operation = WaitForSqlAzureOperation();
                     SqlDatabaseOperationContext context = new SqlDatabaseOperationContext()
                     {
@@ -78,11 +78,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.SetAzureSqlDatabasePasswordProcess();
+                this.SetAzureSqlDatabasePasswordProcess(this.ServerName, this.NewPassword);
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(this.ProcessExceptionDetails(ex), string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(this.ProcessExceptionDetails(ex), string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

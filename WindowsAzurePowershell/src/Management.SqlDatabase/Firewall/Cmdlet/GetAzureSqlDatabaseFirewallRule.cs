@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        public IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess()
+        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess(string serverName)
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
@@ -60,7 +60,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                                     OperationId = operation.OperationTrackingId,
                                     OperationDescription = CommandRuntime.ToString(),
                                     OperationStatus = operation.Status,
-                                    ServerName = this.ServerName,
+                                    ServerName = serverName,
                                     RuleName = p.Name,
                                     StartIpAddress = p.StartIpAddress,
                                     EndIpAddress = p.EndIpAddress
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 base.ProcessRecord();
 
-                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess();
+                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess(this.ServerName);
 
                 if (rules != null)
                 {
@@ -98,7 +98,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }

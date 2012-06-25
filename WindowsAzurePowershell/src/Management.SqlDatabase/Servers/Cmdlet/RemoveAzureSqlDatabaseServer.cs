@@ -41,17 +41,18 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             set;
         }
 
-        private void RemoveAzureSqlDatabaseServerProcess()
+        internal bool RemoveAzureSqlDatabaseServerProcess(string serverName)
         {
             using (new OperationContextScope((IContextChannel)Channel))
             {
                 try
                 {
-                    this.RetryCall(s => this.Channel.RemoveServer(s, this.ServerName));
+                    RetryCall(subscription =>
+                        Channel.RemoveServer(subscription, serverName));
                     Operation operation = WaitForSqlAzureOperation();
                     var context = new SqlDatabaseOperationContext()
                     {
-                        ServerName = this.ServerName,
+                        ServerName = serverName,
                         OperationId = operation.OperationTrackingId,
                         OperationDescription = CommandRuntime.ToString(),
                         OperationStatus = operation.Status
@@ -62,8 +63,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 catch (CommunicationException ex)
                 {
                     this.WriteErrorDetails(ex);
+                    return false;
                 }
             }
+
+            return true;
         }
 
         protected override void ProcessRecord()
@@ -72,11 +76,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             {
                 base.ProcessRecord();
 
-                this.RemoveAzureSqlDatabaseServerProcess();
+                this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
             }
             catch (Exception ex)
             {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
+                SafeWriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
             }
         }
     }
