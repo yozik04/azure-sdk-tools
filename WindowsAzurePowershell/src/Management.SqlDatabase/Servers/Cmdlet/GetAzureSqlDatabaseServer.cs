@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 try
                 {
                     servers = this.RetryCall(s => this.Channel.GetServers(s));
-                    operation = WaitForSqlAzureOperation();
+                    operation = WaitForSqlDatabaseOperation();
                     if (!string.IsNullOrEmpty(serverName) && operation != null)
                     {
                         var server = servers.FirstOrDefault(s => s.Name == serverName);

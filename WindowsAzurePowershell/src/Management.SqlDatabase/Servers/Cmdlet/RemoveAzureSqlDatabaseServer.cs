@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 {
                     RetryCall(subscription =>
                         Channel.RemoveServer(subscription, serverName));
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     var context = new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName,

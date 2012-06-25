@@ -70,7 +70,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 try
                 {
                     serverName = this.RetryCall(s => this.Channel.NewServer(s, adminLogin, adminLoginPassword, location));
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     return new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName.InnerText,

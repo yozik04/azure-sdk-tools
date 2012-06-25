@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                 try
                 {
                     var firewallRules = this.RetryCall(s => this.Channel.GetServerFirewallRules(s, this.ServerName));
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     return firewallRules
                                 .Select(p => new SqlDatabaseFirewallRuleContext()
                                 {

@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                     RetryCall(subscription =>
                         Channel.RemoveServerFirewallRule(subscription, serverName, ruleName));
 
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     var context = new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName,

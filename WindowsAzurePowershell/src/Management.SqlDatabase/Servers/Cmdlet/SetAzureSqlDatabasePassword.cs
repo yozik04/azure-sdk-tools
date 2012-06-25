@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 using (new OperationContextScope((IContextChannel)Channel))
                 {
                     this.RetryCall(s => this.Channel.SetPassword(s, serverName, newPassword));
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     SqlDatabaseOperationContext context = new SqlDatabaseOperationContext()
                     {
                         OperationDescription = CommandRuntime.ToString(),

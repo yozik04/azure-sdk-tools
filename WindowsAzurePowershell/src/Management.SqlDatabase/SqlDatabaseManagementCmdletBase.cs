@@ -25,8 +25,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
 
     public class SqlDatabaseManagementCmdletBase : CloudCmdlet<ISqlDatabaseManagement>
     {
-        // SQL Azure doesn't support async 
-        protected static WAPPSCmdlet.Operation WaitForSqlAzureOperation()
+        // Windows Azure SQL Database doesn't support async calls
+        protected static WAPPSCmdlet.Operation WaitForSqlDatabaseOperation()
         {
             string operationId = RetrieveOperationId();
             WAPPSCmdlet.Operation operation = new WAPPSCmdlet.Operation();

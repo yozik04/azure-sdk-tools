@@ -92,7 +92,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         this.EndIpAddress = address;
                     }
 
-                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
                     var context = new SqlDatabaseFirewallRuleContext()
                     {
                         ServerName = this.ServerName,
