@@ -19,9 +19,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Linq;
     using System.Management.Automation;
     using System.ServiceModel;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                 try
                 {
                     var firewallRules = this.RetryCall(s => this.Channel.GetServerFirewallRules(s, this.ServerName));
-                    Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
                     return firewallRules
                                 .Select(p => new SqlDatabaseFirewallRuleContext()
                                 {

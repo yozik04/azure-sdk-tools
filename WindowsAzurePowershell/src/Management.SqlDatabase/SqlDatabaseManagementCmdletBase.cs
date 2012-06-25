@@ -18,17 +18,18 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
     using System.Globalization;
     using System.Management.Automation;
     using System.ServiceModel;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
+    using System.ServiceModel.Web;
     using Microsoft.WindowsAzure.Management.CloudService.Services;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     public class SqlDatabaseManagementCmdletBase : CloudCmdlet<ISqlDatabaseManagement>
     {
         // SQL Azure doesn't support async 
-        protected static Operation WaitForSqlAzureOperation()
+        protected static WAPPSCmdlet.Operation WaitForSqlAzureOperation()
         {
             string operationId = RetrieveOperationId();
-            Operation operation = new Operation();
+            WAPPSCmdlet.Operation operation = new WAPPSCmdlet.Operation();
             operation.OperationTrackingId = operationId;
             operation.Status = "Success";
             return operation;

@@ -17,9 +17,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.High)]
     public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 {
                     RetryCall(subscription =>
                         Channel.RemoveServer(subscription, serverName));
-                    Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
                     var context = new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName,

@@ -17,10 +17,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.Extensions;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword", ConfirmImpact = ConfirmImpact.Medium)]
     public class SetAzureSqlDatabasePassword : SqlDatabaseManagementCmdletBase
@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 using (new OperationContextScope((IContextChannel)Channel))
                 {
                     this.RetryCall(s => this.Channel.SetPassword(s, serverName, newPassword));
-                    Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
                     SqlDatabaseOperationContext context = new SqlDatabaseOperationContext()
                     {
                         OperationDescription = CommandRuntime.ToString(),

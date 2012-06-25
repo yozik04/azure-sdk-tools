@@ -18,9 +18,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using System.Xml;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
@@ -70,7 +70,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
                 try
                 {
                     serverName = this.RetryCall(s => this.Channel.NewServer(s, adminLogin, adminLoginPassword, location));
-                    Operation operation = WaitForSqlAzureOperation();
+                    WAPPSCmdlet.Operation operation = WaitForSqlAzureOperation();
                     return new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName.InnerText,

@@ -19,9 +19,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
     using System.Linq;
     using System.Management.Automation;
     using System.ServiceModel;
-    using Microsoft.Samples.WindowsAzure.ServiceManagement;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
+    using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
     /// Retrieves a list of all the SQL Azure servers that belongs to a subscription.
@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
             using (new OperationContextScope((IContextChannel)Channel))
             {
                 SqlDatabaseServerList servers = null;
-                Operation operation = null;
+                WAPPSCmdlet.Operation operation = null;
                 try
                 {
                     servers = this.RetryCall(s => this.Channel.GetServers(s));
