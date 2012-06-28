@@ -12,96 +12,71 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 {
     using System;
     using System.Management.Automation;
     using System.ServiceModel;
-    using System.Xml;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
-    /// <summary>
-    /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
-    /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer")]
-    public class NewAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.High)]
+    public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
-        public NewAzureSqlDatabaseServer()
+        public RemoveAzureSqlDatabaseServer()
         {
         }
 
-        public NewAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
+        public RemoveAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
 
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "SQL Database administrator login name.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the SQL Database server to delete.")]
         [ValidateNotNullOrEmpty]
-        public string AdministratorLogin
+        public string ServerName
         {
             get;
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database administrator login password.")]
-        [ValidateNotNullOrEmpty]
-        public string AdministratorLoginPassword
+        internal bool RemoveAzureSqlDatabaseServerProcess(string serverName)
         {
-            get;
-            set;
-        }
-
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database server location.")]
-        [ValidateNotNullOrEmpty]
-        public string Location
-        {
-            get;
-            set;
-        }
-
-        internal SqlDatabaseOperationContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
-        {
-            XmlElement serverName = null;
-
             using (new OperationContextScope((IContextChannel)Channel))
             {
                 try
                 {
-                    serverName = this.RetryCall(s => this.Channel.NewServer(s, adminLogin, adminLoginPassword, location));
+                    RetryCall(subscription =>
+                        Channel.RemoveServer(subscription, serverName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    return new SqlDatabaseOperationContext()
+                    var context = new SqlDatabaseOperationContext()
                     {
-                        ServerName = serverName.InnerText,
-                        OperationStatus = operation.Status,
+                        ServerName = serverName,
+                        OperationId = operation.OperationTrackingId,
                         OperationDescription = CommandRuntime.ToString(),
-                        OperationId = operation.OperationTrackingId
+                        OperationStatus = operation.Status
                     };
+
+                    WriteObject(context, true);
                 }
                 catch (CommunicationException ex)
                 {
                     this.WriteErrorDetails(ex);
+                    return false;
                 }
-
-                return null;
             }
+
+            return true;
         }
 
-        /// <summary>
-        /// Executes the cmdlet.
-        /// </summary>
         protected override void ProcessRecord()
         {
             try
             {
                 base.ProcessRecord();
-                var context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
 
-                if (context != null)
-                {
-                    WriteObject(context, true);
-                }
+                this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
             }
             catch (Exception ex)
             {

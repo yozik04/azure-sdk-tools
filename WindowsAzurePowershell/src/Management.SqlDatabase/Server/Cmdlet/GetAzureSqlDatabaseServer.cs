@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Management.SqlDatabase.Servers.Cmdlet
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 {
     using System;
     using System.Collections.Generic;

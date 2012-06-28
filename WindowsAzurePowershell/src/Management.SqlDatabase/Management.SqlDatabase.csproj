@@ -127,10 +127,10 @@
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\RemoveAzureSqlDatabaseFirewallRule.cs" />
-    <Compile Include="Servers\Cmdlet\GetAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\Cmdlet\NewAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
-    <Compile Include="Servers\Cmdlet\SetAzureSqlDatabasePassword.cs" />
+    <Compile Include="Server\Cmdlet\GetAzureSqlDatabaseServer.cs" />
+    <Compile Include="Server\Cmdlet\NewAzureSqlDatabaseServer.cs" />
+    <Compile Include="Server\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
+    <Compile Include="Server\Cmdlet\SetAzureSqlDatabasePassword.cs" />
     <Compile Include="Model\SqlDatabaseFirewallRuleContext.cs" />
     <Compile Include="Model\SqlDatabaseOperationContext.cs" />
     <Compile Include="Model\SqlDatabaseServerContext.cs" />
