@@ -56,6 +56,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             var newServerResult = newAzureSqlDatabaseServer.NewAzureSqlDatabaseServerProcess("MyLogin", "MyPassword", "MyLocation");
             Assert.AreEqual("NewServerName", newServerResult.ServerName);
             Assert.AreEqual("Success", newServerResult.OperationStatus);
+
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
         }
 
@@ -121,6 +122,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("MyLogin1", firstServer.AdministratorLogin);
             Assert.AreEqual("MyLocation1", firstServer.Location);
             Assert.AreEqual("Success", firstServer.OperationStatus);
+
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
         }
 
@@ -195,6 +197,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("MyLogin1", firstServer.AdministratorLogin);
             Assert.AreEqual("MyLocation1", firstServer.Location);
             Assert.AreEqual("Success", firstServer.OperationStatus);
+            
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
 
             // Remove TestServer0 again
@@ -246,6 +249,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("NewServerName", setPasswordResult.ServerName);
             Assert.AreEqual("Success", setPasswordResult.OperationStatus);
             Assert.AreEqual("NewPassword", password);
+            
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
         }
     }

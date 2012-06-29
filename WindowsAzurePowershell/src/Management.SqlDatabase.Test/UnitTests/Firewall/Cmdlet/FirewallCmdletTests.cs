@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Xml;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Management.CloudService.Test;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
@@ -73,12 +74,73 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             
             // New Firewall rule with IpDetect parameter set
             newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpDetection", "Server2", "Rule2", null, null);
+            Assert.AreEqual(true, newFirewallRuleCalled);
             Assert.AreEqual("Server2", newFirewallResult.ServerName);
             Assert.AreEqual("Rule2", newFirewallResult.RuleName);
             Assert.AreEqual("1.2.3.4", newFirewallResult.StartIpAddress);
             Assert.AreEqual("1.2.3.4", newFirewallResult.EndIpAddress);
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
-            Assert.AreEqual(true, newFirewallRuleCalled);
+
+            Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
+        }
+
+        [TestMethod]
+        public void GetAzureSqlDatabaseFirewallRuleProcessTest()
+        {
+            SqlDatabaseFirewallRulesList firewallList = new SqlDatabaseFirewallRulesList();
+            MockCommandRuntime commandRuntime = new MockCommandRuntime();
+            SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
+            channel.NewServerFirewallRuleThunk = ar =>
+            {
+                Assert.AreEqual("Server1", (string)ar.Values["serverName"]);
+                SqlDatabaseFirewallRule newRule = new SqlDatabaseFirewallRule();
+                newRule.Name = (string)ar.Values["ruleName"];
+                newRule.StartIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIpAddress;
+                newRule.EndIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIpAddress;
+                firewallList.Add(newRule);
+            };
+
+            channel.GetServerFirewallRulesThunk = ar =>
+            {
+                return firewallList;
+            };
+
+            // New firewall rule with IpRange parameter set
+            NewAzureSqlDatabaseFirewallRule newAzureSqlDatabaseFirewallRule = new NewAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
+            newAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
+            var newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
+            Assert.AreEqual("Success", newFirewallResult.OperationStatus);
+            newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule2", "1.1.1.1", "2.2.2.2");
+            Assert.AreEqual("Success", newFirewallResult.OperationStatus);
+
+            // Get all rules
+            GetAzureSqlDatabaseFirewallRule getAzureSqlDatabaseFirewallRule = new GetAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
+            getAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
+            var getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", null);
+            Assert.AreEqual(2, getFirewallResult.Count());
+            var firstRule = getFirewallResult.First();
+            Assert.AreEqual("Server1", firstRule.ServerName);
+            Assert.AreEqual("Rule1", firstRule.RuleName);
+            Assert.AreEqual("0.0.0.0", firstRule.StartIpAddress);
+            Assert.AreEqual("1.1.1.1", firstRule.EndIpAddress);
+            Assert.AreEqual("Success", firstRule.OperationStatus);
+            var lastRule = getFirewallResult.Last();
+            Assert.AreEqual("Server1", lastRule.ServerName);
+            Assert.AreEqual("Rule2", lastRule.RuleName);
+            Assert.AreEqual("1.1.1.1", lastRule.StartIpAddress);
+            Assert.AreEqual("2.2.2.2", lastRule.EndIpAddress);
+            Assert.AreEqual("Success", lastRule.OperationStatus);
+
+            // Get one rule
+            getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", "Rule2");
+            Assert.AreEqual(1, getFirewallResult.Count());
+            firstRule = getFirewallResult.First();
+            Assert.AreEqual("Server1", firstRule.ServerName);
+            Assert.AreEqual("Rule2", firstRule.RuleName);
+            Assert.AreEqual("1.1.1.1", firstRule.StartIpAddress);
+            Assert.AreEqual("2.2.2.2", firstRule.EndIpAddress);
+            Assert.AreEqual("Success", firstRule.OperationStatus);
+
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
         }
     }

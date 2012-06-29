@@ -46,38 +46,74 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess(string serverName)
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server firewall rule name.")]
+        [ValidateNotNullOrEmpty]
+        public string RuleName { get; set; }
+
+        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
         {
-            using (new OperationContextScope((IContextChannel)Channel))
+            IEnumerable<SqlDatabaseFirewallRuleContext> processResult = null;
+
+            try
             {
-                try
+                InvokeInOperationContext(() =>
                 {
-                    var firewallRules = this.RetryCall(s => this.Channel.GetServerFirewallRules(s, this.ServerName));
+                    SqlDatabaseFirewallRulesList firewallRules = RetryCall(subscription => 
+                        Channel.GetServerFirewallRules(subscription, this.ServerName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    return firewallRules
-                                .Select(p => new SqlDatabaseFirewallRuleContext()
+
+                    if (string.IsNullOrEmpty(ruleName))
+                    {
+                        // Firewall rule name is not specified, select all 
+                        processResult = firewallRules.Select(p => new SqlDatabaseFirewallRuleContext()
+                        {
+                            OperationDescription = CommandRuntime.ToString(),
+                            OperationId = operation.OperationTrackingId,
+                            OperationStatus = operation.Status,
+                            ServerName = serverName,
+                            RuleName = p.Name,
+                            StartIpAddress = p.StartIpAddress,
+                            EndIpAddress = p.EndIpAddress
+                        });
+                    }
+                    else
+                    {
+                        var firewallRule = firewallRules.FirstOrDefault(p => p.Name == ruleName);
+                        if (firewallRule != null)
+                        {
+                            processResult = new List<SqlDatabaseFirewallRuleContext>
+                            {
+                                new SqlDatabaseFirewallRuleContext
                                 {
-                                    OperationId = operation.OperationTrackingId,
                                     OperationDescription = CommandRuntime.ToString(),
+                                    OperationId = operation.OperationTrackingId,
                                     OperationStatus = operation.Status,
                                     ServerName = serverName,
-                                    RuleName = p.Name,
-                                    StartIpAddress = p.StartIpAddress,
-                                    EndIpAddress = p.EndIpAddress
-                                });
-                }
-                catch (CommunicationException ex)
-                {
-                    if (ex is EndpointNotFoundException && IsVerbose() == false)
-                    {
-                        return null;
+                                    RuleName = firewallRule.Name,
+                                    StartIpAddress = firewallRule.StartIpAddress,
+                                    EndIpAddress = firewallRule.EndIpAddress
+                                }
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("The firewall rule was not found.");
+                        }
                     }
 
-                    this.WriteErrorDetails(ex);
+                });
+            }
+            catch (CommunicationException ex)
+            {
+                if (ex is EndpointNotFoundException && IsVerbose() == false)
+                {
+                    return null;
                 }
+
+                this.WriteErrorDetails(ex);
             }
 
-            return null;
+            return processResult;
         }
 
         /// <summary>
@@ -89,7 +125,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 base.ProcessRecord();
 
-                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess(this.ServerName);
+                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName);
 
                 if (rules != null)
                 {
