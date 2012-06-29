@@ -52,34 +52,33 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal bool RemoveAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
+        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
         {
-            using (new OperationContextScope((IContextChannel)Channel))
+            SqlDatabaseOperationContext operationContext = null;
+
+            try
             {
-                try
+                InvokeInOperationContext(() =>
                 {
                     RetryCall(subscription =>
                         Channel.RemoveServerFirewallRule(subscription, serverName, ruleName));
-
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    var context = new SqlDatabaseOperationContext()
+
+                    operationContext = new SqlDatabaseOperationContext()
                     {
-                        ServerName = serverName,
-                        OperationId = operation.OperationTrackingId,
                         OperationDescription = CommandRuntime.ToString(),
-                        OperationStatus = operation.Status
+                        OperationId = operation.OperationTrackingId,
+                        OperationStatus = operation.Status,
+                        ServerName = serverName
                     };
-
-                    WriteObject(context, true);
-                }
-                catch (CommunicationException ex)
-                {
-                    this.WriteErrorDetails(ex);
-                    return false;
-                }
-
-                return true;
+                });
             }
+            catch (CommunicationException ex)
+            {
+                this.WriteErrorDetails(ex);
+            }
+
+            return operationContext;
         }
 
         /// <summary>
@@ -90,10 +89,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
+                SqlDatabaseOperationContext context = RemoveAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName);
 
-                if (RemoveAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName))
+                if (context != null)
                 {
-                    SafeWriteObjectWithTimestamp("CompleteMessage");
+                    WriteObject(context, true);
                 }
             }
             catch (Exception ex)
