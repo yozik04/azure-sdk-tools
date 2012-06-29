@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer")]
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.Low)]
     public class NewAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
         public NewAzureSqlDatabaseServer()

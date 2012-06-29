@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseFirewallRule", DefaultParameterSetName = "IpRange")]
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseFirewallRule", DefaultParameterSetName = "IpRange", ConfirmImpact = ConfirmImpact.Low)]
     public class NewAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
     {
         public NewAzureSqlDatabaseFirewallRule()

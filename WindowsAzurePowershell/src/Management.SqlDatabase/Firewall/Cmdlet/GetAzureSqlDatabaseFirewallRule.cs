@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseFirewallRule")]
+    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseFirewallRule", ConfirmImpact = ConfirmImpact.None)]
     public class GetAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
     {
         public GetAzureSqlDatabaseFirewallRule()
