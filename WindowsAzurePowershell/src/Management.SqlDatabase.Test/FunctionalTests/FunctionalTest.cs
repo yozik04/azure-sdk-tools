@@ -39,9 +39,26 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         public void ServerTest()
         {
             string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
-            bool testResult = PSScriptExecutor.ExecuteScript("CreateAndGetServer.ps1", arguments);
+            bool testResult = PSScriptExecutor.ExecuteScript("CreateGetDeleteServer.ps1", arguments);
             Assert.IsTrue(testResult);
         }
 
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void FirewallTest()
+        {
+            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
+            bool testResult = PSScriptExecutor.ExecuteScript("CreateGetDropFirewall.ps1", arguments);
+            Assert.IsTrue(testResult);
+        }
+
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void ResetServerPassword()
+        {
+            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
+            bool testResult = PSScriptExecutor.ExecuteScript("ResetPassword.ps1", arguments);
+            Assert.IsTrue(testResult);
+        }
     }
 }

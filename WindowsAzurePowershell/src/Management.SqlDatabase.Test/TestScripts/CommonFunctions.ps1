@@ -80,3 +80,37 @@ function Assert
         throw $message
     }
 }
+
+function Validate-FirewallRule
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true, Position=0)]
+        [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseFirewallRuleContext]
+        $rule, 
+        [Parameter(Mandatory=$true, Position=1)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $expectedServerName,
+        [Parameter(Mandatory=$true, Position=2)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $expectedName,
+        [Parameter(Mandatory=$true, Position=3)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $expectedStartIP,
+        [Parameter(Mandatory=$true, Position=4)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $expectedEndIP
+    )
+
+    Assert {$rule} "Firewall rule is null"
+    Assert {$rule.ServerName -eq $expectedServerName} "ruleName didn't match. Actual:[$rule.ServerName] expected:[$expectedServerName]"
+    Assert {$rule.RuleName -eq $expectedName} "ruleName didn't match. Actual:[$rule.RuleName] expected:[$expectedName]"
+    Assert {$rule.StartIpAddress -eq $expectedStartIP} "StartIP address didn't match. Actual:[$rule.StartIpAddress] expected:[$expectedStartIP]"
+    Assert {$rule.EndIpAddress -eq $expectedEndIP} "EndIP address didn't match. Actual:[$rule.EndIpAddress] expected:[$expectedEndIP]"
+}
+

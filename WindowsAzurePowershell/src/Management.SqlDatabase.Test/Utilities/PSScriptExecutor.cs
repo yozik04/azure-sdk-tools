@@ -59,6 +59,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities
             process.StartInfo.FileName = "powershell.exe";
             process.StartInfo.Arguments = string.Format(" -File {0} {1}", scriptFileName, argument);
             process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
 

@@ -101,8 +101,10 @@
     <Compile Include="Utilities\PSScriptExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestScripts\CreateAndGetServer.ps1" />
     <None Include="TestScripts\CommonFunctions.ps1" />
+    <None Include="TestScripts\CreateGetDeleteServer.ps1" />
+    <None Include="TestScripts\CreateGetDropFirewall.ps1" />
+    <None Include="TestScripts\ResetPassword.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />
