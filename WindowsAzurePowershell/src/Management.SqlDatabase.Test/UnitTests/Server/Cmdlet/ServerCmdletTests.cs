@@ -25,7 +25,7 @@ using Microsoft.WindowsAzure.Management.Test.Stubs;
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {
     [TestClass]
-    public class AzureSqlDatabaseServerTests : TestBase
+    public class ServerCmdletTests : TestBase
     {
         [TestInitialize]
         public void SetupTest()
