@@ -25,18 +25,23 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
 
     public class SqlDatabaseManagementCmdletBase : CloudCmdlet<ISqlDatabaseManagement>
     {
-        // Windows Azure SQL Database doesn't support async calls
-        protected static WAPPSCmdlet.Operation WaitForSqlDatabaseOperation()
-        {
-            string operationId = RetrieveOperationId();
-            WAPPSCmdlet.Operation operation = new WAPPSCmdlet.Operation();
-            operation.OperationTrackingId = operationId;
-            operation.Status = "Success";
-            return operation;
-        }
+        /// <summary>
+        /// Gets or sets a flag indicating whether CreateChannel should share
+        /// the command's current Channel when asking for a new one.  This is
+        /// only used for testing.
+        /// </summary>
+        internal bool ShareChannel { get; set; }
 
         protected override ISqlDatabaseManagement CreateChannel()
         {
+            // If ShareChannel is set by a unit test, use the same channel that
+            // was passed into out constructor.  This allows the test to submit
+            // a mock that we use for all network calls.
+            if (ShareChannel)
+            {
+                return Channel;
+            }
+
             if (this.ServiceBinding == null)
             {
                 this.ServiceBinding = ConfigurationConstants.WebHttpBinding();
@@ -54,6 +59,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
             return SqlDatabaseManagementHelper.CreateSqlDatabaseManagementChannel(this.ServiceBinding, new Uri(this.ServiceEndpoint), CurrentSubscription.Certificate);
         }
 
+        // Windows Azure SQL Database doesn't support async calls
+        protected static WAPPSCmdlet.Operation WaitForSqlDatabaseOperation()
+        {
+            string operationId = RetrieveOperationId();
+            WAPPSCmdlet.Operation operation = new WAPPSCmdlet.Operation();
+            operation.OperationTrackingId = operationId;
+            operation.Status = "Success";
+            return operation;
+        }
+        
         protected override void WriteErrorDetails(System.ServiceModel.CommunicationException exception)
         {
             SqlDatabaseManagementError error = null;

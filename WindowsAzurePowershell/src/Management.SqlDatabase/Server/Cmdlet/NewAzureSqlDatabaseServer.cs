@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database server location.")]
+        [Parameter(Mandatory = true, HelpMessage = "Location in which to create the new SQL Database server.")]
         [ValidateNotNullOrEmpty]
         public string Location
         {
@@ -63,29 +63,30 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 
         internal SqlDatabaseOperationContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
         {
-            XmlElement serverName = null;
+            SqlDatabaseOperationContext operationContext = null;
 
-            using (new OperationContextScope((IContextChannel)Channel))
+            try
             {
-                try
+                InvokeInOperationContext(() =>
                 {
-                    serverName = this.RetryCall(s => this.Channel.NewServer(s, adminLogin, adminLoginPassword, location));
+                    XmlElement serverName = RetryCall(s => Channel.NewServer(s, adminLogin, adminLoginPassword, location));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    return new SqlDatabaseOperationContext()
+
+                    operationContext = new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName.InnerText,
                         OperationStatus = operation.Status,
                         OperationDescription = CommandRuntime.ToString(),
                         OperationId = operation.OperationTrackingId
                     };
-                }
-                catch (CommunicationException ex)
-                {
-                    this.WriteErrorDetails(ex);
-                }
-
-                return null;
+                });
             }
+            catch (CommunicationException ex)
+            {
+                this.WriteErrorDetails(ex);
+            }
+
+            return operationContext;
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                var context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
+                SqlDatabaseOperationContext context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
 
                 if (context != null)
                 {
