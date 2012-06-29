@@ -12,16 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Management.CloudService.Model;
-using Microsoft.WindowsAzure.Management.CloudService.Test;
-using Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet;
-using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest;
-using Microsoft.WindowsAzure.Management.Test.Stubs;
 using System;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Management.CloudService.Test;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
+using Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet;
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {

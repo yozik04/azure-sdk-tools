@@ -42,9 +42,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             {
                 string newServerName = "NewServerName";
 
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin, "MyLogin");
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword, "MyPassword");
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).Location, "MyLocation");
+                Assert.AreEqual("MyLogin", ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin);
+                Assert.AreEqual("MyPassword", ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword);
+                Assert.AreEqual("MyLocation", ((NewSqlDatabaseServerInput)ar.Values["input"]).Location);
 
                 XmlElement operationResult = new XmlDocument().CreateElement("ServerName", "http://schemas.microsoft.com/sqlazure/2010/12/");
                 operationResult.InnerText = newServerName;
@@ -216,9 +216,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             {
                 string newServerName = "NewServerName";
 
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin, "MyLogin");
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword, "MyPassword");
-                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).Location, "MyLocation");
+                Assert.AreEqual("MyLogin", ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin);
+                Assert.AreEqual("MyPassword", ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword);
+                Assert.AreEqual("MyLocation", ((NewSqlDatabaseServerInput)ar.Values["input"]).Location);
                 password = ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword;
 
                 XmlElement operationResult = new XmlDocument().CreateElement("ServerName", "http://schemas.microsoft.com/sqlazure/2010/12/");
@@ -228,7 +228,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
 
             channel.SetPasswordThunk = ar =>
             {
-                Assert.AreEqual((string)ar.Values["serverName"], "NewServerName");
+                Assert.AreEqual("NewServerName", (string)ar.Values["serverName"]);
                 var passwordElement = (XmlElement)ar.Values["password"];
                 Assert.AreEqual("AdministratorLoginPassword", passwordElement.Name);
                 password = passwordElement.InnerText;
