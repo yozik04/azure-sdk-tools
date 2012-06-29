@@ -201,7 +201,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
 
         #region NewServerFirewallRule
 
-        public Func<SimpleServiceManagementAsyncResult, SqlDatabaseFirewallRulesList> NewServerFirewallRuleThunk { get; set; }
+        public Action<SimpleServiceManagementAsyncResult> NewServerFirewallRuleThunk { get; set; }
         public IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, string ruleName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
@@ -214,21 +214,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             return result;
         }
 
-        public SqlDatabaseFirewallRulesList EndNewServerFirewallRule(IAsyncResult asyncResult)
+        public void EndNewServerFirewallRule(IAsyncResult asyncResult)
         {
             if (NewServerFirewallRuleThunk != null)
             {
                 SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
                 Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
 
-                return NewServerFirewallRuleThunk(result);
+                NewServerFirewallRuleThunk(result);
             }
             else if (ThrowsIfNotImplemented)
             {
                 throw new NotImplementedException("NewServerFirewallRuleThunk is not implemented!");
             }
-
-            return default(SqlDatabaseFirewallRulesList);
         }
 
         #endregion
@@ -268,7 +266,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
 
         #region RemoveServerFirewallRule
 
-        public Func<SimpleServiceManagementAsyncResult, SqlDatabaseFirewallRulesList> RemoveServerFirewallRuleThunk { get; set; }
+        public Action<SimpleServiceManagementAsyncResult> RemoveServerFirewallRuleThunk { get; set; }
         public IAsyncResult BeginRemoveServerFirewallRule(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
@@ -280,21 +278,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             return result;
         }
 
-        public SqlDatabaseFirewallRulesList EndRemoveServerFirewallRule(IAsyncResult asyncResult)
+        public void EndRemoveServerFirewallRule(IAsyncResult asyncResult)
         {
             if (RemoveServerFirewallRuleThunk != null)
             {
                 SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
                 Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
 
-                return RemoveServerFirewallRuleThunk(result);
+                RemoveServerFirewallRuleThunk(result);
             }
             else if (ThrowsIfNotImplemented)
             {
                 throw new NotImplementedException("RemoveServerFirewallRuleThunk is not implemented!");
             }
-
-            return default(SqlDatabaseFirewallRulesList);
         }
 
         #endregion

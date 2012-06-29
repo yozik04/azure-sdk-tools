@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
     /// These tests prevent regression in parameter validation attributes.
     /// </summary>
     [TestClass]
-    public class ServerCmdletAttributionTests : TestBase
+    public class FirewallCmdletAttributionTests : TestBase
     {
         [TestInitialize]
         public void SetupTest()
@@ -33,30 +33,23 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
-        public void GetAzureSqlDatabaseServerAttributeTest()
+        public void GetAzureSqlDatabaseFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(GetAzureSqlDatabaseServer);
+            Type cmdlet = typeof(GetAzureSqlDatabaseFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.None);
         }
 
         [TestMethod]
-        public void NewAzureSqlDatabaseServerAttributeTest()
+        public void NewAzureSqlDatabaseFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(NewAzureSqlDatabaseServer);
+            Type cmdlet = typeof(NewAzureSqlDatabaseFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Low);
         }
 
         [TestMethod]
-        public void RemoveAzureSqlDatabaseServerAttributeTest()
+        public void RemoveAzureSqlDatabaseFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(RemoveAzureSqlDatabaseServer);
-            UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.High);
-        }
-
-        [TestMethod]
-        public void SetAzureSqlDatabasePasswordAttributeTest()
-        {
-            Type cmdlet = typeof(SetAzureSqlDatabasePassword);
+            Type cmdlet = typeof(RemoveAzureSqlDatabaseFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Medium);
         }
     }

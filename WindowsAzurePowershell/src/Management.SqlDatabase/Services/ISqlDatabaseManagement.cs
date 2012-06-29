@@ -82,7 +82,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         [WebInvoke(Method = "PUT", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules/{ruleName}")]
         IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, string ruleName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
 
-        SqlDatabaseFirewallRulesList EndNewServerFirewallRule(IAsyncResult asyncResult);
+        void EndNewServerFirewallRule(IAsyncResult asyncResult);
 
         /// <summary>
         /// Adds a new firewall rule or updates an existing firewall rule for a SQL Database server with requester’s IP address.
@@ -102,6 +102,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules/{ruleName}")]
         IAsyncResult BeginRemoveServerFirewallRule(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state);
 
-        SqlDatabaseFirewallRulesList EndRemoveServerFirewallRule(IAsyncResult asyncResult);
+        void EndRemoveServerFirewallRule(IAsyncResult asyncResult);
     }
 }

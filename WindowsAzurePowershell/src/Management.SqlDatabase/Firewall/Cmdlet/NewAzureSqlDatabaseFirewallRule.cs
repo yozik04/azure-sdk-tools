@@ -15,6 +15,7 @@
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 {
     using System;
+    using System.Diagnostics;
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
@@ -75,42 +76,64 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal void NewAzureSqlDatabaseFirewallRuleProcess()
+        internal SqlDatabaseFirewallRuleContext NewAzureSqlDatabaseFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
-            using (new OperationContextScope((IContextChannel)Channel))
+            SqlDatabaseFirewallRuleContext operationContext = null;
+
+            try
             {
-                try
+                switch (paramterSetName)
                 {
-                    if (this.ParameterSetName == "IpRange")
-                    {
-                        this.RetryCall(s => this.Channel.NewServerFirewallRule(s, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress));
-                    }
-                    else if (this.ParameterSetName == "IpDetection")
-                    {
-                        var address = this.RetryCall(s => this.Channel.NewServerFirewallRuleWithIpDetect(s, this.ServerName, this.RuleName));
-                        this.StartIpAddress = address;
-                        this.EndIpAddress = address;
-                    }
+                    case "IpRange":
+                        InvokeInOperationContext(() =>
+                        {
+                            RetryCall(subscription =>
+                                Channel.NewServerFirewallRule(subscription, serverName, ruleName, startIpAddress, endIpAddress));
+                            WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    var context = new SqlDatabaseFirewallRuleContext()
-                    {
-                        ServerName = this.ServerName,
-                        OperationId = operation.OperationTrackingId,
-                        OperationDescription = CommandRuntime.ToString(),
-                        OperationStatus = operation.Status,
-                        RuleName = this.RuleName,
-                        StartIpAddress = this.StartIpAddress,
-                        EndIpAddress = this.EndIpAddress
-                    };
+                            operationContext = new SqlDatabaseFirewallRuleContext()
+                            {
+                                OperationDescription = CommandRuntime.ToString(),
+                                OperationStatus = operation.Status,
+                                OperationId = operation.OperationTrackingId,
+                                ServerName = serverName,
+                                RuleName = ruleName,
+                                StartIpAddress = startIpAddress,
+                                EndIpAddress = endIpAddress
+                            };
+                        });
+                        break;
+                    case "IpDetection":
+                        InvokeInOperationContext(() =>
+                        {
+                            var detectedIpAddress = RetryCall(subscription =>
+                                Channel.NewServerFirewallRuleWithIpDetect(subscription, serverName, ruleName));
+                            WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    WriteObject(context, true);
-                }
-                catch (CommunicationException ex)
-                {
-                    this.WriteErrorDetails(ex);
+                            operationContext = new SqlDatabaseFirewallRuleContext()
+                            {
+                                OperationDescription = CommandRuntime.ToString(),
+                                OperationStatus = operation.Status,
+                                OperationId = operation.OperationTrackingId,
+                                ServerName = serverName,
+                                RuleName = ruleName,
+                                StartIpAddress = detectedIpAddress,
+                                EndIpAddress = detectedIpAddress
+                            };
+                        });
+                        break;
+                    default:
+                        // Should never get here
+                        Debug.Assert(false, "Invalid parameter set!");
+                        break;
                 }
             }
+            catch (CommunicationException ex)
+            {
+                this.WriteErrorDetails(ex);
+            }
+
+            return operationContext;
         }
 
         /// <summary>
@@ -121,7 +144,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.NewAzureSqlDatabaseFirewallRuleProcess();
+                SqlDatabaseOperationContext context = this.NewAzureSqlDatabaseFirewallRuleProcess(this.ParameterSetName, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress);
+
+                if (context != null)
+                {
+                    WriteObject(context, true);
+                }
             }
             catch (Exception ex)
             {
