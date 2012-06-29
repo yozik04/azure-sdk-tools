@@ -138,7 +138,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
 
         #region SetPassword
 
-        public Func<SimpleServiceManagementAsyncResult, SqlDatabaseServerList> SetPasswordThunk { get; set; }
+        public Action<SimpleServiceManagementAsyncResult> SetPasswordThunk { get; set; }
         public IAsyncResult BeginSetPassword(string subscriptionId, string serverName, XmlElement password, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
@@ -150,21 +150,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             return result;
         }
 
-        public SqlDatabaseServerList EndSetPassword(IAsyncResult asyncResult)
+        public void EndSetPassword(IAsyncResult asyncResult)
         {
             if (SetPasswordThunk != null)
             {
                 SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
                 Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
 
-                return SetPasswordThunk(result);
+                SetPasswordThunk(result);
             }
             else if (ThrowsIfNotImplemented)
             {
                 throw new NotImplementedException("SetPasswordThunk is not implemented!");
             }
-
-            return default(SqlDatabaseServerList);
         }
 
         #endregion

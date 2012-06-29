@@ -50,27 +50,33 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal void SetAzureSqlDatabasePasswordProcess(string serverName, string newPassword)
+        internal SqlDatabaseOperationContext SetAzureSqlDatabasePasswordProcess(string serverName, string newPassword)
         {
+            SqlDatabaseOperationContext operationContext = null;
+
             try
             {
-                using (new OperationContextScope((IContextChannel)Channel))
+                InvokeInOperationContext(() =>
                 {
-                    this.RetryCall(s => this.Channel.SetPassword(s, serverName, newPassword));
+                    RetryCall(subscription =>
+                        Channel.SetPassword(subscription, serverName, newPassword));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    SqlDatabaseOperationContext context = new SqlDatabaseOperationContext()
+
+                    operationContext = new SqlDatabaseOperationContext()
                     {
+                        ServerName = serverName,
                         OperationDescription = CommandRuntime.ToString(),
-                        OperationId = operation.OperationTrackingId,
-                        OperationStatus = operation.Status
+                        OperationStatus = operation.Status,
+                        OperationId = operation.OperationTrackingId
                     };
-                    WriteObject(context, true);
-                }
+                });
             }
             catch (CommunicationException ex)
             {
                 this.WriteErrorDetails(ex);
             }
+
+            return operationContext;
         }
 
         protected override void ProcessRecord()
@@ -78,7 +84,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                this.SetAzureSqlDatabasePasswordProcess(this.ServerName, this.NewPassword);
+                SqlDatabaseOperationContext context = this.SetAzureSqlDatabasePasswordProcess(this.ServerName, this.NewPassword);
+
+                if (context != null)
+                {
+                    WriteObject(context, true);
+                }
             }
             catch (Exception ex)
             {

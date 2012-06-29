@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/servers/{serverName}?op=ResetPassword", BodyStyle = WebMessageBodyStyle.Bare)]
         IAsyncResult BeginSetPassword(string subscriptionId, string serverName, XmlElement password, AsyncCallback callback, object state);
 
-        SqlDatabaseServerList EndSetPassword(IAsyncResult asyncResult);
+        void EndSetPassword(IAsyncResult asyncResult);
 
         /// <summary>
         /// Retrieves a list of all the firewall rules for a SQL Database server that belongs to a subscription.

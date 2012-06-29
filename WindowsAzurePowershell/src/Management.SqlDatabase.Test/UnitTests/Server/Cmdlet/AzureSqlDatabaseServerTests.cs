@@ -203,5 +203,50 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             removeServerContext = removeAzureSqlDatabaseServer.RemoveAzureSqlDatabaseServerProcess("TestServer0");
             Assert.AreEqual(1, commandRuntime.ErrorRecords.Count);
         }
+
+        [TestMethod]
+        public void SetAzureSqlDatabasePasswordProcessTest()
+        {
+            MockCommandRuntime commandRuntime = new MockCommandRuntime();
+            SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
+
+            string password = null;
+
+            channel.NewServerThunk = ar =>
+            {
+                string newServerName = "NewServerName";
+
+                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin, "MyLogin");
+                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword, "MyPassword");
+                Assert.AreEqual(((NewSqlDatabaseServerInput)ar.Values["input"]).Location, "MyLocation");
+                password = ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLoginPassword;
+
+                XmlElement operationResult = new XmlDocument().CreateElement("ServerName", "http://schemas.microsoft.com/sqlazure/2010/12/");
+                operationResult.InnerText = newServerName;
+                return operationResult;
+            };
+
+            channel.SetPasswordThunk = ar =>
+            {
+                Assert.AreEqual((string)ar.Values["serverName"], "NewServerName");
+                var passwordElement = (XmlElement)ar.Values["password"];
+                Assert.AreEqual("AdministratorLoginPassword", passwordElement.Name);
+                password = passwordElement.InnerText;
+            };
+
+            NewAzureSqlDatabaseServer newAzureSqlDatabaseServer = new NewAzureSqlDatabaseServer(channel) { ShareChannel = true };
+            newAzureSqlDatabaseServer.CommandRuntime = commandRuntime;
+            var newServerResult = newAzureSqlDatabaseServer.NewAzureSqlDatabaseServerProcess("MyLogin", "MyPassword", "MyLocation");
+            Assert.AreEqual("NewServerName", newServerResult.ServerName);
+            Assert.AreEqual("Success", newServerResult.OperationStatus);
+
+            SetAzureSqlDatabasePassword setAzureSqlDatabasePassword = new SetAzureSqlDatabasePassword(channel) { ShareChannel = true };
+            setAzureSqlDatabasePassword.CommandRuntime = commandRuntime;
+            var setPasswordResult = setAzureSqlDatabasePassword.SetAzureSqlDatabasePasswordProcess("NewServerName", "NewPassword");
+            Assert.AreEqual("NewServerName", setPasswordResult.ServerName);
+            Assert.AreEqual("Success", setPasswordResult.OperationStatus);
+            Assert.AreEqual("NewPassword", password);
+            Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
+        }
     }
 }
