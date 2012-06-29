@@ -69,7 +69,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             {
                 InvokeInOperationContext(() =>
                 {
-                    XmlElement serverName = RetryCall(s => Channel.NewServer(s, adminLogin, adminLoginPassword, location));
+                    XmlElement serverName = RetryCall(subscription => 
+                        Channel.NewServer(subscription, adminLogin, adminLoginPassword, location));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
                     operationContext = new SqlDatabaseOperationContext()

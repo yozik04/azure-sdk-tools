@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
 using System.Linq;
+using System.ServiceModel;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Management.CloudService.Model;
 using Microsoft.WindowsAzure.Management.CloudService.Test;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet;
+using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest;
 using Microsoft.WindowsAzure.Management.Test.Stubs;
-using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {
@@ -54,8 +53,71 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             NewAzureSqlDatabaseServer newAzureSqlDatabaseServer = new NewAzureSqlDatabaseServer(channel) { ShareChannel = true };
             newAzureSqlDatabaseServer.CommandRuntime = new MockCommandRuntime();
             var newServerResult = newAzureSqlDatabaseServer.NewAzureSqlDatabaseServerProcess("MyLogin", "MyPassword", "MyLocation");
-            Assert.AreEqual(newServerResult.ServerName, "NewServerName");
-            Assert.AreEqual(newServerResult.OperationStatus, "Success");
+            Assert.AreEqual("NewServerName", newServerResult.ServerName);
+            Assert.AreEqual("Success", newServerResult.OperationStatus);
+        }
+
+        [TestMethod]
+        public void GetAzureSqlDatabaseServerProcessTest()
+        {
+            SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
+            SqlDatabaseServerList serverList = new SqlDatabaseServerList();
+
+            channel.NewServerThunk = ar =>
+            {
+                string newServerName = "TestServer" + serverList.Count.ToString();
+                serverList.Add(new SqlDatabaseServer()
+                {
+                    Name = newServerName,
+                    AdministratorLogin = ((NewSqlDatabaseServerInput)ar.Values["input"]).AdministratorLogin,
+                    Location = ((NewSqlDatabaseServerInput)ar.Values["input"]).Location
+                });
+
+                XmlElement operationResult = new XmlDocument().CreateElement("ServerName", "http://schemas.microsoft.com/sqlazure/2010/12/");
+                operationResult.InnerText = newServerName;
+                return operationResult;
+            };
+
+            channel.GetServersThunk = ar =>
+            {
+                return serverList;
+            };
+
+            // Add two servers
+            NewAzureSqlDatabaseServer newAzureSqlDatabaseServer = new NewAzureSqlDatabaseServer(channel) { ShareChannel = true };
+            newAzureSqlDatabaseServer.CommandRuntime = new MockCommandRuntime();
+            var newServerResult = newAzureSqlDatabaseServer.NewAzureSqlDatabaseServerProcess("MyLogin0", "MyPassword0", "MyLocation0");
+            Assert.AreEqual("TestServer0", newServerResult.ServerName);
+            Assert.AreEqual("Success", newServerResult.OperationStatus);
+
+            newServerResult = newAzureSqlDatabaseServer.NewAzureSqlDatabaseServerProcess("MyLogin1", "MyPassword1", "MyLocation1");
+            Assert.AreEqual("TestServer1", newServerResult.ServerName);
+            Assert.AreEqual("Success", newServerResult.OperationStatus);
+
+            // Get all servers
+            GetAzureSqlDatabaseServer getAzureSqlDatabaseServer = new GetAzureSqlDatabaseServer(channel) { ShareChannel = true };
+            getAzureSqlDatabaseServer.CommandRuntime = new MockCommandRuntime();
+            var getServerResult = getAzureSqlDatabaseServer.GetAzureSqlDatabaseServersProcess(null);
+            Assert.AreEqual(2, getServerResult.Count());
+            var firstServer = getServerResult.First();
+            Assert.AreEqual("TestServer0", firstServer.ServerName);
+            Assert.AreEqual("MyLogin0", firstServer.AdministratorLogin);
+            Assert.AreEqual("MyLocation0", firstServer.Location);
+            Assert.AreEqual("Success", firstServer.OperationStatus);
+            var lastServer = getServerResult.Last();
+            Assert.AreEqual("TestServer1", lastServer.ServerName);
+            Assert.AreEqual("MyLogin1", lastServer.AdministratorLogin);
+            Assert.AreEqual("MyLocation1", lastServer.Location);
+            Assert.AreEqual("Success", lastServer.OperationStatus);
+
+            // Get one server
+            getServerResult = getAzureSqlDatabaseServer.GetAzureSqlDatabaseServersProcess("TestServer1");
+            Assert.AreEqual(1, getServerResult.Count());
+            firstServer = getServerResult.First();
+            Assert.AreEqual("TestServer1", firstServer.ServerName);
+            Assert.AreEqual("MyLogin1", firstServer.AdministratorLogin);
+            Assert.AreEqual("MyLocation1", firstServer.Location);
+            Assert.AreEqual("Success", firstServer.OperationStatus);
         }
     }
 }

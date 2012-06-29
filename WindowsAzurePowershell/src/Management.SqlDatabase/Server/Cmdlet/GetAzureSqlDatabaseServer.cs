@@ -44,30 +44,44 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 
         internal IEnumerable<SqlDatabaseServerContext> GetAzureSqlDatabaseServersProcess(string serverName)
         {
-            using (new OperationContextScope((IContextChannel)Channel))
+            IEnumerable<SqlDatabaseServerContext> processResult = null;
+
+            try
             {
-                SqlDatabaseServerList servers = null;
-                WAPPSCmdlet.Operation operation = null;
-                try
+                InvokeInOperationContext(() =>
                 {
-                    servers = this.RetryCall(s => this.Channel.GetServers(s));
-                    operation = WaitForSqlDatabaseOperation();
-                    if (!string.IsNullOrEmpty(serverName) && operation != null)
+                    SqlDatabaseServerList servers = RetryCall(subscription =>
+                        Channel.GetServers(subscription));
+                    WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
+
+                    if (string.IsNullOrEmpty(serverName))
+                    {
+                        // Server name is not specified, select all 
+                        processResult = servers.Select(server => new SqlDatabaseServerContext
+                        {
+                            ServerName = server.Name,
+                            Location = server.Location,
+                            AdministratorLogin = server.AdministratorLogin,
+                            OperationStatus = operation.Status,
+                            OperationDescription = CommandRuntime.ToString(),
+                            OperationId = operation.OperationTrackingId
+                        });
+                    }
+                    else
                     {
                         var server = servers.FirstOrDefault(s => s.Name == serverName);
-
                         if (server != null)
                         {
-                            return new List<SqlDatabaseServerContext>
+                            processResult = new List<SqlDatabaseServerContext>
                             {
                                 new SqlDatabaseServerContext
                                 {
-                                    OperationId = operation.OperationTrackingId,
-                                    OperationDescription = CommandRuntime.ToString(),
-                                    OperationStatus = operation.Status,
                                     ServerName = server.Name,
                                     Location = server.Location,
-                                    AdministratorLogin = server.AdministratorLogin
+                                    AdministratorLogin = server.AdministratorLogin,
+                                    OperationStatus = operation.Status,
+                                    OperationDescription = CommandRuntime.ToString(),
+                                    OperationId = operation.OperationTrackingId
                                 }
                             };
                         }
@@ -76,27 +90,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                             throw new Exception("The server was not found.");
                         }
                     }
-                }
-                catch (CommunicationException ex)
-                {
-                    if (ex is EndpointNotFoundException && IsVerbose() == false)
-                    {
-                        return null;
-                    }
-
-                    this.WriteErrorDetails(ex);
-                }
-
-                return servers.Select(s => new SqlDatabaseServerContext
-                    {
-                        ServerName = s.Name,
-                        Location = s.Location,
-                        AdministratorLogin = s.AdministratorLogin,
-                        OperationDescription = CommandRuntime.ToString(),
-                        OperationStatus = operation.Status,
-                        OperationId = operation.OperationTrackingId
-                    });
+                });
             }
+            catch (CommunicationException ex)
+            {
+                if (ex is EndpointNotFoundException && IsVerbose() == false)
+                {
+                    return null;
+                }
+
+                this.WriteErrorDetails(ex);
+            }
+
+            return processResult;
         }
 
         /// <summary>
