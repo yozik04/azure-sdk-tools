@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/servers/{serverName}")]
         IAsyncResult BeginRemoveServer(string subscriptionId, string serverName, AsyncCallback callback, object state);
 
-        SqlDatabaseServerList EndRemoveServer(IAsyncResult asyncResult);
+        void EndRemoveServer(IAsyncResult asyncResult);
 
         /// <summary>
         /// Sets the administrative password of a SQL Database server for a subscription.

@@ -14,10 +14,13 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 {
+    using System.Collections.Generic;
     using System.Management.Automation;
 
     public class MockCommandRuntime : ICommandRuntime
     {
+        public List<ErrorRecord> ErrorRecords = new List<ErrorRecord>();
+
         public override string ToString()
         {
             return "MockCommand";
@@ -85,7 +88,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 
         public void WriteError(ErrorRecord errorRecord)
         {
-            throw new System.NotImplementedException();
+            this.ErrorRecords.Add(errorRecord);
         }
 
         public void WriteObject(object sendToPipeline, bool enumerateCollection)

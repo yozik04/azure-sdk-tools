@@ -41,33 +41,33 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal bool RemoveAzureSqlDatabaseServerProcess(string serverName)
+        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseServerProcess(string serverName)
         {
-            using (new OperationContextScope((IContextChannel)Channel))
+            SqlDatabaseOperationContext operationContext = null;
+
+            try
             {
-                try
+                InvokeInOperationContext(() =>
                 {
                     RetryCall(subscription =>
                         Channel.RemoveServer(subscription, serverName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-                    var context = new SqlDatabaseOperationContext()
+
+                    operationContext = new SqlDatabaseOperationContext()
                     {
                         ServerName = serverName,
-                        OperationId = operation.OperationTrackingId,
+                        OperationStatus = operation.Status,
                         OperationDescription = CommandRuntime.ToString(),
-                        OperationStatus = operation.Status
+                        OperationId = operation.OperationTrackingId
                     };
-
-                    WriteObject(context, true);
-                }
-                catch (CommunicationException ex)
-                {
-                    this.WriteErrorDetails(ex);
-                    return false;
-                }
+                });
+            }
+            catch (CommunicationException ex)
+            {
+                this.WriteErrorDetails(ex);
             }
 
-            return true;
+            return operationContext;
         }
 
         protected override void ProcessRecord()
@@ -75,8 +75,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
+                SqlDatabaseOperationContext context = this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
 
-                this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
+                if (context != null)
+                {
+                    WriteObject(context, true);
+                }
             }
             catch (Exception ex)
             {

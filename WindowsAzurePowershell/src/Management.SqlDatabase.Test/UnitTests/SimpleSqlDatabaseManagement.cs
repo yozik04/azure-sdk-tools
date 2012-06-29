@@ -108,7 +108,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
 
         #region RemoveServer
 
-        public Func<SimpleServiceManagementAsyncResult, SqlDatabaseServerList> RemoveServerThunk { get; set; }
+        public Action<SimpleServiceManagementAsyncResult> RemoveServerThunk { get; set; }
         public IAsyncResult BeginRemoveServer(string subscriptionId, string serverName, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
@@ -119,21 +119,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             return result;
         }
 
-        public SqlDatabaseServerList EndRemoveServer(IAsyncResult asyncResult)
+        public void EndRemoveServer(IAsyncResult asyncResult)
         {
             if (RemoveServerThunk != null)
             {
                 SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
                 Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
 
-                return RemoveServerThunk(result);
+                RemoveServerThunk(result);
             }
             else if (ThrowsIfNotImplemented)
             {
                 throw new NotImplementedException("RemoveServerThunk is not implemented!");
             }
-
-            return default(SqlDatabaseServerList);
         }
 
         #endregion
