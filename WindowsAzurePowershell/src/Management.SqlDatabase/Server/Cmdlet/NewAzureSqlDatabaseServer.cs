@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "SQL Database administrator login name.")]
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Administrator login name for the new SQL Database server.")]
         [ValidateNotNullOrEmpty]
         public string AdministratorLogin
         {
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database administrator login password.")]
+        [Parameter(Mandatory = true, HelpMessage = "Administrator login password for the new SQL Database server.")]
         [ValidateNotNullOrEmpty]
         public string AdministratorLoginPassword
         {
