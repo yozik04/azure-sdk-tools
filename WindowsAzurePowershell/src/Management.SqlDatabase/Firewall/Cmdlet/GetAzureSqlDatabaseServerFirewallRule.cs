@@ -48,7 +48,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server firewall rule name.")]
         [ValidateNotNullOrEmpty]
-        public string RuleName { get; set; }
+        public string RuleName
+        {
+            get;
+            set;
+        }
 
         internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
@@ -58,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 InvokeInOperationContext(() =>
                 {
-                    SqlDatabaseFirewallRulesList firewallRules = RetryCall(subscription => 
+                    SqlDatabaseFirewallRulesList firewallRules = RetryCall(subscription =>
                         Channel.GetServerFirewallRules(subscription, this.ServerName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 

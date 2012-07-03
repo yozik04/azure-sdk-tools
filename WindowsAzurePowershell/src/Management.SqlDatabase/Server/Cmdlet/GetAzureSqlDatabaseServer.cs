@@ -38,9 +38,13 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
+        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
-        public string ServerName { get; set; }
+        public string ServerName
+        {
+            get;
+            set;
+        }
 
         internal IEnumerable<SqlDatabaseServerContext> GetAzureSqlDatabaseServersProcess(string serverName)
         {
