@@ -54,9 +54,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
+        internal IEnumerable<SqlDatabaseServerFirewallRuleContext> GetAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
-            IEnumerable<SqlDatabaseFirewallRuleContext> processResult = null;
+            IEnumerable<SqlDatabaseServerFirewallRuleContext> processResult = null;
 
             try
             {
@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                     if (string.IsNullOrEmpty(ruleName))
                     {
                         // Firewall rule name is not specified, select all 
-                        processResult = firewallRules.Select(p => new SqlDatabaseFirewallRuleContext()
+                        processResult = firewallRules.Select(p => new SqlDatabaseServerFirewallRuleContext()
                         {
                             OperationDescription = CommandRuntime.ToString(),
                             OperationId = operation.OperationTrackingId,
@@ -85,9 +85,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         var firewallRule = firewallRules.FirstOrDefault(p => p.Name == ruleName);
                         if (firewallRule != null)
                         {
-                            processResult = new List<SqlDatabaseFirewallRuleContext>
+                            processResult = new List<SqlDatabaseServerFirewallRuleContext>
                             {
-                                new SqlDatabaseFirewallRuleContext
+                                new SqlDatabaseServerFirewallRuleContext
                                 {
                                     OperationDescription = CommandRuntime.ToString(),
                                     OperationId = operation.OperationTrackingId,

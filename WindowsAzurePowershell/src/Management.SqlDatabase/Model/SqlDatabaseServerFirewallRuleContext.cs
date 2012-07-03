@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
-    public class SqlDatabaseFirewallRuleContext : SqlDatabaseOperationContext
+    public class SqlDatabaseServerFirewallRuleContext : SqlDatabaseServerOperationContext
     {
         public string RuleName { get; set; }
 

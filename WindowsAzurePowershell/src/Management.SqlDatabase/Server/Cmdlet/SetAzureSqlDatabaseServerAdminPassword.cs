@@ -50,9 +50,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
+        internal SqlDatabaseServerOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
         {
-            SqlDatabaseOperationContext operationContext = null;
+            SqlDatabaseServerOperationContext operationContext = null;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         Channel.SetPassword(subscription, serverName, newPassword));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    operationContext = new SqlDatabaseOperationContext()
+                    operationContext = new SqlDatabaseServerOperationContext()
                     {
                         ServerName = serverName,
                         OperationDescription = CommandRuntime.ToString(),
@@ -84,7 +84,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.SetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.NewPassword);
+                SqlDatabaseServerOperationContext context = this.SetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.NewPassword);
 
                 if (context != null)
                 {

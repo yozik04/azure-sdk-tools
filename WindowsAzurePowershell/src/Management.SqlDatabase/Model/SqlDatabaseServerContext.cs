@@ -14,7 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
-    public class SqlDatabaseServerContext : SqlDatabaseOperationContext
+    public class SqlDatabaseServerContext : SqlDatabaseServerOperationContext
     {       
         public string AdministratorLogin
         {

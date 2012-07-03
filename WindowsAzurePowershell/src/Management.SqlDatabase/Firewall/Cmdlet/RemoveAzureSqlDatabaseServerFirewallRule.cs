@@ -44,7 +44,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database server firewall rule name.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server firewall rule name.")]
         [ValidateNotNullOrEmpty]
         public string RuleName
         {
@@ -52,9 +52,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
+        internal SqlDatabaseServerOperationContext RemoveAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
-            SqlDatabaseOperationContext operationContext = null;
+            SqlDatabaseServerOperationContext operationContext = null;
 
             try
             {
@@ -64,7 +64,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         Channel.RemoveServerFirewallRule(subscription, serverName, ruleName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    operationContext = new SqlDatabaseOperationContext()
+                    operationContext = new SqlDatabaseServerOperationContext()
                     {
                         OperationDescription = CommandRuntime.ToString(),
                         OperationId = operation.OperationTrackingId,
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = RemoveAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
+                SqlDatabaseServerOperationContext context = RemoveAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
 
                 if (context != null)
                 {

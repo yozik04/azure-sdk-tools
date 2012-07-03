@@ -76,9 +76,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal SqlDatabaseFirewallRuleContext NewAzureSqlDatabaseServerFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
+        internal SqlDatabaseServerFirewallRuleContext NewAzureSqlDatabaseServerFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
-            SqlDatabaseFirewallRuleContext operationContext = null;
+            SqlDatabaseServerFirewallRuleContext operationContext = null;
 
             try
             {
@@ -91,7 +91,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                                 Channel.NewServerFirewallRule(subscription, serverName, ruleName, startIpAddress, endIpAddress));
                             WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                            operationContext = new SqlDatabaseFirewallRuleContext()
+                            operationContext = new SqlDatabaseServerFirewallRuleContext()
                             {
                                 OperationDescription = CommandRuntime.ToString(),
                                 OperationStatus = operation.Status,
@@ -110,7 +110,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                                 Channel.NewServerFirewallRuleWithIpDetect(subscription, serverName, ruleName));
                             WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                            operationContext = new SqlDatabaseFirewallRuleContext()
+                            operationContext = new SqlDatabaseServerFirewallRuleContext()
                             {
                                 OperationDescription = CommandRuntime.ToString(),
                                 OperationStatus = operation.Status,
@@ -144,7 +144,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.NewAzureSqlDatabaseServerFirewallRuleProcess(this.ParameterSetName, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress);
+                SqlDatabaseServerOperationContext context = this.NewAzureSqlDatabaseServerFirewallRuleProcess(this.ParameterSetName, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress);
 
                 if (context != null)
                 {
