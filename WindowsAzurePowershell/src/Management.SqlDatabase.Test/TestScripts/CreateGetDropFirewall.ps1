@@ -52,7 +52,7 @@ Try
     $rule1StartIP="1.0.0.0"
     $rule1EndIP="2.0.0.0"
     Write-Output "Creating Firewall rule $rule1Name ..."
-    $rule = New-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -StartIpAddress $rule1StartIP -EndIpAddress $rule1EndIP
+    $rule = New-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -StartIpAddress $rule1StartIP -EndIpAddress $rule1EndIP
     Write-Output "created"
     Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule1Name -expectedStartIP $rule1StartIP -expectedEndIP $rule1EndIP
     
@@ -60,13 +60,13 @@ Try
     $rule2StartIP="2.3.4.5"
     $rule2EndIP="3.4.5.6"
     Write-Output "Creating Firewall rule $rule2Name ..."
-    $rule = New-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule2Name -StartIpAddress $rule2StartIP -EndIpAddress $rule2EndIP
+    $rule = New-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule2Name -StartIpAddress $rule2StartIP -EndIpAddress $rule2EndIP
     Write-Output "created"
     Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule2Name -expectedStartIP $rule2StartIP -expectedEndIP $rule2EndIP
     
     # Get Firewall rules and validate
     Write-Output "Getting firewall rules..."
-    $rules = Get-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName
+    $rules = Get-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName
     Write-Output "Got firewall rules"
     Assert {$rules} "Get firewall rule didn't return any rule"
     Assert {$rules.Count -eq 2} "Get firewall rule didn't return expected number of rules 2. But returned $rule.Count"
@@ -81,9 +81,9 @@ Try
     
     # Delete a Firewall rules
     Write-Output "Deleting firewall rule $rule1Name ..."
-    Remove-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule1Name
+    Remove-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule1Name
     Write-Output "Deleted firewall rule $rule1Name"
-    $rules = Get-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName | Where-Object {$_.RuleName -eq $rule1Name}
+    $rules = Get-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName | Where-Object {$_.RuleName -eq $rule1Name}
     Assert {$rules -eq $null} "Firewall rule $rule1Name is not dropped"
     
     $isTestPass = $True

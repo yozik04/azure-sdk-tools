@@ -87,7 +87,7 @@ function Validate-FirewallRule
     Param
     (
         [Parameter(Mandatory=$true, Position=0)]
-        [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseFirewallRuleContext]
+        [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseServerFirewallRuleContext]
         $rule, 
         [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]

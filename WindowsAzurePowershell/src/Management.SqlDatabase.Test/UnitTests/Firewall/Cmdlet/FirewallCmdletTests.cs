@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void NewAzureSqlDatabaseFirewallRuleProcessTest()
+        public void NewAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
             SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void GetAzureSqlDatabaseFirewallRuleProcessTest()
+        public void GetAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             SqlDatabaseFirewallRulesList firewallList = new SqlDatabaseFirewallRulesList();
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
@@ -146,7 +146,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void RemoveAzureSqlDatabaseFirewallRuleProcessTest()
+        public void RemoveAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             SqlDatabaseFirewallRulesList firewallList = new SqlDatabaseFirewallRulesList();
             MockCommandRuntime commandRuntime = new MockCommandRuntime();

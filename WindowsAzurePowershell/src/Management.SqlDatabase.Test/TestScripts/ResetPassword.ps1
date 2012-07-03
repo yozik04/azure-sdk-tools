@@ -49,7 +49,7 @@ Try
     
     # Connect to server
     Write-Output "Adding firewall rule to allow connection ..."
-    New-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName all -StartIpAddress "0.0.0.0" -EndIpAddress "255.255.255.255"
+    New-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName all -StartIpAddress "0.0.0.0" -EndIpAddress "255.255.255.255"
     Write-Output "Connecting to server ..."
     $connString = "data source=$($server.ServerName).database.windows.net;User ID=$loginName;Password=$loginPassword"
     $conn = New-Object System.Data.SqlClient.SqlConnection($connString);
@@ -59,7 +59,7 @@ Try
     # Reset Password
     $newPassword="Sql@zureNew"
     Write-Output "Resetting password ..."
-    Set-AzureSqlDatabasePassword -ServerName $server.ServerName -NewPassword $newPassword
+    Set-AzureSqlDatabaseServerAdminPassword -ServerName $server.ServerName -NewPassword $newPassword
     Write-Output "Rest done"
     Write-Output "Connecting to server using new password ..."
     $connString = "data source=$($server.ServerName).database.windows.net;User ID=$loginName;Password=$newPassword";
