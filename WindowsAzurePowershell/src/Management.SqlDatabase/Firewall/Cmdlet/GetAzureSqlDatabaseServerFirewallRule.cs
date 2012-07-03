@@ -26,14 +26,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseFirewallRule", ConfirmImpact = ConfirmImpact.None)]
-    public class GetAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.None)]
+    public class GetAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public GetAzureSqlDatabaseFirewallRule()
+        public GetAzureSqlDatabaseServerFirewallRule()
         {
         }
 
-        public GetAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
+        public GetAzureSqlDatabaseServerFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
         [ValidateNotNullOrEmpty]
         public string RuleName { get; set; }
 
-        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
+        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
             IEnumerable<SqlDatabaseFirewallRuleContext> processResult = null;
 
@@ -125,7 +125,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 base.ProcessRecord();
 
-                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName);
+                var rules = this.GetAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
 
                 if (rules != null)
                 {

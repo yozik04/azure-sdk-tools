@@ -208,7 +208,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
-        public void SetAzureSqlDatabasePasswordProcessTest()
+        public void SetAzureSqlDatabaseServerAdminPasswordProcessTest()
         {
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
             SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
@@ -243,9 +243,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("NewServerName", newServerResult.ServerName);
             Assert.AreEqual("Success", newServerResult.OperationStatus);
 
-            SetAzureSqlDatabasePassword setAzureSqlDatabasePassword = new SetAzureSqlDatabasePassword(channel) { ShareChannel = true };
-            setAzureSqlDatabasePassword.CommandRuntime = commandRuntime;
-            var setPasswordResult = setAzureSqlDatabasePassword.SetAzureSqlDatabasePasswordProcess("NewServerName", "NewPassword");
+            SetAzureSqlDatabaseServerAdminPassword setAzureSqlDatabaseServerAdminPassword = new SetAzureSqlDatabaseServerAdminPassword(channel) { ShareChannel = true };
+            setAzureSqlDatabaseServerAdminPassword.CommandRuntime = commandRuntime;
+            var setPasswordResult = setAzureSqlDatabaseServerAdminPassword.SetAzureSqlDatabaseServerAdminPasswordProcess("NewServerName", "NewPassword");
             Assert.AreEqual("NewServerName", setPasswordResult.ServerName);
             Assert.AreEqual("Success", setPasswordResult.OperationStatus);
             Assert.AreEqual("NewPassword", password);

@@ -124,17 +124,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MSSharedLibKey.snk" />
-    <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseFirewallRule.cs" />
-    <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseFirewallRule.cs" />
-    <Compile Include="Firewall\Cmdlet\RemoveAzureSqlDatabaseFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseServerFirewallRule.cs" />
+    <Compile Include="Firewall\Cmdlet\RemoveAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Server\Cmdlet\GetAzureSqlDatabaseServer.cs" />
     <Compile Include="Server\Cmdlet\NewAzureSqlDatabaseServer.cs" />
     <Compile Include="Server\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
-    <Compile Include="Server\Cmdlet\SetAzureSqlDatabasePassword.cs" />
     <Compile Include="Model\SqlDatabaseFirewallRuleContext.cs" />
     <Compile Include="Model\SqlDatabaseOperationContext.cs" />
     <Compile Include="Model\SqlDatabaseServerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Cmdlet\SetAzureSqlDatabaseServerAdminPassword.cs" />
     <Compile Include="Services\ClientOutputMessageInspector.cs" />
     <Compile Include="Services\ConfigurationConstants.cs" />
     <Compile Include="Services\Constants.cs" />

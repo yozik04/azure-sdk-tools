@@ -54,9 +54,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
-        public void SetAzureSqlDatabasePasswordAttributeTest()
+        public void SetAzureSqlDatabaseServerAdminPasswordAttributeTest()
         {
-            Type cmdlet = typeof(SetAzureSqlDatabasePassword);
+            Type cmdlet = typeof(SetAzureSqlDatabaseServerAdminPassword);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Medium);
         }
     }

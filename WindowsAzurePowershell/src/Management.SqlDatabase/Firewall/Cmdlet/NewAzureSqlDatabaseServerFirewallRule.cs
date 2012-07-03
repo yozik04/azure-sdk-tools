@@ -25,14 +25,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseFirewallRule", DefaultParameterSetName = "IpRange", ConfirmImpact = ConfirmImpact.Low)]
-    public class NewAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServerFirewallRule", DefaultParameterSetName = "IpRange", ConfirmImpact = ConfirmImpact.Low)]
+    public class NewAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public NewAzureSqlDatabaseFirewallRule()
+        public NewAzureSqlDatabaseServerFirewallRule()
         {
         }
 
-        public NewAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
+        public NewAzureSqlDatabaseServerFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -76,7 +76,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal SqlDatabaseFirewallRuleContext NewAzureSqlDatabaseFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
+        internal SqlDatabaseFirewallRuleContext NewAzureSqlDatabaseServerFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
             SqlDatabaseFirewallRuleContext operationContext = null;
 
@@ -144,7 +144,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.NewAzureSqlDatabaseFirewallRuleProcess(this.ParameterSetName, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress);
+                SqlDatabaseOperationContext context = this.NewAzureSqlDatabaseServerFirewallRuleProcess(this.ParameterSetName, this.ServerName, this.RuleName, this.StartIpAddress, this.EndIpAddress);
 
                 if (context != null)
                 {

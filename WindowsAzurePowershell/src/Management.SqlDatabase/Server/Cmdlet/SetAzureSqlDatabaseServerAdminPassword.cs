@@ -22,14 +22,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
-    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword", ConfirmImpact = ConfirmImpact.Medium)]
-    public class SetAzureSqlDatabasePassword : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServerAdminPassword", ConfirmImpact = ConfirmImpact.Medium)]
+    public class SetAzureSqlDatabaseServerAdminPassword : SqlDatabaseManagementCmdletBase
     {
-        public SetAzureSqlDatabasePassword()
+        public SetAzureSqlDatabaseServerAdminPassword()
         {
         }
 
-        public SetAzureSqlDatabasePassword(ISqlDatabaseManagement channel)
+        public SetAzureSqlDatabaseServerAdminPassword(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext SetAzureSqlDatabasePasswordProcess(string serverName, string newPassword)
+        internal SqlDatabaseOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
         {
             SqlDatabaseOperationContext operationContext = null;
 
@@ -84,7 +84,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.SetAzureSqlDatabasePasswordProcess(this.ServerName, this.NewPassword);
+                SqlDatabaseOperationContext context = this.SetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.NewPassword);
 
                 if (context != null)
                 {

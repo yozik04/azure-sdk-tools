@@ -24,14 +24,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Deletes a firewall rule from a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseFirewallRule", ConfirmImpact = ConfirmImpact.Medium)]
-    public class RemoveAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.Medium)]
+    public class RemoveAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public RemoveAzureSqlDatabaseFirewallRule()
+        public RemoveAzureSqlDatabaseServerFirewallRule()
         {
         }
 
-        public RemoveAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
+        public RemoveAzureSqlDatabaseServerFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
+        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
             SqlDatabaseOperationContext operationContext = null;
 
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = RemoveAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName);
+                SqlDatabaseOperationContext context = RemoveAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
 
                 if (context != null)
                 {
