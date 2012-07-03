@@ -45,19 +45,16 @@ Try
     # Create Server
     Write-Output "Creating server"
     $server = New-AzureSqlDatabaseServer -AdministratorLogin $loginName -AdministratorLoginPassword $loginPassword -Location $serverLocation
-    Assert {$server} "Server is not created"
+    Validate-SqlDatabaseOperationContext -Actual $server -expectedServerName $server.ServerName -expectedOperationDescription "New-AzureSqlDatabaseServer"
     Write-Output "Server $($server.ServerName) created"
     
     # Get Server
     Write-Output "Getting server"
     $getServer = Get-AzureSqlDatabaseServer | Where-Object {$_.ServerName -eq $server.ServerName}
     Assert {$getServer} "Can not get server $($server.ServerName)"
+    Validate-SqlDatabaseServerContext -Actual $getServer -ExpectedAdministratorLogin $loginName -ExpectedLocation $serverLocation -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Get-AzureSqlDatabaseServer"
     Write-Output "Got server $($server.ServerName)"
-    
-    # Validate server Name
-    Write-Output "Validating server"
-    Assert {$server.ServerName -eq $getServer.ServerName} "ServerName didn't match Expected:$($server.ServerName)  Actual:$($getServer.ServerName)"
-    Write-Output "Validation successful"
+
     $isTestPass = $True
 }
 Finally
@@ -66,7 +63,8 @@ Finally
     {
         # Drop server
         Write-Output "Dropping server $($server.ServerName)"
-        Remove-AzureSqlDatabaseServer -ServerName $server.ServerName
+        $droppedServer = Remove-AzureSqlDatabaseServer -ServerName $server.ServerName
+        Validate-SqlDatabaseOperationContext -Actual $droppedServer -expectedServerName $server.ServerName -expectedOperationDescription "Remove-AzureSqlDatabaseServer"
         Write-Output "Dropped server $($server.ServerName)"
         
         #Validate Drop server

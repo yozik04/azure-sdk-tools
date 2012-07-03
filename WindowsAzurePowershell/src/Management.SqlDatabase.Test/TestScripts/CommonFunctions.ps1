@@ -23,10 +23,10 @@ function Init-TestEnvironment
         [Parameter(Mandatory=$true, Position=0)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $subscriptionID,
+        $SubscriptionID,
         [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]
-        $certThumbPrint
+        $CertThumbPrint
     )
     
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management.SqlDatabase"
@@ -36,9 +36,9 @@ function Init-TestEnvironment
         Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.dll
     }
 
-    $myCert = Get-Item cert:\\CurrentUser\My\$certThumbPrint
-    $subName = "MySub" + $subscriptionID
-    Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $subscriptionID -Certificate $myCert
+    $myCert = Get-Item cert:\\CurrentUser\My\$CertThumbPrint
+    $subName = "MySub" + $SubscriptionID
+    Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert
     Select-AzureSubscription -SubscriptionName $subName
 }
 
@@ -51,13 +51,13 @@ function Assert
     [CmdletBinding()]
     param( 
        [Parameter(Position=0,ParameterSetName="Script",Mandatory=$true)]
-       [ScriptBlock]$condition
+       [ScriptBlock]$Condition
     ,
        [Parameter(Position=0,ParameterSetName="Bool",Mandatory=$true)]
-       [bool]$success
+       [bool]$Success
     ,
        [Parameter(Position=1,Mandatory=$true)]
-       [string]$message
+       [string]$Message
     )
 
     $message = "ASSERT FAILED: $message"
@@ -81,36 +81,96 @@ function Assert
     }
 }
 
-function Validate-FirewallRule
+function Validate-SqlDatabaseOperationContext 
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true, Position=0)]
+        [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseOperationContext]
+        $Actual, 
+        [Parameter(Mandatory=$true, Position=1)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedServerName,
+        [Parameter(Mandatory=$true, Position=2)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedOperationDescription
+    )
+    
+    $expectedOperationStatus = "Success"
+    Assert {$actual} "SqlDatabaseOperationContext is null"
+    Assert {$actual.ServerName -eq $expectedServerName} "ServerName didn't match. Actual:[$($actual.ServerName)] expected:[$expectedServerName]"
+    Assert {$actual.OperationDescription -eq $expectedOperationDescription} "OperationDescription didn't match. Actual:[$($actual.OperationDescription)] expected:[$expectedOperationDescription]"
+    Assert {$actual.OperationStatus -eq $expectedOperationStatus} "OperationStatus didn't match. Actual:[$($actual.OperationStatus)] expected:[$expectedOperationStatus]"
+}
+
+function Validate-SqlDatabaseServerContext
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true, Position=0)]
+        [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseServerContext]
+        $Actual,
+        [Parameter(Mandatory=$true, Position=1)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedAdministratorLogin,
+        [Parameter(Mandatory=$true, Position=2)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedLocation,
+        [Parameter(Mandatory=$true, Position=3)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedServerName,
+        [Parameter(Mandatory=$true, Position=4)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedOperationDescription
+    )
+
+    Assert {$actual} "SqlDatabaseServerContext is null"
+    Assert {$actual.AdministratorLogin -eq $ExpectedAdministratorLogin} "AdministratorLogin didn't match. Actual:[$($actual.AdministratorLogin)] expected:[$ExpectedAdministratorLogin]"
+    Assert {$actual.Location -eq $ExpectedLocation} "Location didn't match. Actual:[$($actual.Location)] expected:[$ExpectedLocation]"
+    Validate-SqlDatabaseOperationContext -Actual $actual -ExpectedServerName $ExpectedServerName -ExpectedOperationDescription $ExpectedOperationDescription
+}
+
+function Validate-SqlDatabaseFirewallRuleContext
 {
     [CmdletBinding()]
     Param
     (
         [Parameter(Mandatory=$true, Position=0)]
         [Microsoft.WindowsAzure.Management.SqlDatabase.Model.SqlDatabaseFirewallRuleContext]
-        $rule, 
+        $Actual,
         [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $expectedServerName,
+        $ExpectedRuleName,
         [Parameter(Mandatory=$true, Position=2)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $expectedName,
+        $ExpectedStartIpAddress,
         [Parameter(Mandatory=$true, Position=3)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $expectedStartIP,
+        $ExpectedEndIpAddress,
         [Parameter(Mandatory=$true, Position=4)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $expectedEndIP
+        $ExpectedServerName,
+        [Parameter(Mandatory=$true, Position=5)]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $ExpectedOperationDescription
     )
 
-    Assert {$rule} "Firewall rule is null"
-    Assert {$rule.ServerName -eq $expectedServerName} "ruleName didn't match. Actual:[$rule.ServerName] expected:[$expectedServerName]"
-    Assert {$rule.RuleName -eq $expectedName} "ruleName didn't match. Actual:[$rule.RuleName] expected:[$expectedName]"
-    Assert {$rule.StartIpAddress -eq $expectedStartIP} "StartIP address didn't match. Actual:[$rule.StartIpAddress] expected:[$expectedStartIP]"
-    Assert {$rule.EndIpAddress -eq $expectedEndIP} "EndIP address didn't match. Actual:[$rule.EndIpAddress] expected:[$expectedEndIP]"
+    Assert {$actual} "SqlDatabaseServerContext is null"
+    Assert {$actual.RuleName -eq $ExpectedRuleName} "RuleName didn't match. Actual:[$($actual.RuleName)] expected:[$ExpectedRuleName]"
+    Assert {$actual.StartIpAddress -eq $ExpectedStartIpAddress} "StartIpAddress didn't match. Actual:[$($actual.StartIpAddress)] expected:[$ExpectedStartIpAddress]"
+    Assert {$actual.EndIpAddress -eq $ExpectedEndIpAddress} "EndIpAddress didn't match. Actual:[$($actual.EndIpAddress)] expected:[$ExpectedEndIpAddress]"
+    Validate-SqlDatabaseOperationContext -Actual $actual -ExpectedServerName $ExpectedServerName -ExpectedOperationDescription $ExpectedOperationDescription
 }
-

@@ -59,8 +59,11 @@ Try
     # Reset Password
     $newPassword="Sql@zureNew"
     Write-Output "Resetting password ..."
-    Set-AzureSqlDatabasePassword -ServerName $server.ServerName -NewPassword $newPassword
+    $resetResponse = Set-AzureSqlDatabasePassword -ServerName $server.ServerName -NewPassword $newPassword
     Write-Output "Rest done"
+    Validate-SqlDatabaseOperationContext -Actual $resetResponse -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Set-AzureSqlDatabasePassword"
+    
+    # Connect to server using new password
     Write-Output "Connecting to server using new password ..."
     $connString = "data source=$($server.ServerName).database.windows.net;User ID=$loginName;Password=$newPassword";
     $conn = New-Object System.Data.SqlClient.SqlConnection($connString);

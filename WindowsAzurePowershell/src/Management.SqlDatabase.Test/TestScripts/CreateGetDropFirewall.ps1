@@ -53,8 +53,8 @@ Try
     $rule1EndIP="2.0.0.0"
     Write-Output "Creating Firewall rule $rule1Name ..."
     $rule = New-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -StartIpAddress $rule1StartIP -EndIpAddress $rule1EndIP
+    Validate-SqlDatabaseFirewallRuleContext -Actual $rule -ExpectedRuleName $rule1Name -ExpectedStartIpAddress $rule1StartIP -ExpectedEndIpAddress $rule1EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "New-AzureSqlDatabaseFirewallRule"
     Write-Output "created"
-    Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule1Name -expectedStartIP $rule1StartIP -expectedEndIP $rule1EndIP
     
     $rule2Name="rule2"
     $rule2StartIP="2.3.4.5"
@@ -62,7 +62,7 @@ Try
     Write-Output "Creating Firewall rule $rule2Name ..."
     $rule = New-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule2Name -StartIpAddress $rule2StartIP -EndIpAddress $rule2EndIP
     Write-Output "created"
-    Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule2Name -expectedStartIP $rule2StartIP -expectedEndIP $rule2EndIP
+    Validate-SqlDatabaseFirewallRuleContext -Actual $rule -ExpectedRuleName $rule2Name -ExpectedStartIpAddress $rule2StartIP -ExpectedEndIpAddress $rule2EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "New-AzureSqlDatabaseFirewallRule"
     
     # Get Firewall rules and validate
     Write-Output "Getting firewall rules..."
@@ -73,16 +73,17 @@ Try
     
     Write-Output "validating Firewall rule $rule1Name ..."
     $rule = $rules | Where-Object {$_.RuleName -eq $rule1Name}
-    Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule1Name -expectedStartIP $rule1StartIP -expectedEndIP $rule1EndIP
+    Validate-SqlDatabaseFirewallRuleContext -Actual $rule -ExpectedRuleName $rule1Name -ExpectedStartIpAddress $rule1StartIP -ExpectedEndIpAddress $rule1EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Get-AzureSqlDatabaseFirewallRule"
 
     Write-Output "validating Firewall rule $rule2Name ..."
     $rule = $rules | Where-Object {$_.RuleName -eq $rule2Name}
-    Validate-FirewallRule -rule $rule -expectedServerName $server.ServerName -expectedName $rule2Name -expectedStartIP $rule2StartIP -expectedEndIP $rule2EndIP
+    Validate-SqlDatabaseFirewallRuleContext -Actual $rule -ExpectedRuleName $rule2Name -ExpectedStartIpAddress $rule2StartIP -ExpectedEndIpAddress $rule2EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Get-AzureSqlDatabaseFirewallRule"
     
     # Delete a Firewall rules
     Write-Output "Deleting firewall rule $rule1Name ..."
-    Remove-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule1Name
-    Write-Output "Deleted firewall rule $rule1Name"
+    $removedFw = Remove-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName -RuleName $rule1Name
+    Write-Output "Deleted"
+    Validate-SqlDatabaseOperationContext -Actual $removedFw -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Remove-AzureSqlDatabaseFirewallRule"
     $rules = Get-AzureSqlDatabaseFirewallRule -ServerName $server.ServerName | Where-Object {$_.RuleName -eq $rule1Name}
     Assert {$rules -eq $null} "Firewall rule $rule1Name is not dropped"
     
