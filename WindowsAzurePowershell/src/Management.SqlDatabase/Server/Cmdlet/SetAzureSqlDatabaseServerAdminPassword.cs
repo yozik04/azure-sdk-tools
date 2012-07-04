@@ -22,19 +22,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
-    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabasePassword", ConfirmImpact = ConfirmImpact.Medium)]
-    public class SetAzureSqlDatabasePassword : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServerAdminPassword", ConfirmImpact = ConfirmImpact.Medium)]
+    public class SetAzureSqlDatabaseServerAdminPassword : SqlDatabaseManagementCmdletBase
     {
-        public SetAzureSqlDatabasePassword()
+        public SetAzureSqlDatabaseServerAdminPassword()
         {
         }
 
-        public SetAzureSqlDatabasePassword(ISqlDatabaseManagement channel)
+        public SetAzureSqlDatabaseServerAdminPassword(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
@@ -50,9 +50,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext SetAzureSqlDatabasePasswordProcess(string serverName, string newPassword)
+        internal SqlDatabaseServerOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
         {
-            SqlDatabaseOperationContext operationContext = null;
+            SqlDatabaseServerOperationContext operationContext = null;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         Channel.SetPassword(subscription, serverName, newPassword));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    operationContext = new SqlDatabaseOperationContext()
+                    operationContext = new SqlDatabaseServerOperationContext()
                     {
                         ServerName = serverName,
                         OperationDescription = CommandRuntime.ToString(),
@@ -84,7 +84,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.SetAzureSqlDatabasePasswordProcess(this.ServerName, this.NewPassword);
+                SqlDatabaseServerOperationContext context = this.SetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.NewPassword);
 
                 if (context != null)
                 {

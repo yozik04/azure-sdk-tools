@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
             this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
             this.serverLocation = "North Central US";
 
-            new NewAzureSqlDatabaseFirewallRule();
+            new NewAzureSqlDatabaseServerFirewallRule();
         }
 
         [TestMethod]

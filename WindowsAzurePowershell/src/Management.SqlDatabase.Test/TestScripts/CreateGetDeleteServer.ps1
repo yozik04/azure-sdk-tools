@@ -45,7 +45,7 @@ Try
     # Create Server
     Write-Output "Creating server"
     $server = New-AzureSqlDatabaseServer -AdministratorLogin $loginName -AdministratorLoginPassword $loginPassword -Location $serverLocation
-    Validate-SqlDatabaseOperationContext -Actual $server -expectedServerName $server.ServerName -expectedOperationDescription "New-AzureSqlDatabaseServer"
+    Validate-SqlDatabaseServerOperationContext -Actual $server -expectedServerName $server.ServerName -expectedOperationDescription "New-AzureSqlDatabaseServer"
     Write-Output "Server $($server.ServerName) created"
     
     # Get Server
@@ -64,7 +64,7 @@ Finally
         # Drop server
         Write-Output "Dropping server $($server.ServerName)"
         $droppedServer = Remove-AzureSqlDatabaseServer -ServerName $server.ServerName
-        Validate-SqlDatabaseOperationContext -Actual $droppedServer -expectedServerName $server.ServerName -expectedOperationDescription "Remove-AzureSqlDatabaseServer"
+        Validate-SqlDatabaseServerOperationContext -Actual $droppedServer -expectedServerName $server.ServerName -expectedOperationDescription "Remove-AzureSqlDatabaseServer"
         Write-Output "Dropped server $($server.ServerName)"
         
         #Validate Drop server

@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             this.Channel = channel;
         }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server name.")]
         [ValidateNotNullOrEmpty]
         public string ServerName
         {
@@ -41,9 +41,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseOperationContext RemoveAzureSqlDatabaseServerProcess(string serverName)
+        internal SqlDatabaseServerOperationContext RemoveAzureSqlDatabaseServerProcess(string serverName)
         {
-            SqlDatabaseOperationContext operationContext = null;
+            SqlDatabaseServerOperationContext operationContext = null;
 
             try
             {
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         Channel.RemoveServer(subscription, serverName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    operationContext = new SqlDatabaseOperationContext()
+                    operationContext = new SqlDatabaseServerOperationContext()
                     {
                         ServerName = serverName,
                         OperationStatus = operation.Status,
@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseOperationContext context = this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
+                SqlDatabaseServerOperationContext context = this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
 
                 if (context != null)
                 {

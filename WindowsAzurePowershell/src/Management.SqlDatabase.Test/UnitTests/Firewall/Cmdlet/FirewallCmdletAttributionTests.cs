@@ -33,23 +33,23 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
-        public void GetAzureSqlDatabaseFirewallRuleAttributeTest()
+        public void GetAzureSqlDatabaseServerFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(GetAzureSqlDatabaseFirewallRule);
+            Type cmdlet = typeof(GetAzureSqlDatabaseServerFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.None);
         }
 
         [TestMethod]
-        public void NewAzureSqlDatabaseFirewallRuleAttributeTest()
+        public void NewAzureSqlDatabaseServerFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(NewAzureSqlDatabaseFirewallRule);
+            Type cmdlet = typeof(NewAzureSqlDatabaseServerFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Low);
         }
 
         [TestMethod]
-        public void RemoveAzureSqlDatabaseFirewallRuleAttributeTest()
+        public void RemoveAzureSqlDatabaseServerFirewallRuleAttributeTest()
         {
-            Type cmdlet = typeof(RemoveAzureSqlDatabaseFirewallRule);
+            Type cmdlet = typeof(RemoveAzureSqlDatabaseServerFirewallRule);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Medium);
         }
     }

@@ -16,7 +16,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Model
 {
     using Microsoft.WindowsAzure.Management.Model;
 
-    public class SqlDatabaseOperationContext : ManagementOperationContext
+    public class SqlDatabaseServerOperationContext : ManagementOperationContext
     {
         public string ServerName
         {

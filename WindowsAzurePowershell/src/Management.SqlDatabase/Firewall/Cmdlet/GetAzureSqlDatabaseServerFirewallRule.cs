@@ -26,14 +26,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     /// <summary>
     /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseFirewallRule", ConfirmImpact = ConfirmImpact.None)]
-    public class GetAzureSqlDatabaseFirewallRule : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.None)]
+    public class GetAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
-        public GetAzureSqlDatabaseFirewallRule()
+        public GetAzureSqlDatabaseServerFirewallRule()
         {
         }
 
-        public GetAzureSqlDatabaseFirewallRule(ISqlDatabaseManagement channel)
+        public GetAzureSqlDatabaseServerFirewallRule(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -48,24 +48,28 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "SQL Database server firewall rule name.")]
         [ValidateNotNullOrEmpty]
-        public string RuleName { get; set; }
-
-        internal IEnumerable<SqlDatabaseFirewallRuleContext> GetAzureSqlDatabaseFirewallRuleProcess(string serverName, string ruleName)
+        public string RuleName
         {
-            IEnumerable<SqlDatabaseFirewallRuleContext> processResult = null;
+            get;
+            set;
+        }
+
+        internal IEnumerable<SqlDatabaseServerFirewallRuleContext> GetAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
+        {
+            IEnumerable<SqlDatabaseServerFirewallRuleContext> processResult = null;
 
             try
             {
                 InvokeInOperationContext(() =>
                 {
-                    SqlDatabaseFirewallRulesList firewallRules = RetryCall(subscription => 
+                    SqlDatabaseFirewallRulesList firewallRules = RetryCall(subscription =>
                         Channel.GetServerFirewallRules(subscription, this.ServerName));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
                     if (string.IsNullOrEmpty(ruleName))
                     {
                         // Firewall rule name is not specified, select all 
-                        processResult = firewallRules.Select(p => new SqlDatabaseFirewallRuleContext()
+                        processResult = firewallRules.Select(p => new SqlDatabaseServerFirewallRuleContext()
                         {
                             OperationDescription = CommandRuntime.ToString(),
                             OperationId = operation.OperationTrackingId,
@@ -81,9 +85,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         var firewallRule = firewallRules.FirstOrDefault(p => p.Name == ruleName);
                         if (firewallRule != null)
                         {
-                            processResult = new List<SqlDatabaseFirewallRuleContext>
+                            processResult = new List<SqlDatabaseServerFirewallRuleContext>
                             {
-                                new SqlDatabaseFirewallRuleContext
+                                new SqlDatabaseServerFirewallRuleContext
                                 {
                                     OperationDescription = CommandRuntime.ToString(),
                                     OperationId = operation.OperationTrackingId,
@@ -125,7 +129,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             {
                 base.ProcessRecord();
 
-                var rules = this.GetAzureSqlDatabaseFirewallRuleProcess(this.ServerName, this.RuleName);
+                var rules = this.GetAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
 
                 if (rules != null)
                 {

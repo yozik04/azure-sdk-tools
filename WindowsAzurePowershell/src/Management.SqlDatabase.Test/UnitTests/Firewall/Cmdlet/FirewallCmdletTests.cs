@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void NewAzureSqlDatabaseFirewallRuleProcessTest()
+        public void NewAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
             SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
@@ -49,9 +49,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             };
 
             // New firewall rule with IpRange parameter set
-            NewAzureSqlDatabaseFirewallRule newAzureSqlDatabaseFirewallRule = new NewAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            newAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
+            NewAzureSqlDatabaseServerFirewallRule newAzureSqlDatabaseServerFirewallRule = new NewAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            newAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
             Assert.AreEqual("Server1", newFirewallResult.ServerName);
             Assert.AreEqual("Rule1", newFirewallResult.RuleName);
             Assert.AreEqual("0.0.0.0", newFirewallResult.StartIpAddress);
@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             };
 
             // New Firewall rule with IpDetect parameter set
-            newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpDetection", "Server2", "Rule2", null, null);
+            newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpDetection", "Server2", "Rule2", null, null);
             Assert.AreEqual(true, newFirewallRuleCalled);
             Assert.AreEqual("Server2", newFirewallResult.ServerName);
             Assert.AreEqual("Rule2", newFirewallResult.RuleName);
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void GetAzureSqlDatabaseFirewallRuleProcessTest()
+        public void GetAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             SqlDatabaseFirewallRulesList firewallList = new SqlDatabaseFirewallRulesList();
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
@@ -107,17 +107,17 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             };
 
             // New firewall rule with IpRange parameter set
-            NewAzureSqlDatabaseFirewallRule newAzureSqlDatabaseFirewallRule = new NewAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            newAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
+            NewAzureSqlDatabaseServerFirewallRule newAzureSqlDatabaseServerFirewallRule = new NewAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            newAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
-            newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule2", "1.1.1.1", "2.2.2.2");
+            newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpRange", "Server1", "Rule2", "1.1.1.1", "2.2.2.2");
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
 
             // Get all rules
-            GetAzureSqlDatabaseFirewallRule getAzureSqlDatabaseFirewallRule = new GetAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            getAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", null);
+            GetAzureSqlDatabaseServerFirewallRule getAzureSqlDatabaseServerFirewallRule = new GetAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            getAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var getFirewallResult = getAzureSqlDatabaseServerFirewallRule.GetAzureSqlDatabaseServerFirewallRuleProcess("Server1", null);
             Assert.AreEqual(2, getFirewallResult.Count());
             var firstRule = getFirewallResult.First();
             Assert.AreEqual("Server1", firstRule.ServerName);
@@ -133,7 +133,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             Assert.AreEqual("Success", lastRule.OperationStatus);
 
             // Get one rule
-            getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", "Rule2");
+            getFirewallResult = getAzureSqlDatabaseServerFirewallRule.GetAzureSqlDatabaseServerFirewallRuleProcess("Server1", "Rule2");
             Assert.AreEqual(1, getFirewallResult.Count());
             firstRule = getFirewallResult.First();
             Assert.AreEqual("Server1", firstRule.ServerName);
@@ -146,7 +146,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
         }
 
         [TestMethod]
-        public void RemoveAzureSqlDatabaseFirewallRuleProcessTest()
+        public void RemoveAzureSqlDatabaseServerFirewallRuleProcessTest()
         {
             SqlDatabaseFirewallRulesList firewallList = new SqlDatabaseFirewallRulesList();
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
@@ -180,26 +180,26 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             };
 
             // New firewall rule with IpRange parameter set
-            NewAzureSqlDatabaseFirewallRule newAzureSqlDatabaseFirewallRule = new NewAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            newAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
+            NewAzureSqlDatabaseServerFirewallRule newAzureSqlDatabaseServerFirewallRule = new NewAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            newAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpRange", "Server1", "Rule1", "0.0.0.0", "1.1.1.1");
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
-            newFirewallResult = newAzureSqlDatabaseFirewallRule.NewAzureSqlDatabaseFirewallRuleProcess("IpRange", "Server1", "Rule2", "1.1.1.1", "2.2.2.2");
+            newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpRange", "Server1", "Rule2", "1.1.1.1", "2.2.2.2");
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
 
             // Get all rules
-            GetAzureSqlDatabaseFirewallRule getAzureSqlDatabaseFirewallRule = new GetAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            getAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", null);
+            GetAzureSqlDatabaseServerFirewallRule getAzureSqlDatabaseServerFirewallRule = new GetAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            getAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var getFirewallResult = getAzureSqlDatabaseServerFirewallRule.GetAzureSqlDatabaseServerFirewallRuleProcess("Server1", null);
             Assert.AreEqual(2, getFirewallResult.Count());
 
             // Remove Rule1
-            RemoveAzureSqlDatabaseFirewallRule removeAzureSqlDatabaseFirewallRule = new RemoveAzureSqlDatabaseFirewallRule(channel) { ShareChannel = true };
-            removeAzureSqlDatabaseFirewallRule.CommandRuntime = commandRuntime;
-            var removeServerContext = removeAzureSqlDatabaseFirewallRule.RemoveAzureSqlDatabaseFirewallRuleProcess("Server1", "Rule1");
+            RemoveAzureSqlDatabaseServerFirewallRule removeAzureSqlDatabaseServerFirewallRule = new RemoveAzureSqlDatabaseServerFirewallRule(channel) { ShareChannel = true };
+            removeAzureSqlDatabaseServerFirewallRule.CommandRuntime = commandRuntime;
+            var removeServerContext = removeAzureSqlDatabaseServerFirewallRule.RemoveAzureSqlDatabaseServerFirewallRuleProcess("Server1", "Rule1");
 
             // Verify only one rule is left
-            getFirewallResult = getAzureSqlDatabaseFirewallRule.GetAzureSqlDatabaseFirewallRuleProcess("Server1", null);
+            getFirewallResult = getAzureSqlDatabaseServerFirewallRule.GetAzureSqlDatabaseServerFirewallRuleProcess("Server1", null);
             Assert.AreEqual(1, getFirewallResult.Count());
             var firstRule = getFirewallResult.First();
             Assert.AreEqual("Server1", firstRule.ServerName);
@@ -211,7 +211,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
            
             // Remove Rule1 again
-            removeServerContext = removeAzureSqlDatabaseFirewallRule.RemoveAzureSqlDatabaseFirewallRuleProcess("Server1", "Rule1");
+            removeServerContext = removeAzureSqlDatabaseServerFirewallRule.RemoveAzureSqlDatabaseServerFirewallRuleProcess("Server1", "Rule1");
             Assert.AreEqual(1, commandRuntime.ErrorRecords.Count);
         }
     }
