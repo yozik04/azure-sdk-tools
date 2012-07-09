@@ -18,10 +18,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.High)]
+    /// <summary>
+    /// Removes an existing Windows Azure SQL Database server in the selected subscription.
+    /// </summary>
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     public class RemoveAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
         public RemoveAzureSqlDatabaseServer()
@@ -41,10 +45,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
+        [Parameter(HelpMessage = "Do not confirm on the deletion of the server")]
+        public SwitchParameter Force
+        {
+            get;
+            set;
+        }
+
         internal SqlDatabaseServerOperationContext RemoveAzureSqlDatabaseServerProcess(string serverName)
         {
-            SqlDatabaseServerOperationContext operationContext = null;
+            // Do nothing if force is not specified and user cancelled the operation
+            if (!Force.IsPresent &&
+                !ShouldProcess(string.Empty, string.Format(Resources.RemoveAzureSqlDatabaseServerWarning, serverName),
+                               Resources.ShouldProcessCaption))
+            {
+                return null;
+            }
 
+            SqlDatabaseServerOperationContext operationContext = null;
             try
             {
                 InvokeInOperationContext(() =>

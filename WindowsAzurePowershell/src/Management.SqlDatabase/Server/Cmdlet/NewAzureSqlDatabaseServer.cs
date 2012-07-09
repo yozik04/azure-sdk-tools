@@ -19,13 +19,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using System.ServiceModel;
     using System.Xml;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
+    /// Creates a new Windows Azure SQL Database server in the selected subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.Low)]
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServer", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Low)]
     public class NewAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
         public NewAzureSqlDatabaseServer()
@@ -61,15 +62,28 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
+        [Parameter(HelpMessage = "Do not confirm on the creation of the server")]
+        public SwitchParameter Force
+        {
+            get;
+            set;
+        }
+
         internal SqlDatabaseServerOperationContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
         {
-            SqlDatabaseServerOperationContext operationContext = null;
+            // Do nothing if force is not specified and user cancelled the operation
+            if (!Force.IsPresent &&
+                !ShouldProcess(string.Empty, Resources.NewAzureSqlDatabaseServerWarning, Resources.ShouldProcessCaption))
+            {
+                return null;
+            }
 
+            SqlDatabaseServerOperationContext operationContext = null;
             try
             {
                 InvokeInOperationContext(() =>
                 {
-                    XmlElement serverName = RetryCall(subscription => 
+                    XmlElement serverName = RetryCall(subscription =>
                         Channel.NewServer(subscription, adminLogin, adminLoginPassword, location));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 

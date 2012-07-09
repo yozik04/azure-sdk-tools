@@ -19,13 +19,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Updates an existing firewall rule or adds a new firewall rule for a SQL Azure server that belongs to a subscription.
+    /// Updates an existing firewall rule or adds a new firewall rule for a Windows Azure SQL Database server in the selected subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServerFirewallRule", DefaultParameterSetName = "IpRange", ConfirmImpact = ConfirmImpact.Low)]
+    [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServerFirewallRule", DefaultParameterSetName = "IpRange", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Low)]
     public class NewAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
         public NewAzureSqlDatabaseServerFirewallRule()
@@ -76,10 +77,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
+        [Parameter(HelpMessage = "Do not confirm on the creation of the firewall rule")]
+        public SwitchParameter Force
+        {
+            get;
+            set;
+        }
+
         internal SqlDatabaseServerFirewallRuleContext NewAzureSqlDatabaseServerFirewallRuleProcess(string paramterSetName, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
-            SqlDatabaseServerFirewallRuleContext operationContext = null;
+            // Do nothing if force is not specified and user cancelled the operation
+            if (!Force.IsPresent &&
+                !ShouldProcess(string.Empty, string.Format(Resources.NewAzureSqlDatabaseServerFirewallRuleWarning, ruleName, serverName),
+                               Resources.ShouldProcessCaption))
+            {
+                return null;
+            }
 
+            SqlDatabaseServerFirewallRuleContext operationContext = null;
             try
             {
                 switch (paramterSetName)

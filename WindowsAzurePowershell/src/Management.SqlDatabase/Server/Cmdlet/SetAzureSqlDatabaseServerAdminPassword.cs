@@ -19,10 +19,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.Extensions;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
-    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServerAdminPassword", ConfirmImpact = ConfirmImpact.Medium)]
+    /// <summary>
+    /// Reset the administrator password for an existing Windows Azure SQL Database server in the selected subscription.
+    /// </summary>
+    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServerAdminPassword", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Medium)]
     public class SetAzureSqlDatabaseServerAdminPassword : SqlDatabaseManagementCmdletBase
     {
         public SetAzureSqlDatabaseServerAdminPassword()
@@ -50,10 +54,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
+        [Parameter(HelpMessage = "Do not confirm on the change of administrator login password for the server")]
+        public SwitchParameter Force
+        {
+            get;
+            set;
+        }
+
         internal SqlDatabaseServerOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
         {
-            SqlDatabaseServerOperationContext operationContext = null;
+            // Do nothing if force is not specified and user cancelled the operation
+            if (!Force.IsPresent &&
+                !ShouldProcess(string.Empty, string.Format(Resources.SetAzureSqlDatabaseServerAdminPasswordWarning, serverName),
+                               Resources.ShouldProcessCaption))
+            {
+                return null;
+            }
 
+            SqlDatabaseServerOperationContext operationContext = null;
             try
             {
                 InvokeInOperationContext(() =>

@@ -20,11 +20,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Retrieves a list of all the SQL Azure servers that belongs to a subscription.
+    /// Retrieves a list of Windows Azure SQL Database servers in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServer", ConfirmImpact = ConfirmImpact.None)]
     public class GetAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
@@ -73,7 +74,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                     }
                     else
                     {
-                        var server = servers.FirstOrDefault(s => s.Name == serverName);
+                        SqlDatabaseServer server = servers.FirstOrDefault(s => s.Name == serverName);
                         if (server != null)
                         {
                             processResult = new List<SqlDatabaseServerContext>
@@ -91,7 +92,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         }
                         else
                         {
-                            throw new Exception("The server was not found.");
+                            throw new ItemNotFoundException(string.Format(Resources.GetAzureSqlDatabaseServerNotFound, serverName));
                         }
                     }
                 });

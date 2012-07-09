@@ -18,13 +18,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Deletes a firewall rule from a SQL Azure server that belongs to a subscription.
+    /// Deletes a firewall rule from a Windows Azure SQL Database server in the selected subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.Medium)]
+    [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServerFirewallRule", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Medium)]
     public class RemoveAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
     {
         public RemoveAzureSqlDatabaseServerFirewallRule()
@@ -52,10 +53,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
+        [Parameter(HelpMessage = "Do not confirm on the creation of the firewall rule")]
+        public SwitchParameter Force
+        {
+            get;
+            set;
+        }
+
         internal SqlDatabaseServerOperationContext RemoveAzureSqlDatabaseServerFirewallRuleProcess(string serverName, string ruleName)
         {
-            SqlDatabaseServerOperationContext operationContext = null;
+            // Do nothing if force is not specified and user cancelled the operation
+            if (!Force.IsPresent &&
+                !ShouldProcess(string.Empty, string.Format(Resources.RemoveAzureSqlDatabaseServerFirewallRuleWarning, ruleName, serverName),
+                               Resources.ShouldProcessCaption))
+            {
+                return null;
+            }
 
+            SqlDatabaseServerOperationContext operationContext = null;
             try
             {
                 InvokeInOperationContext(() =>

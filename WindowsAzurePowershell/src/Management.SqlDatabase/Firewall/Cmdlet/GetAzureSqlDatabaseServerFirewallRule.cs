@@ -20,11 +20,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using System.Management.Automation;
     using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Model;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services;
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Retrieves a list of all the firewall rules for a SQL Azure server that belongs to a subscription.
+    /// Retrieves a list of firewall rule from a Windows Azure SQL Database server in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.None)]
     public class GetAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
@@ -82,7 +83,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                     }
                     else
                     {
-                        var firewallRule = firewallRules.FirstOrDefault(p => p.Name == ruleName);
+                        SqlDatabaseFirewallRule firewallRule = firewallRules.FirstOrDefault(p => p.Name == ruleName);
                         if (firewallRule != null)
                         {
                             processResult = new List<SqlDatabaseServerFirewallRuleContext>
@@ -101,7 +102,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         }
                         else
                         {
-                            throw new Exception("The firewall rule was not found.");
+                            throw new ItemNotFoundException(string.Format(Resources.GetAzureSqlDatabaseServerFirewallRuleNotFound, ruleName, serverName));
                         }
                     }
 
