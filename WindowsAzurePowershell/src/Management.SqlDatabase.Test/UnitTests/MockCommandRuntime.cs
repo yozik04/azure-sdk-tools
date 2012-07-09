@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 
         public bool ShouldProcess(string verboseDescription, string verboseWarning, string caption)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public bool ShouldProcess(string target, string action)

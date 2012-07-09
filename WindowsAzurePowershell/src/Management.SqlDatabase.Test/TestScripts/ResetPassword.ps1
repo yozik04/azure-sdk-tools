@@ -59,7 +59,7 @@ Try
     # Reset Password
     $newPassword="Sql@zureNew"
     Write-Output "Resetting password ..."
-    $resetResponse = Set-AzureSqlDatabaseServerAdminPassword -ServerName $server.ServerName -NewPassword $newPassword
+    $resetResponse = Set-AzureSqlDatabaseServerAdminPassword -ServerName $server.ServerName -NewPassword $newPassword -Force
     Write-Output "Rest done"
     Validate-SqlDatabaseServerOperationContext -Actual $resetResponse -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Set-AzureSqlDatabaseServerAdminPassword"
     
@@ -78,7 +78,7 @@ Finally
     {
         # Drop server
         Write-Output "Dropping server $($server.ServerName) ..."
-        Remove-AzureSqlDatabaseServer -ServerName $server.ServerName
+        Remove-AzureSqlDatabaseServer -ServerName $server.ServerName -Force
         Write-Output "Dropped server $($server.ServerName)"
     }
     if($IsTestPass)

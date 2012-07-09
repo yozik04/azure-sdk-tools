@@ -29,6 +29,8 @@ function Init-TestEnvironment
         $CertThumbPrint
     )
     
+    $ConfirmPreference = "Medium"
+
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management.SqlDatabase"
     if(!$moduleLoaded)
     {

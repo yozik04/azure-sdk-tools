@@ -63,7 +63,7 @@ Finally
     {
         # Drop server
         Write-Output "Dropping server $($server.ServerName)"
-        $droppedServer = Remove-AzureSqlDatabaseServer -ServerName $server.ServerName
+        $droppedServer = Remove-AzureSqlDatabaseServer -ServerName $server.ServerName -Force
         Validate-SqlDatabaseServerOperationContext -Actual $droppedServer -expectedServerName $server.ServerName -expectedOperationDescription "Remove-AzureSqlDatabaseServer"
         Write-Output "Dropped server $($server.ServerName)"
         

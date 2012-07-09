@@ -37,6 +37,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         {
             Type cmdlet = typeof(GetAzureSqlDatabaseServer);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.None);
+            UnitTestHelpers.CheckCmdletModifiesData(cmdlet, false);
         }
 
         [TestMethod]
@@ -44,6 +45,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         {
             Type cmdlet = typeof(NewAzureSqlDatabaseServer);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Low);
+            UnitTestHelpers.CheckCmdletModifiesData(cmdlet, true);
         }
 
         [TestMethod]
@@ -51,6 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         {
             Type cmdlet = typeof(RemoveAzureSqlDatabaseServer);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.High);
+            UnitTestHelpers.CheckCmdletModifiesData(cmdlet, true);
         }
 
         [TestMethod]
@@ -58,6 +61,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         {
             Type cmdlet = typeof(SetAzureSqlDatabaseServerAdminPassword);
             UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Medium);
+            UnitTestHelpers.CheckCmdletModifiesData(cmdlet, true);
         }
     }
 }

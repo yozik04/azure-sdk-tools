@@ -26,9 +26,24 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
         public static void CheckConfirmImpact(Type cmdlet, ConfirmImpact confirmImpact)
         {
             object[] cmdletAttributes = cmdlet.GetCustomAttributes(typeof(CmdletAttribute), true);
-            Assert.AreEqual(cmdletAttributes.Length, 1);
+            Assert.AreEqual(1, cmdletAttributes.Length);
             CmdletAttribute attribute = (CmdletAttribute)cmdletAttributes[0];
-            Assert.AreEqual(attribute.ConfirmImpact, confirmImpact);
+            Assert.AreEqual(confirmImpact, attribute.ConfirmImpact);
+        }
+
+        public static void CheckCmdletModifiesData(Type cmdlet, bool supportsShouldProcess)
+        {
+            // If the Cmdlet modifies data, SupportsShouldProcess should be set to true.
+            object[] cmdletAttributes = cmdlet.GetCustomAttributes(typeof(CmdletAttribute), true);
+            Assert.AreEqual(1, cmdletAttributes.Length);
+            CmdletAttribute attribute = (CmdletAttribute)cmdletAttributes[0];
+            Assert.AreEqual(supportsShouldProcess, attribute.SupportsShouldProcess);
+
+            if (supportsShouldProcess)
+            {
+                // If the Cmdlet modifies data, there needs to be a Force property to bypass ShouldProcess
+                Assert.AreNotEqual(null, cmdlet.GetProperty("Force"), "Force property is expected for Cmdlets that modifies data.");
+            }
         }
     }
 }
