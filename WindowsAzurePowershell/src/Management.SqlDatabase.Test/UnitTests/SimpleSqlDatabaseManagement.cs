@@ -202,12 +202,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
         #region NewServerFirewallRule
 
         public Action<SimpleServiceManagementAsyncResult> NewServerFirewallRuleThunk { get; set; }
-        public IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, string ruleName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
+        public IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
             result.Values["subscriptionId"] = subscriptionId;
             result.Values["serverName"] = serverName;
-            result.Values["ruleName"] = ruleName;
             result.Values["input"] = input;
             result.Values["callback"] = callback;
             result.Values["state"] = state;
@@ -227,39 +226,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             {
                 throw new NotImplementedException("NewServerFirewallRuleThunk is not implemented!");
             }
-        }
-
-        #endregion
-
-        #region NewServerFirewallRuleWithIpDetect
-
-        public Func<SimpleServiceManagementAsyncResult, XmlElement> NewServerFirewallRuleWithIpDetectThunk { get; set; }
-        public IAsyncResult BeginNewServerFirewallRuleWithIpDetect(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state)
-        {
-            SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
-            result.Values["subscriptionId"] = subscriptionId;
-            result.Values["serverName"] = serverName;
-            result.Values["ruleName"] = ruleName;
-            result.Values["callback"] = callback;
-            result.Values["state"] = state;
-            return result;
-        }
-
-        public XmlElement EndNewServerFirewallRuleWithIpDetect(IAsyncResult asyncResult)
-        {
-            if (NewServerFirewallRuleWithIpDetectThunk != null)
-            {
-                SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
-                Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
-
-                return NewServerFirewallRuleWithIpDetectThunk(result);
-            }
-            else if (ThrowsIfNotImplemented)
-            {
-                throw new NotImplementedException("NewServerFirewallRuleWithIpDetectThunk is not implemented!");
-            }
-
-            return default(XmlElement);
         }
 
         #endregion

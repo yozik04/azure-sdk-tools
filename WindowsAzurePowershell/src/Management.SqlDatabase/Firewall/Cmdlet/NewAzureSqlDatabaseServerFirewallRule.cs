@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Updates an existing firewall rule or adds a new firewall rule for a Windows Azure SQL Database server in the selected subscription.
+    /// Creates a new firewall rule for a Windows Azure SQL Database server in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureSqlDatabaseServerFirewallRule", DefaultParameterSetName = "IpRange", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Low)]
     public class NewAzureSqlDatabaseServerFirewallRule : SqlDatabaseManagementCmdletBase
@@ -70,13 +70,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "Use the requester’s IP address.", ParameterSetName = "IpDetection")]
-        public SwitchParameter UseIpAddressDetection
-        {
-            get;
-            set;
-        }
-
         [Parameter(HelpMessage = "Do not confirm on the creation of the firewall rule")]
         public SwitchParameter Force
         {
@@ -115,25 +108,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                                 RuleName = ruleName,
                                 StartIpAddress = startIpAddress,
                                 EndIpAddress = endIpAddress
-                            };
-                        });
-                        break;
-                    case "IpDetection":
-                        InvokeInOperationContext(() =>
-                        {
-                            var detectedIpAddress = RetryCall(subscription =>
-                                Channel.NewServerFirewallRuleWithIpDetect(subscription, serverName, ruleName));
-                            WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
-
-                            operationContext = new SqlDatabaseServerFirewallRuleContext()
-                            {
-                                OperationDescription = CommandRuntime.ToString(),
-                                OperationStatus = operation.Status,
-                                OperationId = operation.OperationTrackingId,
-                                ServerName = serverName,
-                                RuleName = ruleName,
-                                StartIpAddress = detectedIpAddress,
-                                EndIpAddress = detectedIpAddress
                             };
                         });
                         break;

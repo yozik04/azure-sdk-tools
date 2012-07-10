@@ -25,17 +25,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         {
             var input = new NewSqlDatabaseFirewallRuleInput
             {
-                StartIpAddress = startIpAddress,
-                EndIpAddress = endIpAddress
+                Name = ruleName,
+                StartIPAddress = startIpAddress,
+                EndIPAddress = endIpAddress
             };
 
-            proxy.EndNewServerFirewallRule(proxy.BeginNewServerFirewallRule(subscriptionId, serverName, ruleName, input, null, null));
-        }
-
-        public static string NewServerFirewallRuleWithIpDetect(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName)
-        {
-            var result = proxy.EndNewServerFirewallRuleWithIpDetect(proxy.BeginNewServerFirewallRuleWithIpDetect(subscriptionId, serverName, ruleName, null, null));
-            return result.InnerText;
+            proxy.EndNewServerFirewallRule(proxy.BeginNewServerFirewallRule(subscriptionId, serverName, input, null, null));
         }
 
         public static void RemoveServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName)

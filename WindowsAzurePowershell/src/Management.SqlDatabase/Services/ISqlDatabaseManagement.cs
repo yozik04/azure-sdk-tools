@@ -26,80 +26,63 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     {
         /// <summary>
         /// Enumerates SQL Database servers that are provisioned for a subscription.  
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "GET", UriTemplate = @"{subscriptionId}/servers")]
+        [WebInvoke(Method = "GET", UriTemplate = @"{subscriptionId}/services/sqlservers/servers")]
         IAsyncResult BeginGetServers(string subscriptionId, AsyncCallback callback, object state);
 
         SqlDatabaseServerList EndGetServers(IAsyncResult asyncResult);
 
         /// <summary>
         /// Adds a new SQL Database server to a subscription.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715274)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/servers")]
+        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/services/sqlservers/servers")]
         IAsyncResult BeginNewServer(string subscriptionId, NewSqlDatabaseServerInput input, AsyncCallback callback, object state);
 
         XmlElement EndNewServer(IAsyncResult asyncResult);
 
         /// <summary>
         /// Drops a SQL Database server from a subscription.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715285)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/servers/{serverName}")]
+        [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}")]
         IAsyncResult BeginRemoveServer(string subscriptionId, string serverName, AsyncCallback callback, object state);
 
         void EndRemoveServer(IAsyncResult asyncResult);
 
         /// <summary>
         /// Sets the administrative password of a SQL Database server for a subscription.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715272)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/servers/{serverName}?op=ResetPassword", BodyStyle = WebMessageBodyStyle.Bare)]
+        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}?op=ResetPassword", BodyStyle = WebMessageBodyStyle.Bare)]
         IAsyncResult BeginSetPassword(string subscriptionId, string serverName, XmlElement password, AsyncCallback callback, object state);
 
         void EndSetPassword(IAsyncResult asyncResult);
 
         /// <summary>
         /// Retrieves a list of all the firewall rules for a SQL Database server that belongs to a subscription.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715278)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "GET", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules")]
+        [WebInvoke(Method = "GET", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/firewallrules")]
         IAsyncResult BeginGetServerFirewallRules(string subscriptionId, string serverName, AsyncCallback callback, object state);
 
         SqlDatabaseFirewallRulesList EndGetServerFirewallRules(IAsyncResult asyncResult);
 
         /// <summary>
-        /// Updates an existing firewall rule or adds a new firewall rule for a SQL Database server that belongs to a subscription.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715280)
+        /// Creates a new firewall rule for a SQL Database server that belongs to a subscription.
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "PUT", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules/{ruleName}")]
-        IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, string ruleName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
+        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/firewallrules")]
+        IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
 
         void EndNewServerFirewallRule(IAsyncResult asyncResult);
 
         /// <summary>
-        /// Adds a new firewall rule or updates an existing firewall rule for a SQL Database server with requester’s IP address.
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/hh239605)
-        /// </summary>
-        [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules/{ruleName}?op=AutoDetectClientIP")]
-        IAsyncResult BeginNewServerFirewallRuleWithIpDetect(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state);
-
-        XmlElement EndNewServerFirewallRuleWithIpDetect(IAsyncResult asyncResult);
-
-        /// <summary>
         /// Deletes a firewall rule from a SQL Database server that belongs to a subscription
-        /// (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715277)
         /// </summary>
         [OperationContract(AsyncPattern = true)]
-        [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/servers/{serverName}/firewallrules/{ruleName}")]
+        [WebInvoke(Method = "DELETE", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/firewallrules/{ruleName}")]
         IAsyncResult BeginRemoveServerFirewallRule(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state);
 
         void EndRemoveServerFirewallRule(IAsyncResult asyncResult);

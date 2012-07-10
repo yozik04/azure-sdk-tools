@@ -77,8 +77,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                             OperationStatus = operation.Status,
                             ServerName = serverName,
                             RuleName = p.Name,
-                            StartIpAddress = p.StartIpAddress,
-                            EndIpAddress = p.EndIpAddress
+                            StartIpAddress = p.StartIPAddress,
+                            EndIpAddress = p.EndIPAddress
                         });
                     }
                     else
@@ -95,8 +95,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                                     OperationStatus = operation.Status,
                                     ServerName = serverName,
                                     RuleName = firewallRule.Name,
-                                    StartIpAddress = firewallRule.StartIpAddress,
-                                    EndIpAddress = firewallRule.EndIpAddress
+                                    StartIpAddress = firewallRule.StartIPAddress,
+                                    EndIpAddress = firewallRule.EndIPAddress
                                 }
                             };
                         }

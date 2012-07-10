@@ -19,17 +19,17 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     /// <summary>
     /// Get firewall rules data contract. 
     /// </summary>
-    [DataContract(Name = "FirewallRule", Namespace = Constants.SqlDatabaseManagementNS)]
+    [DataContract(Name = "ServiceResource", Namespace = Constants.ServiceManagementNS)]
     public class SqlDatabaseFirewallRule : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]
         public string Name { get; set; }
 
         [DataMember(Order = 2, EmitDefaultValue = false)]
-        public string StartIpAddress { get; set; }
+        public string StartIPAddress { get; set; }
 
         [DataMember(Order = 3, EmitDefaultValue = false)]
-        public string EndIpAddress { get; set; }
+        public string EndIPAddress { get; set; }
 
         public ExtensionDataObject ExtensionData { get; set; }
     }

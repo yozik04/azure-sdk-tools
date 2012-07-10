@@ -19,18 +19,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 
     public static class ConfigurationConstants
     {
-        public const string SqlDatabaseManagementEndpoint = "https://management.database.windows.net:8443";
+        public const string ServiceManagementEndpoint = "https://management.core.windows.net";
 
-        public static Binding WebHttpBinding()
+        public static Binding WebHttpBinding(int maxStringContentLength)
         {
-            const int MAX = 5000000;
-
             var binding = new WebHttpBinding(WebHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
-            binding.ReaderQuotas.MaxStringContentLength = 67108864;
-            binding.MaxBufferSize = MAX;
-            binding.MaxReceivedMessageSize = MAX;
-            binding.ReaderQuotas.MaxArrayLength = MAX;
+            binding.ReaderQuotas.MaxStringContentLength =
+                maxStringContentLength > 0 ?
+                maxStringContentLength :
+                67108864;
 
             return binding;
         }

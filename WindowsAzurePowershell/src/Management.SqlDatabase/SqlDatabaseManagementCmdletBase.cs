@@ -44,16 +44,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase
 
             if (this.ServiceBinding == null)
             {
-                this.ServiceBinding = ConfigurationConstants.WebHttpBinding();
+                this.ServiceBinding = ConfigurationConstants.WebHttpBinding(this.MaxStringContentLength);
             }
 
-            if (string.IsNullOrEmpty(CurrentSubscription.SqlAzureServiceEndpoint))
+            if (string.IsNullOrEmpty(CurrentSubscription.ServiceEndpoint))
             {
-                this.ServiceEndpoint = ConfigurationConstants.SqlDatabaseManagementEndpoint;
+                this.ServiceEndpoint = ConfigurationConstants.ServiceManagementEndpoint;
             }
             else
             {
-                this.ServiceEndpoint = CurrentSubscription.SqlAzureServiceEndpoint;
+                this.ServiceEndpoint = CurrentSubscription.ServiceEndpoint;
             }
 
             return SqlDatabaseManagementHelper.CreateSqlDatabaseManagementChannel(this.ServiceBinding, new Uri(this.ServiceEndpoint), CurrentSubscription.Certificate);

@@ -16,9 +16,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     public class Constants
     {
+        public const string ServiceManagementNS = "http://schemas.microsoft.com/windowsazure";
         public const string SqlDatabaseManagementNS = "http://schemas.microsoft.com/sqlazure/2010/12/";
         public const string VersionHeaderName = "x-ms-version";
-        public const string VersionHeaderContent = "1.0";
+        public const string VersionHeaderContent = "2012-03-01";
         public const string OperationTrackingIdHeader = "x-ms-request-id";
     }
 }

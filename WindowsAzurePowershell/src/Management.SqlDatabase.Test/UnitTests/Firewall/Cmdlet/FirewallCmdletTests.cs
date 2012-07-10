@@ -43,9 +43,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             {
                 newFirewallRuleCalled = true;
                 Assert.AreEqual("Server1", (string)ar.Values["serverName"]);
-                Assert.AreEqual("Rule1", (string)ar.Values["ruleName"]);
-                Assert.AreEqual(((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIpAddress, "0.0.0.0");
-                Assert.AreEqual(((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIpAddress, "1.1.1.1");
+                Assert.AreEqual("Rule1", ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).Name);
+                Assert.AreEqual("0.0.0.0", ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIPAddress);
+                Assert.AreEqual("1.1.1.1", ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIPAddress);
             };
 
             // New firewall rule with IpRange parameter set
@@ -59,30 +59,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             Assert.AreEqual("Success", newFirewallResult.OperationStatus);
             Assert.AreEqual(true, newFirewallRuleCalled);
             Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
-
-            channel.NewServerFirewallRuleThunk = null;
-            newFirewallRuleCalled = false;
-            channel.NewServerFirewallRuleWithIpDetectThunk = ar =>
-            {
-                newFirewallRuleCalled = true;
-                Assert.AreEqual("Server2", (string)ar.Values["serverName"]);
-                Assert.AreEqual("Rule2", (string)ar.Values["ruleName"]);
-
-                XmlElement operationResult = new XmlDocument().CreateElement("IpAddress", "http://schemas.microsoft.com/sqlazure/2010/12/");
-                operationResult.InnerText = "1.2.3.4";
-                return operationResult;
-            };
-
-            // New Firewall rule with IpDetect parameter set
-            newFirewallResult = newAzureSqlDatabaseServerFirewallRule.NewAzureSqlDatabaseServerFirewallRuleProcess("IpDetection", "Server2", "Rule2", null, null);
-            Assert.AreEqual(true, newFirewallRuleCalled);
-            Assert.AreEqual("Server2", newFirewallResult.ServerName);
-            Assert.AreEqual("Rule2", newFirewallResult.RuleName);
-            Assert.AreEqual("1.2.3.4", newFirewallResult.StartIpAddress);
-            Assert.AreEqual("1.2.3.4", newFirewallResult.EndIpAddress);
-            Assert.AreEqual("Success", newFirewallResult.OperationStatus);
-
-            Assert.AreEqual(0, commandRuntime.ErrorRecords.Count);
         }
 
         [TestMethod]
@@ -95,9 +71,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             {
                 Assert.AreEqual("Server1", (string)ar.Values["serverName"]);
                 SqlDatabaseFirewallRule newRule = new SqlDatabaseFirewallRule();
-                newRule.Name = (string)ar.Values["ruleName"];
-                newRule.StartIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIpAddress;
-                newRule.EndIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIpAddress;
+                newRule.Name = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).Name;
+                newRule.StartIPAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIPAddress;
+                newRule.EndIPAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIPAddress;
                 firewallList.Add(newRule);
             };
 
@@ -155,9 +131,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             {
                 Assert.AreEqual("Server1", (string)ar.Values["serverName"]);
                 SqlDatabaseFirewallRule newRule = new SqlDatabaseFirewallRule();
-                newRule.Name = (string)ar.Values["ruleName"];
-                newRule.StartIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIpAddress;
-                newRule.EndIpAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIpAddress;
+                newRule.Name = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).Name;
+                newRule.StartIPAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).StartIPAddress;
+                newRule.EndIPAddress = ((NewSqlDatabaseFirewallRuleInput)ar.Values["input"]).EndIPAddress;
                 firewallList.Add(newRule);
             };
 
