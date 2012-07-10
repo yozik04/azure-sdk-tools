@@ -1,4 +1,5 @@
-﻿// ----------------------------------------------------------------------------------
+﻿using System.Xml.Linq;
+// ----------------------------------------------------------------------------------
 //
 // Copyright 2011 Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Management.Utilities;
+using Microsoft.WindowsAzure.Management.XmlSchema;
+
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 {
@@ -21,15 +25,20 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
     public class FunctionalTest
     {
         private string subscriptionID;
-        private string certThumbprint;
+        private string serializedCert;
         private string serverLocation;
 
         [TestInitialize]
         public void Setup()
         {
-            this.subscriptionID = "055c4f05-8a3d-4f6b-97fc-055ff1aa1ffb";
-            this.certThumbprint = "C37F325D5F41FED506B59BD2A15FBEE6F4FA7A19";
-            this.serverLocation = "North Central US";
+
+            PublishData publishData = General.DeserializeXmlFile<PublishData>("Azure.publishsettings");
+            PublishDataPublishProfile publishProfile = publishData.Items[0];
+            this.serializedCert = publishProfile.ManagementCertificate;
+            this.subscriptionID = publishProfile.Subscription[0].Id;
+
+            XElement root = XElement.Load("SqlDatabaseSettings.xml");
+            this.serverLocation = root.Element("ServerLocation").Value;
 
             new NewAzureSqlDatabaseServerFirewallRule();
         }
@@ -38,7 +47,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         [TestCategory("Functional")]
         public void ServerTest()
         {
-            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
+            string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.serializedCert, this.serverLocation);
             bool testResult = PSScriptExecutor.ExecuteScript("CreateGetDeleteServer.ps1", arguments);
             Assert.IsTrue(testResult);
         }
@@ -47,7 +56,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         [TestCategory("Functional")]
         public void FirewallTest()
         {
-            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
+            string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.serializedCert, this.serverLocation);
             bool testResult = PSScriptExecutor.ExecuteScript("CreateGetDropFirewall.ps1", arguments);
             Assert.IsTrue(testResult);
         }
@@ -56,7 +65,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         [TestCategory("Functional")]
         public void ResetServerPassword()
         {
-            string arguments = string.Format("-subscriptionID \"{0}\" -certThumbPrint \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.certThumbprint, this.serverLocation);
+            string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.serializedCert, this.serverLocation);
             bool testResult = PSScriptExecutor.ExecuteScript("ResetPassword.ps1", arguments);
             Assert.IsTrue(testResult);
         }
