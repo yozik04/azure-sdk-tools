@@ -124,6 +124,15 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to update the firewall rule &quot;{0}&quot; for Windows Azure Sql Database server &quot;{1}&quot;?.
+        /// </summary>
+        internal static string SetAzureSqlDatabaseServerFirewallRuleWarning {
+            get {
+                return ResourceManager.GetString("SetAzureSqlDatabaseServerFirewallRuleWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string ShouldProcessCaption {

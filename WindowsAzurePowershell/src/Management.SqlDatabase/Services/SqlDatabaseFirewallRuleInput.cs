@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     /// New firewall rule data contract. 
     /// </summary>
     [DataContract(Name = "ServiceResource", Namespace = Constants.ServiceManagementNS)]
-    public class NewSqlDatabaseFirewallRuleInput : IExtensibleDataObject
+    public class SqlDatabaseFirewallRuleInput : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]
         public string Name { get; set; }

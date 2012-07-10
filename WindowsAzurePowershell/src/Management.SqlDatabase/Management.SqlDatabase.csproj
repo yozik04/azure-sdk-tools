@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MSSharedLibKey.snk" />
+    <Compile Include="Firewall\Cmdlet\SetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\RemoveAzureSqlDatabaseServerFirewallRule.cs" />
@@ -145,10 +146,10 @@
     <Compile Include="Services\Constants.cs" />
     <Compile Include="Services\ISqlDatabaseManagement.cs" />
     <Compile Include="Services\ISqlDatabaseManagementExternalApi.cs" />
-    <Compile Include="Services\NewSqlDatabaseFirewallRuleInput.cs" />
     <Compile Include="Services\NewSqlDatabaseServerInput.cs" />
     <Compile Include="Services\SqlDatabaseFirewallExtensions.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRule.cs" />
+    <Compile Include="Services\SqlDatabaseFirewallRuleInput.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRulesList.cs" />
     <Compile Include="Services\SqlDatabaseManagementError.cs" />
     <Compile Include="Services\SqlDatabaseManagementHelper.cs" />

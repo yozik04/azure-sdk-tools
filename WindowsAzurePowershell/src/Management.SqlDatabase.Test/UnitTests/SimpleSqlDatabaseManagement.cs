@@ -202,7 +202,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
         #region NewServerFirewallRule
 
         public Action<SimpleServiceManagementAsyncResult> NewServerFirewallRuleThunk { get; set; }
-        public IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
+        public IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, SqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
         {
             SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
             result.Values["subscriptionId"] = subscriptionId;
@@ -225,6 +225,38 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTest
             else if (ThrowsIfNotImplemented)
             {
                 throw new NotImplementedException("NewServerFirewallRuleThunk is not implemented!");
+            }
+        }
+
+        #endregion
+
+        #region UpdateServerFirewallRule
+
+        public Action<SimpleServiceManagementAsyncResult> UpdateServerFirewallRuleThunk { get; set; }
+        public IAsyncResult BeginUpdateServerFirewallRule(string subscriptionId, string serverName, string ruleName, SqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state)
+        {
+            SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
+            result.Values["subscriptionId"] = subscriptionId;
+            result.Values["serverName"] = serverName;
+            result.Values["ruleName"] = ruleName;
+            result.Values["input"] = input;
+            result.Values["callback"] = callback;
+            result.Values["state"] = state;
+            return result;
+        }
+
+        public void EndUpdateServerFirewallRule(IAsyncResult asyncResult)
+        {
+            if (UpdateServerFirewallRuleThunk != null)
+            {
+                SimpleServiceManagementAsyncResult result = asyncResult as SimpleServiceManagementAsyncResult;
+                Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
+
+                UpdateServerFirewallRuleThunk(result);
+            }
+            else if (ThrowsIfNotImplemented)
+            {
+                throw new NotImplementedException("UpdateServerFirewallRuleThunk is not implemented!");
             }
         }
 

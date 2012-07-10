@@ -49,6 +49,14 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
+        public void SetAzureSqlDatabaseServerFirewallRuleAttributeTest()
+        {
+            Type cmdlet = typeof(SetAzureSqlDatabaseServerFirewallRule);
+            UnitTestHelpers.CheckConfirmImpact(cmdlet, ConfirmImpact.Low);
+            UnitTestHelpers.CheckCmdletModifiesData(cmdlet, true);
+        }
+
+        [TestMethod]
         public void RemoveAzureSqlDatabaseServerFirewallRuleAttributeTest()
         {
             Type cmdlet = typeof(RemoveAzureSqlDatabaseServerFirewallRule);

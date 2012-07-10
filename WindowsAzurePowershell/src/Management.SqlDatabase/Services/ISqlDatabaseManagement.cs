@@ -74,9 +74,18 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         /// </summary>
         [OperationContract(AsyncPattern = true)]
         [WebInvoke(Method = "POST", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/firewallrules")]
-        IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, NewSqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
+        IAsyncResult BeginNewServerFirewallRule(string subscriptionId, string serverName, SqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
 
         void EndNewServerFirewallRule(IAsyncResult asyncResult);
+
+        /// <summary>
+        /// Updates an existing firewall rule for a SQL Database server that belongs to a subscription.
+        /// </summary>
+        [OperationContract(AsyncPattern = true)]
+        [WebInvoke(Method = "PUT", UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/firewallrules/{ruleName}")]
+        IAsyncResult BeginUpdateServerFirewallRule(string subscriptionId, string serverName, string ruleName, SqlDatabaseFirewallRuleInput input, AsyncCallback callback, object state);
+
+        void EndUpdateServerFirewallRule(IAsyncResult asyncResult);
 
         /// <summary>
         /// Deletes a firewall rule from a SQL Database server that belongs to a subscription

@@ -23,7 +23,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 
         public static void NewServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName, string startIpAddress, string endIpAddress)
         {
-            var input = new NewSqlDatabaseFirewallRuleInput
+            var input = new SqlDatabaseFirewallRuleInput
             {
                 Name = ruleName,
                 StartIPAddress = startIpAddress,
@@ -31,6 +31,18 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
             };
 
             proxy.EndNewServerFirewallRule(proxy.BeginNewServerFirewallRule(subscriptionId, serverName, input, null, null));
+        }
+
+        public static void UpdateServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName, string startIpAddress, string endIpAddress)
+        {
+            var input = new SqlDatabaseFirewallRuleInput
+            {
+                Name = ruleName,
+                StartIPAddress = startIpAddress,
+                EndIPAddress = endIpAddress
+            };
+
+            proxy.EndUpdateServerFirewallRule(proxy.BeginUpdateServerFirewallRule(subscriptionId, serverName, ruleName, input, null, null));
         }
 
         public static void RemoveServerFirewallRule(this ISqlDatabaseManagement proxy, string subscriptionId, string serverName, string ruleName)

@@ -138,6 +138,9 @@
   <data name="SetAzureSqlDatabaseServerAdminPasswordWarning" xml:space="preserve">
     <value>Are you sure you want to reset the administrator password for Windows Azure Sql Database server "{0}"?</value>
   </data>
+  <data name="SetAzureSqlDatabaseServerFirewallRuleWarning" xml:space="preserve">
+    <value>Are you sure you want to update the firewall rule "{0}" for Windows Azure Sql Database server "{1}"?</value>
+  </data>
   <data name="ShouldProcessCaption" xml:space="preserve">
     <value>Confirm</value>
   </data>
