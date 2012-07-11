@@ -22,21 +22,21 @@ Param
     [Parameter(Mandatory=$true, Position=1)]
     [ValidateNotNullOrEmpty()]
     [String]
-    $certThumbPrint,
+    $SerializedCert,
     [Parameter(Mandatory=$true, Position=2)]
     [ValidateNotNullOrEmpty()]
     [String]
     $serverLocation
 )
 Write-Output "`$subscriptionID=$subscriptionID"
-Write-Output "`$certThumbPrint=$certThumbPrint"
+Write-Output "`$SerializedCert=$SerializedCert"
 Write-Output "`$serverLocation=$serverLocation"
 
 . .\CommonFunctions.ps1
 
 Try
 {
-    Init-TestEnvironment -subscriptionID $subscriptionID -certThumbPrint $certThumbPrint
+    Init-TestEnvironment -subscriptionID $subscriptionID -SerializedCert $SerializedCert
     $isTestPass = $False
     
     # Create Server

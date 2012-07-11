@@ -26,9 +26,9 @@ function Init-TestEnvironment
         $SubscriptionID,
         [Parameter(Mandatory=$true, Position=1)]
         [ValidateNotNullOrEmpty()]
-        $CertThumbPrint
+        [String]
+        $SerializedCert
     )
-    
     $ConfirmPreference = "Medium"
 
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management.SqlDatabase"
@@ -38,7 +38,21 @@ function Init-TestEnvironment
         Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.dll
     }
 
-    $myCert = Get-Item cert:\\CurrentUser\My\$CertThumbPrint
+    # Deserialize the input certificate given in base 64 format.
+    # Install it in the cert store.
+    $storeName = [System.Security.Cryptography.X509Certificates.StoreName]
+    $storeLocation = [System.Security.Cryptography.X509Certificates.StoreLocation]
+    $X509Certificate2 = [System.Security.Cryptography.X509Certificates.X509Certificate2]
+    $X509Store = [System.Security.Cryptography.X509Certificates.X509Store]
+    $OpenFlags = [System.Security.Cryptography.X509Certificates.OpenFlags]
+    
+    $bytes = [System.Convert]::FromBase64String($SerializedCert)
+    $myCert = New-Object $X509Certificate2(,$bytes)
+    $store = New-Object $X509Store($StoreName::My, $StoreLocation::CurrentUser)
+    $store.Open($OpenFlags::ReadWrite)
+    $store.Add($myCert)
+    $store.Close()
+    
     $subName = "MySub" + $SubscriptionID
     Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert
     Select-AzureSubscription -SubscriptionName $subName
