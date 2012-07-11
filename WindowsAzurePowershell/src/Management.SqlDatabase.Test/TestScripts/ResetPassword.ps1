@@ -59,9 +59,9 @@ Try
     # Reset Password
     $newPassword="Sql@zureNew"
     Write-Output "Resetting password ..."
-    $resetResponse = Set-AzureSqlDatabaseServerAdminPassword -ServerName $server.ServerName -NewPassword $newPassword -Force
+    $resetResponse = Set-AzureSqlDatabaseServer -ServerName $server.ServerName -AdminPassword $newPassword -Force
     Write-Output "Rest done"
-    Validate-SqlDatabaseServerOperationContext -Actual $resetResponse -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Set-AzureSqlDatabaseServerAdminPassword"
+    Validate-SqlDatabaseServerOperationContext -Actual $resetResponse -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Set-AzureSqlDatabaseServer"
     
     # Connect to server using new password
     Write-Output "Connecting to server using new password ..."
