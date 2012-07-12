@@ -19,7 +19,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     /// <summary>
     /// New server data contract. 
     /// </summary>
-    [DataContract(Namespace = Constants.SqlDatabaseManagementNS, Name = "Server")]
+    [DataContract(Namespace = Constants.SqlDatabaseManagementNamespace, Name = "Server")]
     public class NewSqlDatabaseServerInput : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]

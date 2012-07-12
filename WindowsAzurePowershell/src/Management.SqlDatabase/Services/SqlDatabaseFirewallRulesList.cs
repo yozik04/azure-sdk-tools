@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     /// <summary>
     /// List of firewall rules.
     /// </summary>
-    [CollectionDataContract(Name = "ServiceResources", ItemName = "ServiceResource", Namespace = Constants.ServiceManagementNS)]
+    [CollectionDataContract(Name = "ServiceResources", ItemName = "ServiceResource", Namespace = Constants.ServiceManagementNamespace)]
     public class SqlDatabaseFirewallRulesList : List<SqlDatabaseFirewallRule>
     {
         public SqlDatabaseFirewallRulesList()

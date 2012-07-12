@@ -17,7 +17,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
-    [CollectionDataContract(Name = "Servers", ItemName = "Server", Namespace = Constants.SqlDatabaseManagementNS)]
+    [CollectionDataContract(Name = "Servers", ItemName = "Server", Namespace = Constants.SqlDatabaseManagementNamespace)]
     public class SqlDatabaseServerList : List<SqlDatabaseServer>
     {
         public SqlDatabaseServerList()

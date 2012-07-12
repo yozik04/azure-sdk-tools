@@ -16,7 +16,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Runtime.Serialization;
 
-    [DataContract(Name = "Error", Namespace = Constants.SqlDatabaseManagementNS)]
+    [DataContract(Name = "Error", Namespace = Constants.SqlDatabaseManagementNamespace)]
     public class SqlDatabaseManagementError : IExtensibleDataObject
     {
         [DataMember(Order = 1)]

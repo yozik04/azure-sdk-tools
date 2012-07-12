@@ -16,7 +16,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System.Runtime.Serialization;
 
-    [DataContract(Name = "Server", Namespace = Constants.SqlDatabaseManagementNS)]
+    [DataContract(Name = "Server", Namespace = Constants.SqlDatabaseManagementNamespace)]
     public class SqlDatabaseServer : IExtensibleDataObject
     {
         [DataMember(Order = 1, EmitDefaultValue = false)]

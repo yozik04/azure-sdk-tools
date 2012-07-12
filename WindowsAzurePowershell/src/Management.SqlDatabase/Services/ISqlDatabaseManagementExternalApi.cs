@@ -19,7 +19,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     /// <summary>
     /// Provides the SQL Azure Management Api. 
     /// </summary>
-    [ServiceContract(Namespace = Constants.SqlDatabaseManagementNS)]
+    [ServiceContract(Namespace = Constants.SqlDatabaseManagementNamespace)]
     public partial interface ISqlDatabaseManagement
     {
     }

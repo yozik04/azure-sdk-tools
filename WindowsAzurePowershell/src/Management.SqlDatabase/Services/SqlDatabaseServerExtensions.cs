@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
             {
                 var tw = new XmlTextWriter(tx);
                 tw.WriteStartDocument();
-                tw.WriteStartElement("AdministratorLoginPassword", Constants.SqlDatabaseManagementNS);
+                tw.WriteStartElement("AdministratorLoginPassword", Constants.SqlDatabaseManagementNamespace);
                 tw.WriteString(password);
                 tw.WriteEndElement();
 
