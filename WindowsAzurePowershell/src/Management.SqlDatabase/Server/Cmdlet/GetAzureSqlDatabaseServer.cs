@@ -16,6 +16,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
     using System.ServiceModel;
@@ -92,7 +93,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         }
                         else
                         {
-                            throw new ItemNotFoundException(string.Format(Resources.GetAzureSqlDatabaseServerNotFound, serverName));
+                            throw new ItemNotFoundException(string.Format(CultureInfo.InvariantCulture, Resources.GetAzureSqlDatabaseServerNotFound, serverName));
                         }
                     }
                 });

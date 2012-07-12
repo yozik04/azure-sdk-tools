@@ -16,6 +16,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
     using System.ServiceModel;
@@ -102,7 +103,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
                         }
                         else
                         {
-                            throw new ItemNotFoundException(string.Format(Resources.GetAzureSqlDatabaseServerFirewallRuleNotFound, ruleName, serverName));
+                            throw new ItemNotFoundException(string.Format(CultureInfo.InvariantCulture, Resources.GetAzureSqlDatabaseServerFirewallRuleNotFound, ruleName, serverName));
                         }
                     }
 
