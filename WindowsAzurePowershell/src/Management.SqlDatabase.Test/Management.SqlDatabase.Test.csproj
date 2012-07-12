@@ -112,12 +112,12 @@
     <Compile Include="Utilities\PSScriptExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MSSharedLibKey.snk" />
     <None Include="TestScripts\CommonFunctions.ps1" />
     <None Include="TestScripts\CreateGetDeleteServer.ps1" />
     <None Include="TestScripts\CreateGetDropFirewall.ps1" />
     <None Include="TestScripts\ResetPassword.ps1" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Management.CloudService.Test\Management.CloudService.Test.csproj">
       <Project>{C7C619E8-BB9B-43B6-9592-EC7F4ED3B55C}</Project>

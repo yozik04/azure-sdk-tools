@@ -79,6 +79,21 @@ Try
     $rule = $rules | Where-Object {$_.RuleName -eq $rule2Name}
     Validate-SqlDatabaseServerFirewallRuleContext -Actual $rule -ExpectedRuleName $rule2Name -ExpectedStartIpAddress $rule2StartIP -ExpectedEndIpAddress $rule2EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Get-AzureSqlDatabaseServerFirewallRule"
     
+    # Update a firewall rule and validate.
+    $rule1StartIP = "255.255.255.254"
+    $rule1EndIP="255.255.255.255"
+    Write-Output "Updating Firewall rule $rule1Name ..."
+    $rule = Set-AzureSqlDatabaseServerFirewallRule $server.ServerName -RuleName $rule1Name -StartIpAddress $rule1StartIP -EndIpAddress $rule1EndIP
+    Validate-SqlDatabaseServerFirewallRuleContext -Actual $rule -ExpectedRuleName $rule1Name -ExpectedStartIpAddress $rule1StartIP -ExpectedEndIpAddress $rule1EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Set-AzureSqlDatabaseServerFirewallRule"
+    Write-Output "updated"
+
+    Write-Output "Getting firewall rules..."
+    $rules = Get-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName
+    Write-Output "Got firewall rules"
+    Write-Output "validating Firewall rule $rule1Name ..."
+    $rule = $rules | Where-Object {$_.RuleName -eq $rule1Name}
+    Validate-SqlDatabaseServerFirewallRuleContext -Actual $rule -ExpectedRuleName $rule1Name -ExpectedStartIpAddress $rule1StartIP -ExpectedEndIpAddress $rule1EndIP -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Get-AzureSqlDatabaseServerFirewallRule"
+    
     # Delete a Firewall rules
     Write-Output "Deleting firewall rule $rule1Name ..."
     $removedFw = Remove-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -Force
