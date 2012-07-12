@@ -140,7 +140,7 @@
     <Compile Include="Server\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
     <Compile Include="Model\SqlDatabaseServerContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Cmdlet\SetAzureSqlDatabaseServerAdminPassword.cs" />
+    <Compile Include="Server\Cmdlet\SetAzureSqlDatabaseServer.cs" />
     <Compile Include="Services\ClientOutputMessageInspector.cs" />
     <Compile Include="Services\ConfigurationConstants.cs" />
     <Compile Include="Services\Constants.cs" />

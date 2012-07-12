@@ -24,16 +24,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
     using WAPPSCmdlet = Microsoft.WindowsAzure.Management.CloudService.WAPPSCmdlet;
 
     /// <summary>
-    /// Reset the administrator password for an existing Windows Azure SQL Database server in the selected subscription.
+    /// Update settings for an existing Windows Azure SQL Database server in the selected subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServerAdminPassword", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Medium)]
-    public class SetAzureSqlDatabaseServerAdminPassword : SqlDatabaseManagementCmdletBase
+    [Cmdlet(VerbsCommon.Set, "AzureSqlDatabaseServer", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Medium)]
+    public class SetAzureSqlDatabaseServer : SqlDatabaseManagementCmdletBase
     {
-        public SetAzureSqlDatabaseServerAdminPassword()
+        public SetAzureSqlDatabaseServer()
         {
         }
 
-        public SetAzureSqlDatabaseServerAdminPassword(ISqlDatabaseManagement channel)
+        public SetAzureSqlDatabaseServer(ISqlDatabaseManagement channel)
         {
             this.Channel = channel;
         }
@@ -46,9 +46,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        [Parameter(Mandatory = true, HelpMessage = "SQL Database administrator login password.")]
+        [Parameter(Mandatory = true, ParameterSetName = "ResetServerAdminPassword", HelpMessage = "SQL Database administrator login password.")]
         [ValidateNotNullOrEmpty]
-        public string NewPassword
+        public string AdminPassword
         {
             get;
             set;
@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseServerOperationContext SetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
+        internal SqlDatabaseServerOperationContext ResetAzureSqlDatabaseServerAdminPasswordProcess(string serverName, string newPassword)
         {
             // Do nothing if force is not specified and user cancelled the operation
             if (!Force.IsPresent &&
@@ -102,11 +102,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseServerOperationContext context = this.SetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.NewPassword);
-
-                if (context != null)
+                object operationContext = null;
+                switch (this.ParameterSetName)
                 {
-                    WriteObject(context, true);
+                    case "ResetServerAdminPassword":
+                        operationContext = this.ResetAzureSqlDatabaseServerAdminPasswordProcess(this.ServerName, this.AdminPassword);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (operationContext != null)
+                {
+                    WriteObject(operationContext, true);
                 }
             }
             catch (Exception ex)

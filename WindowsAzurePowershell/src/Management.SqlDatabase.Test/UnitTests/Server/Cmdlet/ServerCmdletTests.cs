@@ -243,9 +243,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("NewServerName", newServerResult.ServerName);
             Assert.AreEqual("Success", newServerResult.OperationStatus);
 
-            SetAzureSqlDatabaseServerAdminPassword setAzureSqlDatabaseServerAdminPassword = new SetAzureSqlDatabaseServerAdminPassword(channel) { ShareChannel = true };
-            setAzureSqlDatabaseServerAdminPassword.CommandRuntime = commandRuntime;
-            var setPasswordResult = setAzureSqlDatabaseServerAdminPassword.SetAzureSqlDatabaseServerAdminPasswordProcess("NewServerName", "NewPassword");
+            SetAzureSqlDatabaseServer setAzureSqlDatabaseServer = new SetAzureSqlDatabaseServer(channel) { ShareChannel = true };
+            setAzureSqlDatabaseServer.CommandRuntime = commandRuntime;
+            var setPasswordResult = setAzureSqlDatabaseServer.ResetAzureSqlDatabaseServerAdminPasswordProcess("NewServerName", "NewPassword");
             Assert.AreEqual("NewServerName", setPasswordResult.ServerName);
             Assert.AreEqual("Success", setPasswordResult.OperationStatus);
             Assert.AreEqual("NewPassword", password);
