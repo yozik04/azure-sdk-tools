@@ -147,6 +147,7 @@
     <Compile Include="Services\ClientOutputMessageInspector.cs" />
     <Compile Include="Services\ConfigurationConstants.cs" />
     <Compile Include="Services\Constants.cs" />
+    <Compile Include="Services\ServiceResourceError.cs" />
     <Compile Include="Services\ISqlDatabaseManagement.cs" />
     <Compile Include="Services\ISqlDatabaseManagementExternalApi.cs" />
     <Compile Include="Services\NewSqlDatabaseServerInput.cs" />

@@ -16,95 +16,114 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.IO;
+    using System.Management.Automation;
     using System.Net;
-    using System.Runtime.Serialization;
     using System.Security.Cryptography.X509Certificates;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Web;
-    using System.Xml;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Properties;
 
     public static class SqlDatabaseManagementHelper
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposing the factory would also dispose the channel we are returning.")]
-        public static ISqlDatabaseManagement CreateSqlDatabaseManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert)
+        public static ISqlDatabaseManagement CreateSqlDatabaseManagementChannel(Binding binding, Uri remoteUri, X509Certificate2 cert, string requestSessionId)
         {
             WebChannelFactory<ISqlDatabaseManagement> factory = new WebChannelFactory<ISqlDatabaseManagement>(binding, remoteUri);
-            factory.Endpoint.Behaviors.Add(new ClientOutputMessageInspector());
+            factory.Endpoint.Behaviors.Add(new ClientOutputMessageInspector(requestSessionId));
             factory.Credentials.ClientCertificate.Certificate = cert;
             return factory.CreateChannel();
         }
 
-        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlDatabaseManagementError errorDetails)
+        /// <summary>
+        /// Generates a client side tracing Id of the format:
+        /// [Guid]-[Time in UTC]
+        /// </summary>
+        /// <returns>A string representation of the client side tracing Id.</returns>
+        public static string GenerateClientTracingId()
         {
-            HttpStatusCode httpStatusCode;
-            string operationId;
-            return TryGetExceptionDetails(exception, out errorDetails, out httpStatusCode, out operationId);
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", Guid.NewGuid().ToString(), DateTime.UtcNow.ToString("u"));
         }
 
-        public static bool TryGetExceptionDetails(CommunicationException exception, out SqlDatabaseManagementError errorDetails, out HttpStatusCode httpStatusCode, out string operationId)
+        /// <summary>
+        /// Retrieves the exception details contained in the exception and wrap it in a PowerShell <see cref="ErrorRecord"/>.
+        /// </summary>
+        /// <param name="exception">The exception containing the error details.</param>
+        /// <param name="errorRecord">An output parameter for the error record containing the error details.</param>
+        /// <param name="requestId">An output parameter for the request Id present in the reponse headers.</param>
+        public static void RetrieveExceptionDetails(Exception exception, out ErrorRecord errorRecord, out string requestId)
         {
-            errorDetails = null;
-            httpStatusCode = 0;
-            operationId = null;
+            errorRecord = null;
+            requestId = null;
 
-            if (exception == null)
+            // Look for known exceptions through the exceptions and inner exceptions
+            Exception innerException = exception;
+            while (innerException != null)
             {
-                return false;
-            }
-
-            if (exception.Message == "Internal Server Error")
-            {
-                httpStatusCode = HttpStatusCode.InternalServerError;
-                return true;
-            }
-
-            WebException wex = exception.InnerException as WebException;
-
-            if (wex == null)
-            {
-                return false;
-            }
-
-            HttpWebResponse response = wex.Response as HttpWebResponse;
-            if (response == null)
-            {
-                return false;
-            }
-
-            if (response.Headers != null)
-            {
-                operationId = response.Headers[Constants.OperationTrackingIdHeader];
-            }
-
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                errorDetails = new SqlDatabaseManagementError();
-                errorDetails.Message = response.ResponseUri.AbsoluteUri + " does not exist.";
-                errorDetails.Code = response.StatusCode.ToString();
-                return false;
-            }
-
-            using (var s = response.GetResponseStream())
-            {
-                if (s.Length == 0)
+                WebException webException = innerException as WebException;
+                if ((webException != null) &&
+                    (webException.Response != null))
                 {
-                    return false;
+                    HttpWebResponse response = webException.Response as HttpWebResponse;
+
+                    // Extract the request Ids and write them as warnings
+                    if (response.Headers != null)
+                    {
+                        requestId = response.Headers[Constants.RequestIdHeaderName];
+                    }
+
+                    using (Stream responseStream = response.GetResponseStream())
+                    {
+                        responseStream.Seek(0, SeekOrigin.Begin);
+                        // Check if it's a service resource error message
+                        ServiceResourceError serviceResourceError;
+                        if (ServiceResourceError.TryParse(responseStream, out serviceResourceError))
+                        {
+                            errorRecord = new ErrorRecord(new CommunicationException(serviceResourceError.Message), string.Empty, ErrorCategory.InvalidOperation, null);
+                            break;
+                        }
+
+                        responseStream.Seek(0, SeekOrigin.Begin);
+                        // Check if it's a database management error message
+                        SqlDatabaseManagementError databaseManagementError;
+                        if (SqlDatabaseManagementError.TryParse(responseStream, out databaseManagementError))
+                        {
+                            string errorDetails = string.Format(
+                                CultureInfo.InvariantCulture,
+                                Resources.DatabaseManagementErrorFormat,
+                                databaseManagementError.Code,
+                                databaseManagementError.Message);
+
+                            errorRecord = new ErrorRecord(new CommunicationException(errorDetails), string.Empty, ErrorCategory.InvalidOperation, null);
+                            break;
+                        }
+                    }
+
+                    // Check if it's a not found message
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        string message = string.Format(CultureInfo.InvariantCulture, Resources.UriDoesNotExist, response.ResponseUri.AbsoluteUri);
+                        string errorDetails = string.Format(
+                            CultureInfo.InvariantCulture,
+                            Resources.DatabaseManagementErrorFormat,
+                            response.StatusCode.ToString(),
+                            message);
+
+                        errorRecord = new ErrorRecord(new CommunicationException(errorDetails), string.Empty, ErrorCategory.InvalidOperation, null);
+                        break;
+                    }
                 }
 
-                try
-                {
-                    XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(s, new XmlDictionaryReaderQuotas());
-                    DataContractSerializer ser = new DataContractSerializer(typeof(SqlDatabaseManagementError));
-                    errorDetails = (SqlDatabaseManagementError)ser.ReadObject(reader, true);
-                }
-                catch (SerializationException)
-                {
-                    return false;
-                }
+                innerException = innerException.InnerException;
             }
 
-            return true;
+            // If it's here, it was an unknown exception, wrap the original exception as is.
+            if (errorRecord == null)
+            {
+                errorRecord = new ErrorRecord(exception, string.Empty, ErrorCategory.InvalidOperation, null);
+            }
         }
     }
 }

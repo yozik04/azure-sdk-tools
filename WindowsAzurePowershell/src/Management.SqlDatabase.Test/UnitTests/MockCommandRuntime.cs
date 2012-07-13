@@ -16,10 +16,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 {
     using System.Collections.Generic;
     using System.Management.Automation;
+    using System.Text;
 
     public class MockCommandRuntime : ICommandRuntime
     {
         public List<ErrorRecord> ErrorRecords = new List<ErrorRecord>();
+        public StringBuilder WarningOutput = new StringBuilder();
 
         public override string ToString()
         {
@@ -118,7 +120,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 
         public void WriteWarning(string text)
         {
-            throw new System.NotImplementedException();
+            this.WarningOutput.AppendLine(text);
         }
     }
 }

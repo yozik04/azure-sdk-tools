@@ -14,13 +14,21 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
+    using System;
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Description;
     using System.ServiceModel.Dispatcher;
 
-    public class ClientOutputMessageInspector : IClientMessageInspector, IEndpointBehavior
+    internal class ClientOutputMessageInspector : IClientMessageInspector, IEndpointBehavior
     {
+        private string requestSessionId;
+
+        internal ClientOutputMessageInspector(string requestSessionId)
+        {
+            this.requestSessionId = requestSessionId;
+        }
+
         #region IClientMessageInspector Members
 
         public void AfterReceiveReply(ref System.ServiceModel.Channels.Message reply, object correlationState) 
@@ -35,6 +43,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
                 if (property.Headers[Constants.VersionHeaderName] == null)
                 {
                     property.Headers.Add(Constants.VersionHeaderName, Constants.VersionHeaderContent);
+                }
+
+                if (property.Headers[Constants.ClientSessionIdHeaderName] == null)
+                {
+                    property.Headers.Add(Constants.ClientSessionIdHeaderName, SqlDatabaseManagementCmdletBase.clientSessionId);
+                }
+
+                if (property.Headers[Constants.ClientRequestIdHeaderName] == null)
+                {
+                    property.Headers.Add(Constants.ClientRequestIdHeaderName, this.requestSessionId);
                 }
             }
 

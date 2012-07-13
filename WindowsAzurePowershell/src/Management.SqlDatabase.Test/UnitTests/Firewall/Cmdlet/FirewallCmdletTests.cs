@@ -265,6 +265,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Firewall.
             // Remove Rule1 again
             removeServerContext = removeAzureSqlDatabaseServerFirewallRule.RemoveAzureSqlDatabaseServerFirewallRuleProcess("Server1", "Rule1");
             Assert.AreEqual(1, commandRuntime.ErrorRecords.Count);
+            Assert.IsTrue(commandRuntime.WarningOutput.Length > 0);
         }
     }
 }

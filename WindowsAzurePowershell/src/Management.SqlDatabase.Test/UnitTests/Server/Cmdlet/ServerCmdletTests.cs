@@ -205,6 +205,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             removeAzureSqlDatabaseServer.CommandRuntime = commandRuntime;
             removeServerContext = removeAzureSqlDatabaseServer.RemoveAzureSqlDatabaseServerProcess("TestServer0");
             Assert.AreEqual(1, commandRuntime.ErrorRecords.Count);
+            Assert.IsTrue(commandRuntime.WarningOutput.Length > 0);
         }
 
         [TestMethod]

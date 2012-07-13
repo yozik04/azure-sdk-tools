@@ -61,6 +61,43 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {1}
+        ///Error Code: {0}.
+        /// </summary>
+        internal static string DatabaseManagementErrorFormat {
+            get {
+                return ResourceManager.GetString("DatabaseManagementErrorFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Request Id: &apos;{0}&apos;.
+        /// </summary>
+        internal static string ExceptionClientRequestId {
+            get {
+                return ResourceManager.GetString("ExceptionClientRequestId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Session Id: &apos;{0}&apos;.
+        /// </summary>
+        internal static string ExceptionClientSessionId {
+            get {
+                return ResourceManager.GetString("ExceptionClientSessionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Id: &apos;{0}&apos;.
+        /// </summary>
+        internal static string ExceptionRequestId {
+            get {
+                return ResourceManager.GetString("ExceptionRequestId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The firewall rule &quot;{0}&quot; could not be found in the Windows Azure Sql Database server &quot;{1}&quot;..
         /// </summary>
         internal static string GetAzureSqlDatabaseServerFirewallRuleNotFound {
@@ -138,6 +175,15 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Properties {
         internal static string ShouldProcessCaption {
             get {
                 return ResourceManager.GetString("ShouldProcessCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} does not exist..
+        /// </summary>
+        internal static string UriDoesNotExist {
+            get {
+                return ResourceManager.GetString("UriDoesNotExist", resourceCulture);
             }
         }
     }

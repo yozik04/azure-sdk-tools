@@ -14,7 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
 {
+    using System;
+    using System.IO;
     using System.Runtime.Serialization;
+    using System.Xml;
 
     [DataContract(Name = "Error", Namespace = Constants.SqlDatabaseManagementNamespace)]
     public class SqlDatabaseManagementError : IExtensibleDataObject
@@ -32,5 +35,38 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         public int State { get; set; }
 
         public ExtensionDataObject ExtensionData { get; set; }
+
+        /// <summary>
+        /// Tries to deserialized instance of <see cref="SqlDatabaseManagementError"/> to its object equivalent.
+        /// A return value indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="input">A stream that contains a serialized instance of <see cref="SqlDatabaseManagementError"/> to convert.</param>
+        /// <param name="result">When the method returns, contains the deserialized <see cref="SqlDatabaseManagementError"/> object,
+        /// if the conversion succeeded, or <c>null</c>, if the conversion failed.</param>
+        /// <returns><c>true</c> if the input parameter is successfully converted; otherwise, <c>false</c>.</returns>
+        public static bool TryParse(Stream input, out SqlDatabaseManagementError result)
+        {
+            result = null;
+
+            if (input == null)
+            {
+                return false;
+            }
+
+            // Deserialize the stream using DataContractSerializer.
+            try
+            {
+                XmlDictionaryReader xmlReader = XmlDictionaryReader.CreateTextReader(input, new XmlDictionaryReaderQuotas());
+                DataContractSerializer serializer = new DataContractSerializer(typeof(SqlDatabaseManagementError));
+                result = (SqlDatabaseManagementError)serializer.ReadObject(xmlReader, true);
+                return true;
+            }
+            catch (Exception)
+            {
+            }
+
+            return false;
+        }
+
     }
 }
