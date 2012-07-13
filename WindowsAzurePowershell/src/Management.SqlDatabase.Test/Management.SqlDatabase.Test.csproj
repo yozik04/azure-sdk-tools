@@ -116,6 +116,7 @@
     <None Include="TestScripts\CommonFunctions.ps1" />
     <None Include="TestScripts\CreateGetDeleteServer.ps1" />
     <None Include="TestScripts\CreateGetDropFirewall.ps1" />
+    <None Include="TestScripts\FormatValidation.ps1" />
     <None Include="TestScripts\ResetPassword.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,9 @@
       <Project>{559A16C7-B11C-4AA6-8C16-8ADECA6ABED7}</Project>
       <Name>ServiceManagement</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestScripts\ExpectedFormat.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

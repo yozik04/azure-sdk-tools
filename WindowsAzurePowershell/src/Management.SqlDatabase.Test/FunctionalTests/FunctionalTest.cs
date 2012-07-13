@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-// ----------------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------------
 //
 // Copyright 2011 Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +11,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.IO;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet;
 using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
@@ -68,6 +71,37 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
             string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\"", this.subscriptionID, this.serializedCert, this.serverLocation);
             bool testResult = PSScriptExecutor.ExecuteScript("ResetPassword.ps1", arguments);
             Assert.IsTrue(testResult);
+        }
+
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void OutputObjectFormatValidation()
+        {
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory() + Guid.NewGuid());
+            string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\" -OutputFile \"{3}\"", this.subscriptionID, this.serializedCert, this.serverLocation, outputFile);
+            bool testResult = PSScriptExecutor.ExecuteScript("FormatValidation.ps1", arguments);
+            Assert.IsTrue(testResult);
+
+            string actualFormat = GetMaskedData(outputFile);
+            Console.WriteLine(actualFormat);
+            string expectedFormat = GetMaskedData("ExpectedFormat.txt");
+            Assert.AreEqual(expectedFormat, actualFormat, "Format of output object didn't match");
+        }
+
+        private string GetMaskedData(string fileName)
+        {
+            string mask = "xxxxxxxxxx";
+            // The code expects the first line of the file contains the list of dynamic data (such as servername, operation id) separated by comma.
+            // These dynamic data will be replaced with xxxxxxxxxx.
+            string dynamicContentLine = File.ReadAllLines(fileName)[0];
+            string[] dynamicContents = dynamicContentLine.Split(',');
+            string data = File.ReadAllText(fileName);
+
+            foreach (string dynamicContent in dynamicContents)
+            {
+                data = data.Replace(dynamicContent, mask);
+            }
+            return data;
         }
     }
 }
