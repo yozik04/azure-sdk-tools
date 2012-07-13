@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 
         private string GetMaskedData(string fileName)
         {
-            string mask = "<...>";
+            string mask = "xxxxxxxxxx";
             // The code expects the first line of the file contains the list of dynamic data (such as servername, operation id) separated by comma.
             // These dynamic data will be replaced with xxxxxxxxxx.
             string dynamicContentLine = File.ReadAllLines(fileName)[0];

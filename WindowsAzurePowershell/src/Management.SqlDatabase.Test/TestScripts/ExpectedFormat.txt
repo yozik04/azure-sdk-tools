@@ -1,17 +1,17 @@
-North Central US,w80ephn2pa,03a16dfe2a9c4de9b6ee03c97d438e52,cac28d71ac9f45069b487802b2c5d74f,69f9338b1d0e43ab93c269e0f6865604
+<server_location>,<server_name>,<operationId1>,<operationId2>,<operationId3>
 SqlDatabaseServerOperationContext
 
 ServerName                                                            OperationDescription                                                  OperationId                                                           OperationStatus                                                      
 ----------                                                            --------------------                                                  -----------                                                           ---------------                                                      
-w80ephn2pa                                                            New-AzureSqlDatabaseServer                                            03a16dfe2a9c4de9b6ee03c97d438e52                                      Success                                                              
+<server_name>                                                            New-AzureSqlDatabaseServer                                            <operationId1>                                      Success                                                              
 SqlDatabaseServerContext
 
 
 AdministratorLogin   : mylogin1
-Location             : North Central US
-ServerName           : w80ephn2pa
+Location             : <server_location>
+ServerName           : <server_name>
 OperationDescription : Get-AzureSqlDatabaseServer
-OperationId          : cac28d71ac9f45069b487802b2c5d74f
+OperationId          : <operationId2>
 OperationStatus      : Success
 
 SqlDatabaseServerFirewallRuleContext
@@ -20,8 +20,8 @@ SqlDatabaseServerFirewallRuleContext
 RuleName             : test
 StartIpAddress       : 1.0.0.0
 EndIpAddress         : 2.0.0.0
-ServerName           : w80ephn2pa
+ServerName           : <server_name>
 OperationDescription : New-AzureSqlDatabaseServerFirewallRule
-OperationId          : 69f9338b1d0e43ab93c269e0f6865604
+OperationId          : <operationId3>
 OperationStatus      : Success
 
