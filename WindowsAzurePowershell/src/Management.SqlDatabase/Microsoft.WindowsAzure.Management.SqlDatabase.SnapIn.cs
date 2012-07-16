@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Samples.ManagementTools.PowerShell
+namespace Microsoft.WindowsAzure.Management.SqlDatabase.PowerShell
 {
-using System.ComponentModel;
-using System.Management.Automation;
+    using System.ComponentModel;
+    using System.Management.Automation;
 
-/// <summary>
+    /// <summary>
     /// Installer class for the Windows Azure Platform PowerShell Cmdlets
     /// Windows Powershell v2.0 snap-in.
     /// </summary>
@@ -29,7 +29,7 @@ using System.Management.Automation;
         /// </summary>
         public override string Description
         {
-            get { return "Windows Azure PowerShell Cmdlets - SqlDB"; }
+            get { return "Cmdlets to create and configure Windows Azure Sql Databases"; }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ using System.Management.Automation;
         /// </summary>
         public override string Name
         {
-            get { return "WAPSCmdlets.SqlDB"; }
+            get { return "WindowsAzureSqlDatabaseCmdlets"; }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ using System.Management.Automation;
         /// </summary>
         public override string Vendor
         {
-            get { return "Microsoft Developer & Platform Evangelism"; }
+            get { return "Microsoft Corporation"; }
         }
     }
 }
