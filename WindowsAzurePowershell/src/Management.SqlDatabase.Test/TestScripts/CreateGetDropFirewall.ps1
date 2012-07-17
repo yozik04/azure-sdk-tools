@@ -96,9 +96,8 @@ Try
     
     # Delete a Firewall rules
     Write-Output "Deleting firewall rule $rule1Name ..."
-    $removedFw = Remove-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -Force
+    Remove-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName $rule1Name -Force
     Write-Output "Deleted"
-    Validate-SqlDatabaseServerOperationContext -Actual $removedFw -ExpectedServerName $server.ServerName -ExpectedOperationDescription "Remove-AzureSqlDatabaseServerFirewallRule"
     $rules = Get-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName | Where-Object {$_.RuleName -eq $rule1Name}
     Assert {$rules -eq $null} "Firewall rule $rule1Name is not dropped"
     

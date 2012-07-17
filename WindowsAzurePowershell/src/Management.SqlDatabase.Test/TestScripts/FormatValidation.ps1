@@ -59,13 +59,16 @@ Try
     
     # write output object to output file
     $SqlDatabaseOperationContext.GetType().Name >> $OutputFile
-    $SqlDatabaseOperationContext >> $OutputFile
+    $SqlDatabaseOperationContext | ft -Wrap >> $OutputFile
+    $SqlDatabaseOperationContext | fl >> $OutputFile
 
     $SqlDatabaseServerContext.GetType().Name >> $OutputFile
-    $SqlDatabaseServerContext >> $OutputFile
+    $SqlDatabaseServerContext | ft -Wrap >> $OutputFile
+    $SqlDatabaseServerContext | fl >> $OutputFile
 
     $SqlDatabaseFirewallRuleContext.GetType().Name >> $OutputFile
-    $SqlDatabaseFirewallRuleContext >> $OutputFile
+    $SqlDatabaseFirewallRuleContext | ft -Wrap >> $OutputFile
+    $SqlDatabaseFirewallRuleContext | fl >> $OutputFile
     
     $isTestPass = $True
 }

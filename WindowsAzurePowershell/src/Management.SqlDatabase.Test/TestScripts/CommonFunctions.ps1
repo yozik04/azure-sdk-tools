@@ -31,11 +31,10 @@ function Init-TestEnvironment
     )
     $ConfirmPreference = "Medium"
 
-    $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management.SqlDatabase"
+    $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
     if(!$moduleLoaded)
     {
-        Import-Module .\Microsoft.WindowsAzure.Management.dll
-        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.dll
+        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
     }
 
     # Deserialize the input certificate given in base 64 format.

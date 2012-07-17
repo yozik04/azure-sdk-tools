@@ -21,7 +21,6 @@ using Microsoft.WindowsAzure.Management.SqlDatabase.Test.Utilities;
 using Microsoft.WindowsAzure.Management.Utilities;
 using Microsoft.WindowsAzure.Management.XmlSchema;
 
-
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
 {
     [TestClass]
@@ -77,7 +76,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test
         [TestCategory("Functional")]
         public void OutputObjectFormatValidation()
         {
-            string outputFile = Path.Combine(Directory.GetCurrentDirectory() + Guid.NewGuid());
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid() + ".txt");
             string arguments = string.Format("-subscriptionID \"{0}\" -serializedCert \"{1}\" -serverLocation \"{2}\" -OutputFile \"{3}\"", this.subscriptionID, this.serializedCert, this.serverLocation, outputFile);
             bool testResult = PSScriptExecutor.ExecuteScript("FormatValidation.ps1", arguments);
             Assert.IsTrue(testResult);
