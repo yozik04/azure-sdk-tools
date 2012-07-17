@@ -93,12 +93,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseServerOperationContext context = this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
-
-                if (context != null)
-                {
-                    WriteObject(context, true);
-                }
+                this.RemoveAzureSqlDatabaseServerProcess(this.ServerName);
             }
             catch (Exception ex)
             {

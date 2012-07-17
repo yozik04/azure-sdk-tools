@@ -104,12 +104,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Firewall.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseServerOperationContext context = RemoveAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
-
-                if (context != null)
-                {
-                    WriteObject(context, true);
-                }
+                RemoveAzureSqlDatabaseServerFirewallRuleProcess(this.ServerName, this.RuleName);
             }
             catch (Exception ex)
             {

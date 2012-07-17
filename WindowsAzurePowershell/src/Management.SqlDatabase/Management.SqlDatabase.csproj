@@ -123,6 +123,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Microsoft.WindowsAzure.Management.SqlDatabase.Types.ps1xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="MSSharedLibKey.snk" />
     <Compile Include="Firewall\Cmdlet\SetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />

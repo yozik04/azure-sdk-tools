@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             set;
         }
 
-        internal SqlDatabaseServerOperationContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
+        internal SqlDatabaseServerContext NewAzureSqlDatabaseServerProcess(string adminLogin, string adminLoginPassword, string location)
         {
             // Do nothing if force is not specified and user cancelled the operation
             if (!Force.IsPresent &&
@@ -78,7 +78,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                 return null;
             }
 
-            SqlDatabaseServerOperationContext operationContext = null;
+            SqlDatabaseServerContext operationContext = null;
             try
             {
                 InvokeInOperationContext(() =>
@@ -87,9 +87,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                         Channel.NewServer(subscription, adminLogin, adminLoginPassword, location));
                     WAPPSCmdlet.Operation operation = WaitForSqlDatabaseOperation();
 
-                    operationContext = new SqlDatabaseServerOperationContext()
+                    operationContext = new SqlDatabaseServerContext()
                     {
                         ServerName = serverName.InnerText,
+                        Location = location,
+                        AdministratorLogin = adminLogin,
                         OperationStatus = operation.Status,
                         OperationDescription = CommandRuntime.ToString(),
                         OperationId = operation.OperationTrackingId
@@ -112,7 +114,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             try
             {
                 base.ProcessRecord();
-                SqlDatabaseServerOperationContext context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
+                SqlDatabaseServerContext context = this.NewAzureSqlDatabaseServerProcess(this.AdministratorLogin, this.AdministratorLoginPassword, this.Location);
 
                 if (context != null)
                 {

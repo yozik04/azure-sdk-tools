@@ -111,11 +111,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
                     default:
                         break;
                 }
-
-                if (operationContext != null)
-                {
-                    WriteObject(operationContext, true);
-                }
             }
             catch (Exception ex)
             {
