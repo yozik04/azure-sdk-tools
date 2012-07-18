@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
             // If it's here, it was an unknown exception, wrap the original exception as is.
             if (errorRecord == null)
             {
-                errorRecord = new ErrorRecord(exception, string.Empty, ErrorCategory.InvalidOperation, null);
+                errorRecord = new ErrorRecord(exception, string.Empty, ErrorCategory.NotSpecified, null);
             }
         }
     }
