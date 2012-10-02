@@ -59,7 +59,13 @@ foreach($singleUrl in $url -split ";")
     $dest = $downloaddir + "\sandbox.exe"
     download $singleUrl $dest
     $final = $downloaddir + "\runtime.exe"
-    copyOnVerify $dest $final
+    if ($overrideUrl) {
+       Write-Host "Skipping signature check"
+       mv $dest $final
+    }
+    else {
+       copyOnVerify $dest $final
+    }
     if (Test-Path -LiteralPath $final)
     {
        cd $downloaddir
